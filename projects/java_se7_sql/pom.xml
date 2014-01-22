@@ -45,6 +45,12 @@
         <module>approaches/jdbc</module>
 	</modules>
 
+    <scm>
+        <url>scm:git:git@github.com:meriosol/etr.git</url>
+        <connection>scm:git:git@github.com:meriosol/etr.git</connection>
+        <tag>HEAD</tag>
+    </scm>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.slf4j</groupId>
