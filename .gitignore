@@ -3,7 +3,8 @@
 *.name
 *.iws
 *.ipr
-.idea/*
+#.idea/*
+.idea
 atlassian-ide-plugin.xml
 out
 
