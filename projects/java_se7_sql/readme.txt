@@ -23,7 +23,7 @@ For instance, if you plan to test jdbc, set this:
             <artifactId>etr-jdbc</artifactId>
             <artifactId>etr-mocked</artifactId>
 			-->
-            <version>0.0.1-RELEASE</version>
+            <version>0.0.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
