@@ -1,0 +1,28 @@
+# intellij
+*.iml
+*.name
+*.iws
+*.ipr
+.idea/*
+atlassian-ide-plugin.xml
+out
+
+# OS generated files
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# eclipse
+.classpath
+.project
+.settings
+
+# maven
+target
+
+# misc:
+tmp
+temp
+
+

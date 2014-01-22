@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+	
+    <parent>
+        <groupId>com.meriosol</groupId>
+        <artifactId>etr-jse7-sql</artifactId>
+        <version>0.0.1-RELEASE</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+	<artifactId>etr-api-study</artifactId>
+    <name>ETR API Study</name>
+    <description>ETR API study module. It should have dependency on some of 'approaches' modules before test.</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.meriosol</groupId>
+            <artifactId>etr-mocked</artifactId>
+			<!-- TIP: Uncomment particular persistence approach you'd like to test:
+            <artifactId>etr-jdbc</artifactId>
+            <artifactId>etr-mocked</artifactId>
+			-->
+            <version>0.0.1-RELEASE</version>
+        </dependency>
+    </dependencies>
+
+
+</project>

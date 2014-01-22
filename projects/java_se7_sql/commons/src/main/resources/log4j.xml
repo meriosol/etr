@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration   SYSTEM  "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <appender name="STDOUT.appender" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <!--
+			<param name="ConversionPattern" value="%d %-5p (%F:%L) - %m%n" />
+			-->
+            <param name="ConversionPattern"
+                   value="%d{yyyy.MM.dd_HH:mm:ss,SSS}-%5p [THRD:%t] %-25c{2} (%M:%L) MDL-%X{moduleId} CORR-%X{corrId} - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="rolling.file.appender" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="tmp/etr-javase7sql.viacp.log"/>
+        <param name="MaxFileSize" value="200KB"/>
+        <param name="MaxBackupIndex" value="1"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <!-- Verbosive pattern: %d{MM.dd.yyyy_HH:mm:ss,SSS}[%t]-%5p %-20c{2} (%M:%L) - %m%n
+                    Simple pattern: "%d - %p - %m%n"
+                 For MDC (notice %X):
+            <param name="ConversionPattern"
+                   value="%d{MM.dd.yyyy_HH:mm:ss,SSS}-%5p [THRD:%t] %-25c{2} (%M:%L) MDL-%X{moduleId} CORRID-%X{corrId} - %m%n"/>
+                    -->
+            <param name="ConversionPattern"
+                   value="%d{MM.dd.yyyy_HH:mm:ss,SSS}-%5p [THRD:%t] %-25c{2} (%M:%L) - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- Loggers: ========= -->
+    <!-- Priority value examples: debug (for testing); warn (for production)
+     Level hier: debug < info < warn < error < fatal
+     -->
+    <!-- App log -->
+    <logger name="com.meriosol" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="rolling.file.appender"/>
+    </logger>
+
+    <!-- Apache logs -->
+    <logger name="org.apache" additivity="false">
+        <level value="warn"/>
+        <appender-ref ref="rolling.file.appender"/>
+        <appender-ref ref="STDOUT.appender"/>
+    </logger>
+    <!-- ~Apache logs -->
+
+    <root>
+        <priority value="warn" />
+        <appender-ref ref="STDOUT.appender" />
+        <appender-ref ref="rolling.file.appender" />
+    </root>
+
+</log4j:configuration>

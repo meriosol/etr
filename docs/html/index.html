@@ -1,0 +1,328 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Event tracker</title>
+<link href="css/et.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+
+<body>
+<h1>Event tracker</h1>
+
+<table>
+	<tbody>
+		<tr>
+			<td>Project:</td>
+			<td>Event tracker</td>
+		</tr>
+		<tr>
+			<td>Inception:</td>
+			<td>2014-01-13</td>
+		</tr>
+		<tr>
+			<td>Goal:</td>
+			<td>
+			Based on sample of event logging entity show how different combinations of industry popular
+			persistence frameworks(frmk-s)/approaches can be used to handle this basic entity CRUD in different DBs.</td>
+		</tr>
+	</tbody>
+</table>
+
+	 
+<h2>Introduction</h2>
+There are tons of approaches to work with databases persistence. It's easy to get lost among them even if you're seasoned developer.
+Once you start this endeavour, you realise that documentation varies from frmk to frmk in details and quality, 
+sample code and configs are not for combination you assess, particular versions of frmk-s don't 
+live together well. Forums - though useful, sometimes more confuse than help. It's especially common when the newest frmk versions are emerged.<br> 
+Another way to look at it: you joined new team. They use some combination of frmk-s which you didn't try. 
+Codebase is large and not easy to grasp at once. Yes, there are books, forums, guru fellows who can help out. But forums can mislead, gurus are busy
+, and you want to see sample actionable code and run it now, learn in a matter of minutes how 
+typical combination of those frmk-s works, how much config/code it "consumes". This project tries to 
+embrace it via providing code snippets and configs which proven to work for particular DBs and frmk-s(and their versions).  
+
+<h2>1. Requirements (or more like wishes/dreams)</h2>
+Use cases are extremely simple:
+<div>
+<img src="img/main_use_cases.jpg" alt="Main use cases" />
+</div>
+
+For 'Manage Event' main scenarios are: 'create','update','delete','retrieve'(a few methods e.g. per category or severity). 
+
+<h3>1.1. Language/frmk combinations</h3>
+Initial selection:
+
+<pre>
+(lang: Java SE v7) (frmk: JDBC v4+ | JPA v2+ | Spring v4+ | Hibernate v4+ | Mybatis v3+) (DB: SQL: (derby v10+ | mysql v5+| pgsql v9+)) (config: XML | Annotations).
+</pre>
+<p>
+You can ask why not e.g. Oracle, IBM DB2. They are solid, matured DBs. For now they are ignored 
+for the sake of DB setup simplicity(e.g. try to find oracle for win7 64x machine which doesn't eat a few gigs of your HDD). 
+Only immensely popular, easily available and open source DBs are selected.
+</p>
+
+Side notes:
+<ul>
+	<li>It's incredible hard to embrace all combinations, so only some "mainstream" will be selected.</li>
+	<li>"Container less" variations are considered only. JPA is the closest to JavaEE though.
+    It's selected to avoid any clutter of additional configuring and dependencies from any EE container.
+	Despite of it those testing DAOs will likely be used in EE containers for testing web-middleware-backend path.</li>
+	<li>Some of frmk-s can be combined in "chains" e.g. (JPA + Spring + Hibernate). Folders and odcs will help to determine which combinatiopn is supported.</li>
+	<li>No embedded DBs/modes are chosen. They are perceived as too far from PROD ready apps. Apache Derby (or JavaDB as modern name) has embedded mode. 
+    You can test it if you wish.</li> 
+</ul>
+
+
+Next iterations can embrace e.g.:
+<ul>
+	<li>(JavaEE: version: (v6 | v7) ; profile: (web | full))
+	<li>(lang: (Java SE 7 | JVM: (groovy v2+ | scala)) | python | perl | MS.Net: (c#))
+	<li>  (DB: NoSQL: (MongoDB | Solr v4+ | Cassandra 1+ | Neo4j)) 
+     - idea is to embrace major NoSQL DB types: key/value or columnar, document, graph
+	<li>2nd level caching (ehcache as main candidate)	 
+</ul>
+
+<div class="note">  
+NOTE: Well, "Java+SQL" orientation is still expected to prevail.
+</div>  
+
+
+<h3>1.2. Traits to consider/embrace in selected frmk-s</h3>
+<ul>
+	<li>How easy to code/config a solution.</li>
+	<li>Transaction(TX) support for ACID DBs(mostly SQL, but e.g. graph DB neo4j supports ACID too).</li>
+	<li>XA distributed TX support (2 phase commits; JavaEE container is required).</li>
+	<li>Date handling support (on very basic level; as a sample of not totally primitive data type).</li>
+	<li>PK support. Client and DB side PK generation. Interesting case is complex keys support. Many legacy databases have composite keys.</li>
+	<li>How easily Object/Relational mismatch is handled(those inheritance hierarchies).</li>
+	<li>"Reconfigurability" (especially for env specific params).</li>
+	<li>Pagination support (can be critical for large storage).</li>
+	<li>Lazy loading (again critical for big data).</li>
+	<li>Large data types support(for now long string is enough; e.g. via Clob or longvarchsr).</li>
+	<li>Performance: latency, throughput.</li>
+	<li>Memory consumption.</li>
+	<li>Multi-threading support(how frmk-s sustain concurrent use).</li>
+	<li>Security (secured passwords, connections etc. Can be too large topic for this small project).</li>
+	<li>Caching(consider <em>ehcache</em> as a sample).</li>
+	<li>i18n(e.g. using UTF-8 charset for data).</li>
+</ul>
+
+It's expected for codebase to show some of them, but not all. Each module should describe what feature set is implemented. 
+
+<h2>2. Design</h2>
+Main idea of design is to create easily 'buildable' mini projects frmk which allows to quickly add and test frmk-s combination.
+To simplify at least one aspect of system entities are planned to be used exactly the same and considered as "frozen".
+
+<h3>2.1. Class high level structure</h3>
+Main classes:
+<div>
+<img src="img/main_classes.jpg" alt="Main classes" />
+</div>
+
+<h4>2.1.1. POJOs</h4>
+Main POJO classes to play with are: 
+<pre>
+  Event(id: long, category: EventCategory, severityLevel: enum(INFO/WARN/ERROR/FATAL)
+        , source: string, processId: string, title: short_string, created: date_time).
+</pre>
+
+Supplement entity is dict of event categories: 
+<pre>
+  EventCategory(code: string, name: string). 
+</pre>
+
+<div class="note">  
+NOTE: Name likely be reduced to just Category(but it's confusing in larger table set). 
+</div>  
+
+These classes are suitable for lists and eager relationships mapping.<br>
+For more detailed info subclasses are to be used(likely in the next iteration):
+
+<pre>
+  DetailedEvent extends Event (info: long_string).
+  DetailedEventCategory extends EventCategory(desc: long_string).
+</pre>
+   
+They are expected to be used only for individual entity editing.  
+
+Sample:
+<pre>
+  Event(id: 123439887656, categoryCode: "START", severityLevel: "INFO", source: "server1"
+        , processId: "PRC2387613", title: "System 123 get started", created: "2014-01-13H03:31:12.349"").
+  EventCategory(code: "START", name: "Start")
+  EventCategory(code: "INTERACT", name: "Interaction")
+  EventCategory(code: "STOP", name: "Stop")
+
+  DetailedEvent(id: 123439887656, categoryCode: "START", severityLevel: "INFO", processId: "PRC2387613"
+             ,  title: "System 123 get started" , created: "2014-01-13H03:31:12.349", info: "E.g. XML with details of start.").
+  
+  DetailedEventCategory(code: "START", name: "Start", desc: "Activity started.")
+  DetailedEventCategory(code: "INTERACT", name: "Interaction", desc: "Interaction performed.")
+  DetailedEventCategory(code: "STOP", name: "Stop", desc: "Activity started", desc: "Activity stopped.")
+</pre>
+  
+Practicality of this entity set in everyday life is doubtful, but at least 
+some interesting use cases can be imagined in future iterations. 
+For instance JMS queue can receive log message from some remote system and transactionally store in DB(XA 2 phase commit).
+It's easy to imagine millions of records for events to check performance(reading/writing), as another case.
+Another "typical" case is workflow. A field ${processId} can be used to group events for some business process.
+A field ${source} can be process name. CEP rules can be implemented somewhere. Sample rule: suspended case after series of 'INTERACT' events.
+Warning about this sleeping process can be sent (e.g. as email, sms, or new event with severityLevel = 'WARN').
+
+<h4>2.1.2. DAOs (or Mappers in ORMs)</h4>
+Core DAO is <b>EventDao</b>. Event categories can have own DAO if time allows. 
+
+<h3>2.2. Data high-level structure</h3>
+To maximize simplicity for ORM inheritance hierarchy  '<em>1 table per class hierarchy</em>' approach is selected. 
+Tables can look like:
+<div>
+<img src="img/events_tables.jpg" alt="Tables" />
+</div>
+
+<pre>
+ Table event_categories(code varchar(16) {PK}, name varchar(100) {UNQ}, description longvarchar).
+ Table events(id long {PK}, category_code varchar(16) {FK}, severity varchar(5)
+        , source varchar(100), process_id varchar(100), title varchar(100), created timestamp, details longvarchar).
+</pre>
+
+<h3>2.3. Project structure</h3>
+Project is organised as directory structure with hierarchy of selected frmk names and approaches.
+For instance if we need to checkout how 'Java SE 7' + Spring JDBC templates + JPA works, structure could be:
+<em>/javase7/spring/jpa</em>. Root dirs e.g. 'javase7' can be considered as "autonomous" group of modules. They can contain 
+subtrees of modules with some reusable members (e.g. commons, api).
+
+<div class="note">  
+NOTE: If tree looks too "deep", flattening can be applied. Sample - 'javase7' (it could be e.g. 'lang/java/se/7').
+</div>  
+
+<h3>2.4. Build</h3>
+For now main build tool is <b>maven</b> v3+, but gradle is in considerations too.<br>
+OS specific scripts will be provided only for win7+(and maybe cygwin) and linux(bash).
+For DBs basic setup instructions will be written(hope so). 
+DDLs and DMLs with initial data used in tests will be added as e.g. SQL scripts / DB. 
+
+<div>
+<img src="img/testing_workflow_basics.jpg" alt="Test workflow" />
+</div>
+
+
+<h2>3. Disclaimers</h2>
+This section describes what this project is NOT about and what to be aware of while perusing its artifacts.
+<ul id="lines">
+	<li>Code and configs are for quick start in particular combination of frmk-s only.
+		Production ready code definitely requires more polishing, e.g. "what if"s handling, NOP situation catching etc.</li>
+	<li>There is no goal to show all advanced features of used frmk-s. More specific projects to be created if time allows.</li>
+	<li>In production systems reusability is one of key non-functional requirements. 
+		This project follows this practice only partially as "side feature" because main goal is 
+		to just show working basic combination, without forcing learner to jump through all hoops/levels of dependencies.
+		Code is expected to be repeated, with reasonable level of sanity. Consider subprojects as relatively independent modules.</li> 	
+	<li>Pragmatism(and a sort of laziness) is strong force to have <em>good enough</em> amount of frmk combinations.
+		Missed combinations are hopefully can be figured out from provided ones. </li>
+	<li>This project assumes you have basic knowledge in back-end development area, familiar at least with Java, SQL.</li>
+	<li>At least from beginning only the most popular modern and stable frmk-s versions to be selected. 
+		Elder versions maybe get addressed when project itself comes to age. Funny part is: these now modern versions will be old soon :).</li>
+	<li>Project is in status "pet, for play around", can be removed at any time without warning.</li>	
+</ul>
+
+<h2>4. Abbreviations</h2>
+
+<table>
+	<thead>
+		<tr>
+			<th>Abbrev</th>
+			<th>Definition</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>frmk</td>
+			<td>framework</td>
+		</tr>
+		<tr>
+			<td>config</td>
+			<td>configuration</td>
+		</tr>
+		<tr>
+			<td>CRUD</td>
+			<td>Create/Read/Update/Delete</td>
+		</tr>
+		<tr>
+			<td>NOP</td>
+			<td>Null Pointer (exception)</td>
+		</tr>
+		
+		<tr>
+			<td>OSS</td>
+			<td>Open Source Software</td>
+		</tr>
+		<tr>
+			<td>dict</td>
+			<td>dictionary</td>
+		</tr>
+		<tr>
+			<td>DAO</td>
+			<td>Data Access Object</td>
+		</tr>
+		<tr>
+			<td>ORM</td>
+			<td> Object Relational Mapping</td>
+		</tr>
+		<tr>
+			<td>DB</td>
+			<td>database</td>
+		</tr>
+		<tr>
+			<td>PROD</td>
+			<td>Production</td>
+		</tr>
+		<tr>
+			<td>DEV</td>
+			<td>Development</td>
+		</tr>
+		<tr>
+			<td>TX</td>
+			<td>Transaction</td>
+		</tr>
+		<tr>
+			<td>ACID</td>
+			<td> Atomic Consistent Isolated Durable (about TX)</td>
+		</tr>
+		<tr>
+			<td>PK</td>
+			<td>Primary Key</td>
+		</tr>
+		<tr>
+			<td>FK</td>
+			<td>Foreign Key</td>
+		</tr>
+		<tr>
+			<td>env</td>
+			<td>environment</td>
+		</tr>
+		<tr>
+			<td>param</td>
+			<td>parameter</td>
+		</tr>
+		<tr>
+			<td>dir</td>
+			<td>directory</td>
+		</tr>
+		<tr>
+			<td>desc</td>
+			<td>description</td>
+		</tr>
+		<tr>
+			<td>CEP</td>
+			<td>Complex Event Processing</td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="footer">
+<hr>
+| Version: 0.5 | Updated: 2014-01-14 | &copy; MerioSol, 2014 |
+</div>
+
+</body>
+
+</html>
