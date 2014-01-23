@@ -1,10 +1,18 @@
 package com.meriosol.etr.dao.impl;
 
 import com.meriosol.etr.dao.EventDao;
+import com.meriosol.etr.dao.mapper.EventMapper;
 import com.meriosol.etr.domain.Event;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.apache.ibatis.session.TransactionIsolationLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -18,9 +26,12 @@ import java.util.List;
 public class EventDaoImpl implements EventDao {
     private static final Logger LOG = LoggerFactory.getLogger(EventDaoImpl.class);
     private static final Long DEFAULT_MAX_EVENT_COUNT = 10000L; // normally client should query max 100
+    private static final String MYBATIS_RESOURCE_CONFIG = "com/meriosol/etr/dao/mybatis-config.xml";
+    private SqlSessionFactory sessionFactory;
     private EventCategoryCache eventCategoryCache;
 
     public EventDaoImpl() {
+        initSessionFactory();
         this.eventCategoryCache = EventCategoryCache.getInstance();
     }
 
@@ -31,7 +42,7 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public String getDaoDescription() {
-        return "Mybatis Xml implementaion";
+        return "Mybatis Xml implementation";
     }
 
     /**
@@ -50,7 +61,15 @@ public class EventDaoImpl implements EventDao {
         if (event.getTitle() == null) {
             throw new IllegalArgumentException(module + " - Event Title should not be null!");
         }
-        throw new RuntimeException("Not implemented!");
+
+        try (SqlSession session = this.sessionFactory.openSession(TransactionIsolationLevel.SERIALIZABLE)) {
+            EventMapper mapper = session.getMapper(EventMapper.class);
+            int howManyRowsInserted = mapper.create(event);
+            assert howManyRowsInserted == 1;
+            session.commit();
+            LOG.debug("AFTER commit: ID for created event ='{}', created='{}'..", event.getId(), event.getCreated());
+        }
+        return event;
     }
 
     /**
@@ -61,7 +80,13 @@ public class EventDaoImpl implements EventDao {
      */
     @Override
     public Event retrieveEvent(Long eventId) {
-        throw new RuntimeException("Not implemented!");
+        Event event;
+        try (SqlSession session = this.sessionFactory.openSession(TransactionIsolationLevel.SERIALIZABLE)) {
+            EventMapper positionMapper = session.getMapper(EventMapper.class);
+            event = positionMapper.retrieveEvent(eventId);
+            session.commit();
+        }
+        return event;
     }
 
     /**
@@ -156,5 +181,15 @@ public class EventDaoImpl implements EventDao {
 
     //--------------------------------
     // Utils:
+    private void initSessionFactory() {
+        InputStream inputStream = null;
+        try {
+            inputStream = Resources.getResourceAsStream(MYBATIS_RESOURCE_CONFIG);
+            this.sessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        } catch (IOException e) {
+            LOG.error(String.format("Error while opening inputStream for resource '%s'!", MYBATIS_RESOURCE_CONFIG), e);
+        }
+    }
+
 
 }

@@ -43,6 +43,7 @@ class EventCategoryCache {
      * @throws SQLException
      */
     Event.Category lookupCategory(String categoryCode, Connection connection) throws SQLException {
+
         if (connection == null) {
             throw new IllegalArgumentException("Connection should not be null!");
         }

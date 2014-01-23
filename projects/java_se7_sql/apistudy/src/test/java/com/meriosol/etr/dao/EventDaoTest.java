@@ -48,8 +48,10 @@ public class EventDaoTest {
     @After
     public void tearDown() throws Exception {
         this.eventDao = null;
-        this.performanceTracker.finishTracking();
-        LOG.info("Performance report:\n{}\n", this.performanceTracker.emitReport());
+        if (this.performanceTracker != null) {
+            this.performanceTracker.finishTracking();
+            LOG.info("Performance report:\n{}\n", this.performanceTracker.emitReport());
+        }
     }
 
     @Test
@@ -61,7 +63,7 @@ public class EventDaoTest {
     @Test
     public void testEventRetrieveById() {
         final String module = "testEventRetrieveById";
-        this.performanceTracker.addMilestone(module + "."+ PerformanceTracker.LifecycleMilestoneName.BEGIN);
+        this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
         try {
             assertNotNull("EventDao should not be null!", this.eventDao);
             // CAUTION: DB should be initialized with events starting from 1000001.
@@ -74,14 +76,15 @@ public class EventDaoTest {
                     , event.getId(), sampleEventId), event.getId(), sampleEventId);
             LOG.info("AFTER Retrieve event by id='{}'. Event: {}", sampleEventId, event);
         } finally {
-            this.performanceTracker.addMilestone(module + "."+ PerformanceTracker.LifecycleMilestoneName.END);
+            this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.END);
         }
     }
 
     @Test
+    @Ignore
     public void testRecentEventsRetrieveWithMaxLimit() {
         final String module = "testRecentEventsRetrieveWithMaxLimit";
-        this.performanceTracker.addMilestone(module + "."+ PerformanceTracker.LifecycleMilestoneName.BEGIN);
+        this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
         try {
             assertNotNull("EventDao should not be null!", this.eventDao);
             Long maxEventCount = 5L;
@@ -91,14 +94,15 @@ public class EventDaoTest {
                     , maxEventCount, events.size()), events.size() <= maxEventCount);
             LOG.info("AFTER Retrieve events with max count='{}'. {}", maxEventCount, constructLogStringForEvents(events));
         } finally {
-            this.performanceTracker.addMilestone(module + "."+ PerformanceTracker.LifecycleMilestoneName.END);
+            this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.END);
         }
     }
 
     @Test
+    @Ignore
     public void testEventsRetrieveForPeriodWithBothPartsNotNull() throws ParseException {
         final String module = "testEventsRetrieveForPeriodWithBothPartsNotNull";
-        this.performanceTracker.addMilestone(module + "."+ PerformanceTracker.LifecycleMilestoneName.BEGIN);
+        this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
         try {
             assertNotNull("EventDao should not be null!", this.eventDao);
             Date endDate = new Date();
@@ -122,14 +126,15 @@ public class EventDaoTest {
                     , DateUtil.formatDateWithDefaultFormat(startDate)
                     , DateUtil.formatDateWithDefaultFormat(endDate), constructLogStringForEvents(events));
         } finally {
-            this.performanceTracker.addMilestone(module + "."+ PerformanceTracker.LifecycleMilestoneName.END);
+            this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.END);
         }
     }
 
     @Test
+    @Ignore
     public void testEventsRetrieveForPeriodWithEndDateNotNull() throws ParseException {
         final String module = "testEventsRetrieveForPeriodWithEndDateNotNull";
-        this.performanceTracker.addMilestone(module + "."+ PerformanceTracker.LifecycleMilestoneName.BEGIN);
+        this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
         try {
             assertNotNull("EventDao should not be null!", this.eventDao);
             Date endDate = new Date();
@@ -150,14 +155,15 @@ public class EventDaoTest {
                     , DateUtil.formatDateWithDefaultFormat(startDate), DateUtil.formatDateWithDefaultFormat(endDate)
                     , constructLogStringForEvents(events));
         } finally {
-            this.performanceTracker.addMilestone(module + "."+ PerformanceTracker.LifecycleMilestoneName.END);
+            this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.END);
         }
     }
 
     @Test
+    @Ignore
     public void testEventsRetrieveForPeriodWithStartDateNotNull() throws ParseException {
         final String module = "testEventsRetrieveForPeriodWithStartDateNotNull";
-        this.performanceTracker.addMilestone(module + "."+ PerformanceTracker.LifecycleMilestoneName.BEGIN);
+        this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
         try {
             assertNotNull("EventDao should not be null!", this.eventDao);
             Date endDate = null;
@@ -178,14 +184,15 @@ public class EventDaoTest {
                     , DateUtil.formatDateWithDefaultFormat(startDate), DateUtil.formatDateWithDefaultFormat(endDate)
                     , constructLogStringForEvents(events));
         } finally {
-            this.performanceTracker.addMilestone(module + "."+ PerformanceTracker.LifecycleMilestoneName.END);
+            this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.END);
         }
     }
 
     @Test
+    @Ignore
     public void testEventsRetrieveForPeriodWithAllDatesNull() throws ParseException {
         final String module = "testEventsRetrieveForPeriodWithAllDatesNull";
-        this.performanceTracker.addMilestone(module + "."+ PerformanceTracker.LifecycleMilestoneName.BEGIN);
+        this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
         try {
             assertNotNull("EventDao should not be null!", this.eventDao);
             Date endDate = null;
@@ -200,14 +207,15 @@ public class EventDaoTest {
             }
             LOG.info("AFTER Retrieve events for empty range startDate-endDate. {}", constructLogStringForEvents(events));
         } finally {
-            this.performanceTracker.addMilestone(module + "."+ PerformanceTracker.LifecycleMilestoneName.END);
+            this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.END);
         }
     }
 
     @Test
+    @Ignore
     public void testEventCreateAndUpdate() {
         final String module = "testEventCreateAndUpdate";
-        this.performanceTracker.addMilestone(module + "."+ PerformanceTracker.LifecycleMilestoneName.BEGIN);
+        this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
         try {
             assertNotNull("EventDao should not be null!", this.eventDao);
             // 1. Create event:
@@ -234,14 +242,15 @@ public class EventDaoTest {
                     , event.getId().equals(updatedEvent.getId()));
             LOG.info("AFTER Update of created event: {}", updatedEvent);
         } finally {
-            this.performanceTracker.addMilestone(module + "."+ PerformanceTracker.LifecycleMilestoneName.END);
+            this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.END);
         }
     }
 
     @Test
+    @Ignore
     public void testEventCreateAndDelete() {
         final String module = "testEventCreateAndDelete";
-        this.performanceTracker.addMilestone(module + "."+ PerformanceTracker.LifecycleMilestoneName.BEGIN);
+        this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
         try {
             assertNotNull("EventDao should not be null!", this.eventDao);
             // 1. Create event:
@@ -255,7 +264,7 @@ public class EventDaoTest {
             Event deletedEvent = eventDao.retrieveEvent(event.getId());
             assertNull(String.format("Deleted Event for ID '%s' should be null!", event.getId()), deletedEvent);
         } finally {
-            this.performanceTracker.addMilestone(module + "."+ PerformanceTracker.LifecycleMilestoneName.END);
+            this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.END);
         }
     }
 
@@ -294,42 +303,42 @@ public class EventDaoTest {
         return sb.toString();
     }
 
-/**
- * Sample event builder.
- */
-private static class SampleEventBuilder {
     /**
-     * @param created
-     * @return Event
+     * Sample event builder.
      */
-    Event buildEvent(Date created) {
-        Event event = buildEvent();
-        event.setCreated(created);
-        return event;
+    private static class SampleEventBuilder {
+        /**
+         * @param created
+         * @return Event
+         */
+        Event buildEvent(Date created) {
+            Event event = buildEvent();
+            event.setCreated(created);
+            return event;
+        }
+
+        /**
+         * @return Event
+         */
+        Event buildEvent() {
+            Event.Category category = new Event.Category("MESSAGE", "");
+            Event.Severity severity = Event.Severity.INFO;
+            String source = "sample_src";
+            String processId = "sample_proc";
+            String title = "sample_title__" + Math.abs(RANDOM.nextInt());
+            Date created = new Date();
+
+            Event event = new Event();
+            event.setCategory(category);
+            event.setSeverity(severity);
+            event.setSource(source);
+            event.setProcessId(processId);
+            event.setTitle(title);
+            event.setCreated(created);
+
+            return event;
+        }
     }
-
-    /**
-     * @return Event
-     */
-    Event buildEvent() {
-        Event.Category category = new Event.Category("MESSAGE", "");
-        Event.Severity severity = Event.Severity.INFO;
-        String source = "sample_src";
-        String processId = "sample_proc";
-        String title = "sample_title__" + Math.abs(RANDOM.nextInt());
-        Date created = new Date();
-
-        Event event = new Event();
-        event.setCategory(category);
-        event.setSeverity(severity);
-        event.setSource(source);
-        event.setProcessId(processId);
-        event.setTitle(title);
-        event.setCreated(created);
-
-        return event;
-    }
-}
 
 
 }

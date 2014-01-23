@@ -3,30 +3,97 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.meriosol.etr.dao.mapper.EventMapper">
-    <sql id="tableName">events</sql>
-    <!-- TODO: add DMLs
-    <insert id="insertPosition" keyProperty="id" useGeneratedKeys="false" parameterType="position" >
-        insert into <include refid="tableName"/> (id, notes) values (#{id}, #{notes})
+    <sql id="eventsTableName">events</sql>
+    <sql id="eventCategoriesTableName">event_categories</sql>
+    <sql id="baseEventFields">title, category_code, severity , source , process_id, created</sql>
+
+    <insert id="create" keyProperty="id" keyColumn="id" useGeneratedKeys="true" parameterType="Event" >
+        insert into <include refid="eventsTableName"/> (<include refid="baseEventFields"/>)
+        values (#{title}, #{category.code}, #{severity}, #{source}, #{processId}, #{created})
     </insert>
 
-    <select id="selectAllPositions" resultType="position">
-        select id, notes from <include refid="tableName"/>
+    <!-- ========================================== -->
+    <!-- Master/detail mapping of events+event_categories -->
+
+    <!-- Way1: Mapping of events+event_categories through left join:
+    <select id="retrieveEvent" resultMap="eventResultMap">
+        select e.id as "id", e.title as "title", ec.code as "category_code", ec.name as "category_name",
+        e.severity as "severity", e.source as "source",e.process_id as "processId", e.created as "created"
+        from <include refid="eventsTableName"/> e left join <include refid="eventCategoriesTableName"/> ec on e.category_code = ec.code
+        where e.id = #{id}
     </select>
 
-    <select id="selectPositionsPaginated" resultType="position">
-        select id, notes from <include refid="tableName"/>
+    <resultMap id="eventResultMap" type="Event">
+        <id property="id" column="id" />
+        <result property="title" column="title"/>
+        <result property="category.code" column="category_code"/>
+        <result property="category.name" column="category_name"/>
+        <result property="severity" column="severity"/>
+        <result property="source" column="source"/>
+        <result property="processId" column="processId"/>
+        <result property="created" column="created"/>
+    </resultMap>
+    -->
+    <!-- Way1.1: Mapping of events+event_categories through left join, more elaborated: -->
+    <select id="retrieveEvent" resultMap="eventResultMap">
+        select e.id as "event_id", e.title as "event_title", ec.code as "category_code", ec.name as "category_name",
+        e.severity as "event_severity", e.source as "event_source",e.process_id as "event_process_id", e.created as "event_created"
+        from <include refid="eventsTableName"/> e left join <include refid="eventCategoriesTableName"/> ec on e.category_code = ec.code
+        where e.id = #{id}
     </select>
 
-    <select id="selectPosition" resultType="position">
-        select id, notes from <include refid="tableName"/> where id = #{id}
+    <resultMap id="eventResultMap" type="Event">
+        <id property="id" column="event_id" />
+        <result property="title" column="event_title"/>
+        <result property="severity" column="event_severity"/>
+        <result property="source" column="event_source"/>
+        <result property="processId" column="event_process_id"/>
+        <result property="created" column="event_created"/>
+        <association property="category" resultMap="eventCategoryResultMap" />
+    </resultMap>
+
+    <resultMap id="eventCategoryResultMap" type="EventCategory">
+        <id property="code" column="category_code" />
+        <result property="name" column="category_name"/>
+    </resultMap>
+
+    <!-- ============================= -->
+    <!-- Way2: Mapping through select(CAUTION: N+1 causes low performance!):
+    <resultMap id="eventResultMap" type="Event">
+        <association property="category" column="category_code" javaType="EventCategory" select="selectEventCategory"/>
+    </resultMap>
+
+    <select id="retrieveEvent" resultMap="eventResultMap">
+        select id,<include refid="baseEventFields"/> from <include refid="eventsTableName"/> where id = #{id}
     </select>
 
-    <update id="updatePositionNotes">
-        update <include refid="tableName"/> set notes = #{notes} where id = #{id}
+    <select id="selectEventCategory" resultType="EventCategory">
+        select code, name from <include refid="eventCategoriesTableName"/>  where code = #{code}
+    </select>
+    -->
+    <!-- ========================================== -->
+
+
+    <!-- TODO: add remaining DMLs
+
+    <select id="selectAllEvents" resultType="Event">
+        select id, notes from <include refid="eventsTableName"/>
+    </select>
+
+    <select id="selectEventsPaginated" resultType="Event">
+        select id, notes from <include refid="eventsTableName"/>
+    </select>
+
+    <select id="selectEvent" resultType="Event">
+        select id, notes from <include refid="eventsTableName"/> where id = #{id}
+    </select>
+
+    <update id="updateEventNotes">
+        update <include refid="eventsTableName"/> set notes = #{notes} where id = #{id}
     </update>
 
-    <delete id="deleteAllPositionsOutOfRange" parameterType="map">
-        delete from <include refid="tableName"/> where id &lt; #{minId} or id &gt; #{maxId}
+    <delete id="deleteAllEventsOutOfRange" parameterType="map">
+        delete from <include refid="eventsTableName"/> where id &lt; #{minId} or id &gt; #{maxId}
     </delete>
     -->
 </mapper>

@@ -35,7 +35,8 @@
 
 
     <typeAliases>
-        <typeAlias type="com.meriosol.etr.domain.Event" alias="event"/>
+        <typeAlias type="com.meriosol.etr.domain.Event" alias="Event"/>
+        <typeAlias type="com.meriosol.etr.domain.Event$Category" alias="EventCategory"/>
     </typeAliases>
 
     <environments default="development">
