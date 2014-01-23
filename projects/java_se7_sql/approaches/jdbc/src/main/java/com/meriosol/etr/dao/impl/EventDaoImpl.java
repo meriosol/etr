@@ -20,14 +20,14 @@ import java.util.List;
  * @version 0.1
  * @since 17/01/14
  */
-public class EventDaoJdbcImpl implements EventDao {
-    private static final Logger LOG = LoggerFactory.getLogger(EventDaoJdbcImpl.class);
+public class EventDaoImpl implements EventDao {
+    private static final Logger LOG = LoggerFactory.getLogger(EventDaoImpl.class);
     private static final Long DEFAULT_MAX_EVENT_COUNT = 10000L; // normally client should query max 100
     private static final String EVENT_COLUMNS = "id, title, category_code, severity, source, process_id, created";
     private DbConnectionFactory dbConnectionFactory;
     private EventCategoryCache eventCategoryCache;
 
-    public EventDaoJdbcImpl() {
+    public EventDaoImpl() {
         this.dbConnectionFactory = DbConnectionFactory.getInstance();
         this.eventCategoryCache = EventCategoryCache.getInstance();
     }

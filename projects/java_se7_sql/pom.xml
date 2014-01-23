@@ -43,6 +43,7 @@
         <module>apistudy</module>
         <module>approaches/mocked</module>
         <module>approaches/jdbc</module>
+        <module>approaches/mybatis/xml</module>
 	</modules>
 
     <scm>

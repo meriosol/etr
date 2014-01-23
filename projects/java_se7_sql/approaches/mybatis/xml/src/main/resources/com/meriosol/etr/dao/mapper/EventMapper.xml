@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meriosol.etr.dao.mapper.EventMapper">
+    <sql id="tableName">events</sql>
+    <!-- TODO: add DMLs
+    <insert id="insertPosition" keyProperty="id" useGeneratedKeys="false" parameterType="position" >
+        insert into <include refid="tableName"/> (id, notes) values (#{id}, #{notes})
+    </insert>
+
+    <select id="selectAllPositions" resultType="position">
+        select id, notes from <include refid="tableName"/>
+    </select>
+
+    <select id="selectPositionsPaginated" resultType="position">
+        select id, notes from <include refid="tableName"/>
+    </select>
+
+    <select id="selectPosition" resultType="position">
+        select id, notes from <include refid="tableName"/> where id = #{id}
+    </select>
+
+    <update id="updatePositionNotes">
+        update <include refid="tableName"/> set notes = #{notes} where id = #{id}
+    </update>
+
+    <delete id="deleteAllPositionsOutOfRange" parameterType="map">
+        delete from <include refid="tableName"/> where id &lt; #{minId} or id &gt; #{maxId}
+    </delete>
+    -->
+</mapper>

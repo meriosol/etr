@@ -8,25 +8,19 @@
         <groupId>com.meriosol</groupId>
         <artifactId>etr-jse7-sql</artifactId>
         <version>0.0.2-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>../../../pom.xml</relativePath>
     </parent>
 
-	<artifactId>etr-api-study</artifactId>
-    <name>ETR API Study</name>
-    <description>ETR API study module. It should have dependency on some of 'approaches' modules before test.</description>
+	<artifactId>etr-mybatis-xml</artifactId>
+    <name>ETR mybatis XML</name>
+    <description>ETR mybatis XML</description>
 
-    <dependencies>
+   <dependencies>
         <dependency>
             <groupId>com.meriosol</groupId>
-            <artifactId>etr-mybatis-xml</artifactId>
-			<!-- TIP: Uncomment particular persistence approach you'd like to test:
-            <artifactId>etr-mybatis-xml</artifactId>
-            <artifactId>etr-jdbc</artifactId>
-            <artifactId>etr-mocked</artifactId>
-			-->
+            <artifactId>etr-api</artifactId>
             <version>0.0.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
-
 
 </project>

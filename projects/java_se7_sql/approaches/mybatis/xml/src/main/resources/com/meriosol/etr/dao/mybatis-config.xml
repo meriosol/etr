@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="com/meriosol/etr/dao/db.properties">
+    </properties>
+
+    <settings>
+        <!-- Valid values are SLF4J, LOG4J, LOG4J2, JDK_LOGGING, COMMONS_LOGGING, STDOUT_LOGGING, NO_LOGGING
+            or a full qualified class name that implements org.apache.ibatis.logging.Log -->
+        <setting name="logImpl" value="LOG4J"/>
+
+        <setting name="cacheEnabled" value="true"/>
+
+        <!-- NOTE: for lazyLoading cglib should be in classpath. -->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="multipleResultSetsEnabled" value="false"/>
+        <setting name="useColumnLabel" value="true"/>
+        <setting name="useGeneratedKeys" value="true"/>
+        <setting name="autoMappingBehavior" value="PARTIAL"/>
+        <!-- ExecutorType: BATCH,REUSE,SIMPLE -->
+        <setting name="defaultExecutorType" value="REUSE"/>
+        <!-- CAUTION: comment it if use postgresql. It doesn't support QueryTimeout (ver9.3, 2014-01-06).
+        <setting name="defaultStatementTimeout" value="25000"/>
+        -->
+
+        <setting name="safeRowBoundsEnabled" value="false"/>
+        <setting name="mapUnderscoreToCamelCase" value="false"/>
+        <!-- localCacheScope: SESSION,STATEMENT -->
+        <setting name="localCacheScope" value="SESSION"/>
+        <setting name="jdbcTypeForNull" value="OTHER"/>
+        <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+    </settings>
+
+
+    <typeAliases>
+        <typeAlias type="com.meriosol.etr.domain.Event" alias="event"/>
+    </typeAliases>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+
+        <!-- TODO: Add JNDI settings for web deployments.
+        <environment id="production">
+            <transactionManager type="MANAGED">
+            <dataSource type="JNDI">
+        </environment>
+        -->
+    </environments>
+    <mappers>
+        <mapper resource="com/meriosol/etr/dao/mapper/EventMapper.xml"/>
+    </mappers>
+</configuration>
