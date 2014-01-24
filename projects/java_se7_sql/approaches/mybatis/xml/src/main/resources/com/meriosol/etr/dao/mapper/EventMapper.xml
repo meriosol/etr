@@ -7,8 +7,25 @@
     <sql id="eventCategoriesTableName">event_categories</sql>
     <sql id="baseEventFields">title, category_code, severity , source , process_id, created</sql>
 
-    <insert id="create" keyProperty="id" keyColumn="id" useGeneratedKeys="true" parameterType="Event" >
-        insert into <include refid="eventsTableName"/> (<include refid="baseEventFields"/>)
+
+    <sql id="joinedSelectBaseForEvents">select e.id as "event_id", e.title as "event_title", ec.code as "category_code",
+        ec.name as "category_name",
+        e.severity as "event_severity", e.source as "event_source",e.process_id as "event_process_id", e.created as
+        "event_created"
+        from
+        <include refid="eventsTableName"/>
+        e left join
+        <include refid="eventCategoriesTableName"/>
+        ec on e.category_code = ec.code
+    </sql>
+
+    <sql id="orderByCreatedDesc">order by created desc
+    </sql>
+
+    <insert id="create" keyProperty="id" keyColumn="id" useGeneratedKeys="true" parameterType="Event">
+        insert into
+        <include refid="eventsTableName"/>
+        (<include refid="baseEventFields"/>)
         values (#{title}, #{category.code}, #{severity}, #{source}, #{processId}, #{created})
     </insert>
 
@@ -35,25 +52,32 @@
     </resultMap>
     -->
     <!-- Way1.1: Mapping of events+event_categories through left join, more elaborated: -->
+    <!--
     <select id="retrieveEvent" resultMap="eventResultMap">
         select e.id as "event_id", e.title as "event_title", ec.code as "category_code", ec.name as "category_name",
         e.severity as "event_severity", e.source as "event_source",e.process_id as "event_process_id", e.created as "event_created"
         from <include refid="eventsTableName"/> e left join <include refid="eventCategoriesTableName"/> ec on e.category_code = ec.code
         where e.id = #{id}
     </select>
+    -->
+
+    <select id="retrieveEvent" resultMap="eventResultMap">
+        <include refid="joinedSelectBaseForEvents"/>
+        where id = #{id}
+    </select>
 
     <resultMap id="eventResultMap" type="Event">
-        <id property="id" column="event_id" />
+        <id property="id" column="event_id"/>
         <result property="title" column="event_title"/>
         <result property="severity" column="event_severity"/>
         <result property="source" column="event_source"/>
         <result property="processId" column="event_process_id"/>
         <result property="created" column="event_created"/>
-        <association property="category" resultMap="eventCategoryResultMap" />
+        <association property="category" resultMap="eventCategoryResultMap"/>
     </resultMap>
 
     <resultMap id="eventCategoryResultMap" type="EventCategory">
-        <id property="code" column="category_code" />
+        <id property="code" column="category_code"/>
         <result property="name" column="category_name"/>
     </resultMap>
 
@@ -73,27 +97,27 @@
     -->
     <!-- ========================================== -->
 
-
-    <!-- TODO: add remaining DMLs
-
-    <select id="selectAllEvents" resultType="Event">
-        select id, notes from <include refid="eventsTableName"/>
+    <select id="retrieveRecentEvents" resultMap="eventResultMap">
+        <include refid="joinedSelectBaseForEvents"/>
+        <include refid="orderByCreatedDesc"/>
     </select>
 
-    <select id="selectEventsPaginated" resultType="Event">
-        select id, notes from <include refid="eventsTableName"/>
+    <select id="retrieveEventsForPeriod" parameterType="map" resultMap="eventResultMap">
+        <include refid="joinedSelectBaseForEvents"/>
+        where created between #{startDate} and #{endDate}
+        <include refid="orderByCreatedDesc"/>
     </select>
 
-    <select id="selectEvent" resultType="Event">
-        select id, notes from <include refid="eventsTableName"/> where id = #{id}
-    </select>
-
-    <update id="updateEventNotes">
-        update <include refid="eventsTableName"/> set notes = #{notes} where id = #{id}
+    <!-- NOTE: Event.created field is assumed immutable, so no new value is accepted for changing it. -->
+    <update id="update" parameterType="Event">
+        update
+        <include refid="eventsTableName"/>
+        set title = #{title}, category_code = #{category.code}, severity = #{severity} , source = #{source} , process_id
+        = #{processId} where id = #{id}
     </update>
 
-    <delete id="deleteAllEventsOutOfRange" parameterType="map">
-        delete from <include refid="eventsTableName"/> where id &lt; #{minId} or id &gt; #{maxId}
+    <delete id="delete">
+        delete from <include refid="eventsTableName"/> where id = #{eventId}
     </delete>
-    -->
+
 </mapper>

@@ -4,17 +4,16 @@ import com.meriosol.etr.dao.EventDao;
 import com.meriosol.etr.dao.mapper.EventMapper;
 import com.meriosol.etr.domain.Event;
 import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.apache.ibatis.session.TransactionIsolationLevel;
+import org.apache.ibatis.session.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Mybatis (XML) impl for Event DAO.
@@ -28,11 +27,9 @@ public class EventDaoImpl implements EventDao {
     private static final Long DEFAULT_MAX_EVENT_COUNT = 10000L; // normally client should query max 100
     private static final String MYBATIS_RESOURCE_CONFIG = "com/meriosol/etr/dao/mybatis-config.xml";
     private SqlSessionFactory sessionFactory;
-    private EventCategoryCache eventCategoryCache;
 
     public EventDaoImpl() {
         initSessionFactory();
-        this.eventCategoryCache = EventCategoryCache.getInstance();
     }
 
     @Override
@@ -105,10 +102,22 @@ public class EventDaoImpl implements EventDao {
         } else if (maxEventCount <= 0) {
             throw new IllegalArgumentException(module + " - maxEventCount should be > 0!");
         }
-        throw new RuntimeException("Not implemented!");
 
-//        List<Event> events = new ArrayList<>();
-//        return events;
+        List<Event> events;
+        try (SqlSession session = this.sessionFactory.openSession(TransactionIsolationLevel.SERIALIZABLE)) {
+            EventMapper positionMapper = session.getMapper(EventMapper.class);
+            int offset = 1;
+            int limit = Integer.MAX_VALUE;
+            if (maxEventCount < Integer.MAX_VALUE) {
+                limit = maxEventCount.intValue();
+            }
+            RowBounds rowBounds = new RowBounds(offset, limit);
+            events = positionMapper.retrieveRecentEvents(rowBounds);
+
+            session.commit();
+        }
+
+        return events;
     }
 
     /**
@@ -124,14 +133,37 @@ public class EventDaoImpl implements EventDao {
     @Override
     public List<Event> retrieveEventsForPeriod(Date startDate, Date endDate) {
         final String module = "retrieveEventsForPeriod";
+        // TODO: consider cases:
+        // (startDate == null, endDate == null)
+        // (startDate == null, endDate != null)
+        // (startDate != null, endDate == null)
+        // (startDate != null, endDate != null)
+        // NOTE: for now artificial values are to be set in cease of nulls
         if (startDate != null && endDate != null) {
             if (startDate.getTime() >= endDate.getTime()) {
                 throw new IllegalArgumentException("startDate should be < endDate!");
             }
-        } else if (startDate != null) {
-        } else if (endDate != null) {
         }
-        throw new RuntimeException("Not implemented!");
+        if (startDate == null) {
+            startDate = new Date(System.currentTimeMillis() - 100 * 60 * 60 * 24 * 365 * 10);
+        }
+        if (endDate == null) {
+            endDate = new Date();
+        }
+        List<Event> events;
+        try (SqlSession session = this.sessionFactory.openSession(TransactionIsolationLevel.SERIALIZABLE)) {
+            EventMapper positionMapper = session.getMapper(EventMapper.class);
+
+            Map<String, Object> params = new HashMap<>(2);
+            params.put("startDate", startDate);
+            params.put("endDate", endDate);
+
+            events = positionMapper.retrieveEventsForPeriod(params);
+
+            session.commit();
+        }
+
+        return events;
 
 //        List<Event> events = new ArrayList<>();
 //        return events;
@@ -153,7 +185,14 @@ public class EventDaoImpl implements EventDao {
         if (event.getTitle() == null) {
             throw new IllegalArgumentException(module + " - Event Title should not be null!");
         }
-        throw new RuntimeException("Not implemented!");
+        try (SqlSession session = this.sessionFactory.openSession(TransactionIsolationLevel.SERIALIZABLE)) {
+            EventMapper mapper = session.getMapper(EventMapper.class);
+            int howManyRowsUpdated = mapper.update(event);
+            assert howManyRowsUpdated == 1;
+            session.commit();
+            LOG.debug("AFTER commit: ID for updated event ='{}', created='{}'..", event.getId(), event.getCreated());
+        }
+        return event;
     }
 
     /**
@@ -176,7 +215,12 @@ public class EventDaoImpl implements EventDao {
     @Override
     public void deleteEvent(Long eventId) {
         final String module = "deleteEvent";
-        throw new RuntimeException("Not implemented!");
+        try (SqlSession session = this.sessionFactory.openSession(TransactionIsolationLevel.SERIALIZABLE)) {
+            EventMapper mapper = session.getMapper(EventMapper.class);
+            int howManyRowsUpdated = mapper.delete(eventId);
+            assert howManyRowsUpdated == 1;
+            session.commit();
+        }
     }
 
     //--------------------------------

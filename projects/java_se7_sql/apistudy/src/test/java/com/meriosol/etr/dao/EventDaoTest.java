@@ -81,7 +81,6 @@ public class EventDaoTest {
     }
 
     @Test
-    @Ignore
     public void testRecentEventsRetrieveWithMaxLimit() {
         final String module = "testRecentEventsRetrieveWithMaxLimit";
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
@@ -99,7 +98,6 @@ public class EventDaoTest {
     }
 
     @Test
-    @Ignore
     public void testEventsRetrieveForPeriodWithBothPartsNotNull() throws ParseException {
         final String module = "testEventsRetrieveForPeriodWithBothPartsNotNull";
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
@@ -131,7 +129,6 @@ public class EventDaoTest {
     }
 
     @Test
-    @Ignore
     public void testEventsRetrieveForPeriodWithEndDateNotNull() throws ParseException {
         final String module = "testEventsRetrieveForPeriodWithEndDateNotNull";
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
@@ -160,7 +157,6 @@ public class EventDaoTest {
     }
 
     @Test
-    @Ignore
     public void testEventsRetrieveForPeriodWithStartDateNotNull() throws ParseException {
         final String module = "testEventsRetrieveForPeriodWithStartDateNotNull";
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
@@ -189,7 +185,6 @@ public class EventDaoTest {
     }
 
     @Test
-    @Ignore
     public void testEventsRetrieveForPeriodWithAllDatesNull() throws ParseException {
         final String module = "testEventsRetrieveForPeriodWithAllDatesNull";
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
@@ -212,7 +207,6 @@ public class EventDaoTest {
     }
 
     @Test
-    @Ignore
     public void testEventCreateAndUpdate() {
         final String module = "testEventCreateAndUpdate";
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
@@ -247,7 +241,6 @@ public class EventDaoTest {
     }
 
     @Test
-    @Ignore
     public void testEventCreateAndDelete() {
         final String module = "testEventCreateAndDelete";
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
