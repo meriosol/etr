@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.meriosol</groupId>
         <artifactId>etr-jse7-sql</artifactId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>0.0.2-RELEASE</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -18,14 +18,15 @@
     <dependencies>
         <dependency>
             <groupId>com.meriosol</groupId>
-            <artifactId>etr-mybatis-annot</artifactId>
+            <artifactId>etr-mocked</artifactId>
 			<!-- TIP: Uncomment particular persistence approach you'd like to test:
+            <artifactId>etr-mybatis-annot-spring</artifactId>
             <artifactId>etr-mybatis-annot</artifactId>
             <artifactId>etr-mybatis-xml</artifactId>
             <artifactId>etr-jdbc</artifactId>
             <artifactId>etr-mocked</artifactId>
 			-->
-            <version>0.0.2-SNAPSHOT</version>
+            <version>0.0.2-RELEASE</version>
         </dependency>
     </dependencies>
 
