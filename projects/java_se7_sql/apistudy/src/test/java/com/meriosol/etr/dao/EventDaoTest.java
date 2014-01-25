@@ -110,6 +110,7 @@ public class EventDaoTest {
             assertNotNull(String.format("Events for period '%s'-'%s' should not be null!"
                     , DateUtil.formatDateWithDefaultFormat(startDate), DateUtil.formatDateWithDefaultFormat(endDate)), events);
             for (Event event : events) {
+                assertNotNull("Event must not be null!", event);
                 Date created = event.getCreated();
                 assertNotNull(String.format("created for event with ID '%s' should not be null!", event.getId()), created);
                 long createdTime = created.getTime();
@@ -141,6 +142,7 @@ public class EventDaoTest {
             assertNotNull(String.format("Events for period '%s'-'%s' should not be null!"
                     , DateUtil.formatDateWithDefaultFormat(startDate), DateUtil.formatDateWithDefaultFormat(endDate)), events);
             for (Event event : events) {
+                assertNotNull("Event must not be null!", event);
                 Date created = event.getCreated();
                 assertNotNull(String.format("created for event with ID '%s' should not be null!", event.getId()), created);
                 long createdTime = created.getTime();
@@ -166,9 +168,10 @@ public class EventDaoTest {
             Date startDate = new Date((new Date()).getTime() - 1000 * 60 * 60 * 24 * 3); // 3 days shift, basically
 
             List<Event> events = eventDao.retrieveEventsForPeriod(startDate, endDate);
-            assertNotNull(String.format("Events for period '%s'-'%s' should not be null!"
-                    , DateUtil.formatDateWithDefaultFormat(startDate), DateUtil.formatDateWithDefaultFormat(endDate)), events);
+            assertNotNull(String.format("Events for period '%s'- should not be null!"
+                    , DateUtil.formatDateWithDefaultFormat(startDate)), events);
             for (Event event : events) {
+                assertNotNull("Event must not be null!", event);
                 Date created = event.getCreated();
                 assertNotNull(String.format("created for event with ID '%s' should not be null!", event.getId()), created);
                 long createdTime = created.getTime();
@@ -194,9 +197,9 @@ public class EventDaoTest {
             Date startDate = null;
 
             List<Event> events = eventDao.retrieveEventsForPeriod(startDate, endDate);
-            assertNotNull(String.format("Events for period '%s'-'%s' should not be null!"
-                    , DateUtil.formatDateWithDefaultFormat(startDate), DateUtil.formatDateWithDefaultFormat(endDate)), events);
+            assertNotNull(String.format("Events should not be null!", events));
             for (Event event : events) {
+                assertNotNull("Event should not be null!", event);
                 Date created = event.getCreated();
                 assertNotNull(String.format("created for event with ID '%s' should not be null!", event.getId()), created);
             }
