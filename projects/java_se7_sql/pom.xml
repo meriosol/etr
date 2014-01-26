@@ -6,7 +6,7 @@
 
 	<groupId>com.meriosol</groupId>
 	<artifactId>etr-jse7-sql</artifactId>
-	<version>0.0.2-RELEASE</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>ETR for Java SE7</name>
@@ -46,6 +46,7 @@
         <module>approaches/mybatis/xml</module>
         <module>approaches/mybatis/annot</module>
         <module>approaches/mybatis/spring/annot</module>
+        <module>approaches/spring/templates</module>
 	</modules>
 
     <scm>

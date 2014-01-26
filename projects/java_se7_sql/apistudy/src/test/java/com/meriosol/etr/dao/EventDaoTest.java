@@ -86,7 +86,7 @@ public class EventDaoTest {
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
         try {
             assertNotNull("EventDao should not be null!", this.eventDao);
-            Long maxEventCount = 5L;
+            Integer maxEventCount = 5;
             List<Event> events = eventDao.retrieveRecentEvents(maxEventCount);
             assertNotNull(String.format("Events for maxEventCount '%s' should not be null!", maxEventCount), events);
             assertTrue(String.format("Event list size should be <= maxEventCount '%s' but it's = '%s'!"

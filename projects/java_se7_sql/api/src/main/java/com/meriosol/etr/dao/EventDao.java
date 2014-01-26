@@ -40,7 +40,7 @@ public interface EventDao  extends BaseDao {
      *                      NOTE: If null provided, all events to be returned (CAUTION: dangerous case if DB is very large).
      * @return List of events.
      */
-    List<Event> retrieveRecentEvents(Long maxEventCount);
+    List<Event> retrieveRecentEvents(Integer maxEventCount);
 
     /**
      * Input params invariant1: if <code>startDate</code> and <code>endDate</code> are not null, startDate must be < endDate.<br>

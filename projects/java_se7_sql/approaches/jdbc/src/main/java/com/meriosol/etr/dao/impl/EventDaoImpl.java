@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class EventDaoImpl implements EventDao {
     private static final Logger LOG = LoggerFactory.getLogger(EventDaoImpl.class);
-    private static final Long DEFAULT_MAX_EVENT_COUNT = 10000L; // normally client should query max 100
+    private static final Integer DEFAULT_MAX_EVENT_COUNT = 10000; // normally client should query max 100
     private static final String EVENT_COLUMNS = "id, title, category_code, severity, source, process_id, created";
     private DbConnectionFactory dbConnectionFactory;
     private EventCategoryCache eventCategoryCache;
@@ -159,7 +159,7 @@ public class EventDaoImpl implements EventDao {
      * @return List of events.
      */
     @Override
-    public List<Event> retrieveRecentEvents(Long maxEventCount) {
+    public List<Event> retrieveRecentEvents(Integer maxEventCount) {
         final String module = "retrieveRecentEvents";
         Connection connection = this.dbConnectionFactory.obtainNewDefaultConnection();
         if (connection == null) {

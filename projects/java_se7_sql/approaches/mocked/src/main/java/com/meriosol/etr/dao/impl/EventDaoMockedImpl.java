@@ -71,7 +71,7 @@ public class EventDaoMockedImpl implements EventDao {
      * @return List of events.
      */
     @Override
-    public List<Event> retrieveRecentEvents(Long maxEventCount) {
+    public List<Event> retrieveRecentEvents(Integer maxEventCount) {
         List<Event> events = new ArrayList<>();
         if (maxEventCount != null && maxEventCount > 0) {
             for (long i = 1; i <= maxEventCount; i++) {

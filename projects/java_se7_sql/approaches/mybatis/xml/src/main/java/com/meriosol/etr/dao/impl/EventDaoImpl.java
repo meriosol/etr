@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public class EventDaoImpl implements EventDao {
     private static final Logger LOG = LoggerFactory.getLogger(EventDaoImpl.class);
-    private static final Long DEFAULT_MAX_EVENT_COUNT = 10000L; // normally client should query max 100
+    private static final Integer  DEFAULT_MAX_EVENT_COUNT = 10000; // normally client should query max 100
     private static final String MYBATIS_RESOURCE_CONFIG = "com/meriosol/etr/dao/mybatis-config.xml";
     private SqlSessionFactory sessionFactory;
 
@@ -95,7 +95,7 @@ public class EventDaoImpl implements EventDao {
      * @return List of events.
      */
     @Override
-    public List<Event> retrieveRecentEvents(Long maxEventCount) {
+    public List<Event> retrieveRecentEvents(Integer maxEventCount) {
         final String module = "retrieveRecentEvents";
         if (maxEventCount == null) {
             maxEventCount = DEFAULT_MAX_EVENT_COUNT;

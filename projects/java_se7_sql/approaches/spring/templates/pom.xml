@@ -8,7 +8,7 @@
         <groupId>com.meriosol</groupId>
         <artifactId>etr-jse7-sql</artifactId>
         <version>0.0.3-SNAPSHOT</version>
-        <relativePath>../../../../pom.xml</relativePath>
+        <relativePath>../../../pom.xml</relativePath>
     </parent>
     <properties>
         <mybatis.version>3.2.3</mybatis.version>
@@ -17,9 +17,9 @@
         <spring.version>4.0.0.RELEASE</spring.version>
     </properties>
 
-    <artifactId>etr-mybatis-annot-spring</artifactId>
-    <name>ETR mybatis Annotations Spring</name>
-    <description>ETR mybatis Annotations, via Spring</description>
+    <artifactId>etr-spring-templates</artifactId>
+    <name>ETR Spring</name>
+    <description>ETR Spring JDBC templates</description>
 
     <dependencies>
         <dependency>
@@ -29,11 +29,6 @@
         </dependency>
 
         <!-- Spring related dep-s:  -->
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-spring</artifactId>
-            <version>1.2.1</version>
-        </dependency>
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
@@ -53,23 +48,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
             <version>${spring.version}</version>
-        </dependency>
-
-        <!-- Mybatis related dep-s:  -->
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>${mybatis.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-            <version>${cglib.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis.caches</groupId>
-            <artifactId>mybatis-ehcache</artifactId>
-            <version>${mybatis-cache.version}</version>
         </dependency>
 
     </dependencies>
