@@ -18,8 +18,9 @@
     <dependencies>
         <dependency>
             <groupId>com.meriosol</groupId>
-            <artifactId>etr-spring-templates</artifactId>
+            <artifactId>etr-hibernate-xml</artifactId>
 			<!-- TIP: Uncomment particular persistence approach you'd like to test:
+            <artifactId>etr-hibernate-xml</artifactId>
             <artifactId>etr-spring-templates</artifactId>
             <artifactId>etr-mybatis-annot-spring</artifactId>
             <artifactId>etr-mybatis-annot</artifactId>

@@ -47,6 +47,7 @@
         <module>approaches/mybatis/annot</module>
         <module>approaches/mybatis/spring/annot</module>
         <module>approaches/spring/templates</module>
+		<module>approaches/hibernate/xml</module>
 	</modules>
 
     <scm>
