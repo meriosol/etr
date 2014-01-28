@@ -2,21 +2,21 @@ package com.meriosol.etr.dao.impl;
 
 import com.meriosol.etr.dao.EventDao;
 import com.meriosol.etr.domain.Event;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.service.ServiceRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
- * Mybatis (XML) impl for Event DAO.
+ * Hibernate (XML) impl for Event DAO.
  *
  * @author meriosol
  * @version 0.1
@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class EventDaoImpl implements EventDao {
     private static final Logger LOG = LoggerFactory.getLogger(EventDaoImpl.class);
-    private static final Integer  DEFAULT_MAX_EVENT_COUNT = 10000; // normally client should query max 100
+    private static final Integer DEFAULT_MAX_EVENT_COUNT = 10000; // normally client should query max 100
     private SessionFactory sessionFactory;
 
     public EventDaoImpl() {
@@ -33,12 +33,12 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public String getDaoName() {
-        return "MybatisXmlImpl";
+        return "HibernateXmlImpl";
     }
 
     @Override
     public String getDaoDescription() {
-        return "Mybatis Xml implementation";
+        return "Hibernate Xml implementation";
     }
 
     /**
@@ -64,14 +64,13 @@ public class EventDaoImpl implements EventDao {
             session = this.sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.save(event);
-
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null && !transaction.wasRolledBack()) {
                 transaction.rollback();
             }
-            LOG.error("Error while inserting Position!", e);
-        }  finally {
+            LOG.error("Error while inserting event!", e);
+        } finally {
             if (session != null) {
                 session.close();
             }
@@ -87,9 +86,42 @@ public class EventDaoImpl implements EventDao {
      */
     @Override
     public Event retrieveEvent(Long eventId) {
-//        Event event = null;
-        throw new RuntimeException("Not implemented!");
-//        return event;
+        Event event = null;
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = this.sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            event = (Event) session.get(Event.class, eventId);
+
+            // Longer way:
+//            List<Event> events = session.createQuery("from Event where id = :idForRetrieve").setLong("idForRetrieve", eventId).list();
+//            if (events != null) {
+//                assert events.size() <= 1;
+//                if (events.size() == 1) {
+//                    event = events.get(0);
+//                }
+//            }
+
+            // NOTE: if not to set lazy to false in hib mapper:
+            //         <many-to-one name="category" class="Event$Category" column="category_code" cascade="all" not-null="false" lazy="false"/>
+            // SLF4J: Failed toString() invocation on an object of type [com.meriosol.etr.domain.Event]
+            // org.hibernate.LazyInitializationException: could not initialize proxy - no Session
+            // To get rid of this temp hack(logger calls to event.toString() internally):
+            LOG.debug("Event loaded: {}", event);
+
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null && !transaction.wasRolledBack()) {
+                transaction.rollback();
+            }
+            LOG.error("Error while selecting event with id='{}'!", eventId, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return event;
     }
 
     /**
@@ -109,11 +141,38 @@ public class EventDaoImpl implements EventDao {
             throw new IllegalArgumentException(module + " - maxEventCount should be > 0!");
         }
 
-        List<Event> events;
-        throw new RuntimeException("Not implemented!");
+        Session session = null;
+        Transaction transaction = null;
+        List<Event> events = null;
+        try {
+            session = this.sessionFactory.openSession();
+            transaction = session.beginTransaction();
 
-//        return events;
+            // Choose your preferred way:
+            events = retrieveRecentEventsViaCriteria(maxEventCount, session);
+            //events = retrieveRecentEventsViaQuery(maxEventCount, session);
+
+            if (events != null) {
+                for (Event event : events) {
+                    LOG.info(" oo event found: '{}'!", event);
+                }
+            }
+
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null && !transaction.wasRolledBack()) {
+                transaction.rollback();
+            }
+            LOG.error("Error while selecting events with maxEventCount='{}'!", maxEventCount, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+
+        return events;
     }
+
 
     /**
      * Input params invariant1: if <code>startDate</code> and <code>endDate</code> are not null, startDate must be < endDate.<br>
@@ -145,10 +204,33 @@ public class EventDaoImpl implements EventDao {
         if (endDate == null) {
             endDate = new Date();
         }
-        List<Event> events;
+        Session session = null;
+        Transaction transaction = null;
+        List<Event> events = null;
+        try {
+            session = this.sessionFactory.openSession();
+            transaction = session.beginTransaction();
 
-        throw new RuntimeException("Not implemented!");
-//        return events;
+            Criteria criteria = session.createCriteria(Event.class);
+            Date startDateForExclusiveBetween = new Date(startDate.getTime() + 1);
+            criteria.add(Restrictions.between("created", startDateForExclusiveBetween, endDate));
+            criteria.addOrder(Order.desc("created"));
+            criteria.setFirstResult(0);
+            criteria.setMaxResults(DEFAULT_MAX_EVENT_COUNT);
+
+            events = (List<Event>) criteria.list();
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null && !transaction.wasRolledBack()) {
+                transaction.rollback();
+            }
+            LOG.error("Error while selecting events with startDate='{}' and endDate='{}'!", startDate, endDate, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return events;
 
     }
 
@@ -168,6 +250,25 @@ public class EventDaoImpl implements EventDao {
         if (event.getTitle() == null) {
             throw new IllegalArgumentException(module + " - Event Title should not be null!");
         }
+
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = this.sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            session.save(event);
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null && !transaction.wasRolledBack()) {
+                transaction.rollback();
+            }
+            LOG.error("Error while updating event with id='{}'!", event.getId(), e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+
         return event;
     }
 
@@ -191,6 +292,25 @@ public class EventDaoImpl implements EventDao {
     @Override
     public void deleteEvent(Long eventId) {
         final String module = "deleteEvent";
+
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = this.sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            String hql = "delete from Event where id= :eventId";
+            session.createQuery(hql).setLong("eventId", eventId).executeUpdate();
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null && !transaction.wasRolledBack()) {
+                transaction.rollback();
+            }
+            LOG.error("Error while deleting event with id='{}'!", eventId, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     //--------------------------------
@@ -214,5 +334,41 @@ public class EventDaoImpl implements EventDao {
                 LOG.error("Error while closing sessionFactory!", e);
             }
         }
+    }
+
+    /**
+     * @param maxEventCount
+     * @param session
+     * @return events
+     */
+    private List<Event> retrieveRecentEventsViaCriteria(Integer maxEventCount, Session session) {
+        List<Event> events;
+        Criteria criteria = session.createCriteria(Event.class);
+        criteria.addOrder(Order.desc("created"));
+        criteria.setFirstResult(0);
+        criteria.setMaxResults(maxEventCount);
+
+        events = (List<Event>) criteria.list();
+        return events;
+    }
+
+    /**
+     * @param maxEventCount
+     * @param session
+     * @return events
+     */
+    private List<Event> retrieveRecentEventsViaQuery(Integer maxEventCount, Session session) {
+        List<Event> events = session.createQuery("from Event order by created desc").list();
+        List<Event> eventsPaginated = new ArrayList<>();
+        if (events != null) {
+            if (maxEventCount > events.size()) {
+                maxEventCount = events.size();
+            }
+
+            for (int i = 0; i < maxEventCount; i++) {
+                eventsPaginated.add(events.get(i));
+            }
+        }
+        return eventsPaginated;
     }
 }

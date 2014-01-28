@@ -20,7 +20,11 @@ public class Event implements Serializable {
     private String title;
     private Date created;
 
+    /**
+     * Event Category.
+     */
     public static class Category implements Serializable {
+
         private String code;
         private String name;
 

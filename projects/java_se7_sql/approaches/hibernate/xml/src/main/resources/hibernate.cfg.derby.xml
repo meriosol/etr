@@ -25,6 +25,7 @@
 
         <!-- Echo all executed SQL to stdout -->
         <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
 
         <mapping resource="com/meriosol/etr/dao/hibernate/Event.hbm.xml"/>
 

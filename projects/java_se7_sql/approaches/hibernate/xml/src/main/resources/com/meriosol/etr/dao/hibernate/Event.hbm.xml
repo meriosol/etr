@@ -13,12 +13,15 @@
             <generator class="native"/>
         </id>
 
-        <!-- TODO: ref to Event.Category
-        <property name="category" column="category_code" type="string"/>
-        -->
-        <!-- TODO: severity is enum, map it then.
-        <property name="severity" column="severity" type="string"/>
-        -->
+        <many-to-one name="category" class="Event$Category" column="category_code"
+                     cascade="save-update" not-null="false" lazy="false" fetch="join"/>
+
+        <property name="severity" column="severity">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.meriosol.etr.domain.Event$Severity</param>
+            </type>
+        </property>
+
         <property name="source" column="source" type="string"/>
         <property name="processId" column="process_id" type="string"/>
         <property name="title" column="title" type="string"/>
