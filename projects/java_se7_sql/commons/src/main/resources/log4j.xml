@@ -5,9 +5,10 @@
         <layout class="org.apache.log4j.PatternLayout">
             <!--
 			<param name="ConversionPattern" value="%d %-5p (%F:%L) - %m%n" />
+                   value="%d{yyyy.MM.dd_HH:mm:ss,SSS}-%5p [THRD:%t] %-25c{2} (%M:%L) MDL-%X{moduleId} CORR-%X{corrId} - %m%n"/>
 			-->
             <param name="ConversionPattern"
-                   value="%d{yyyy.MM.dd_HH:mm:ss,SSS}-%5p [THRD:%t] %-25c{2} (%M:%L) MDL-%X{moduleId} CORR-%X{corrId} - %m%n"/>
+                   value="%d{yyyy.MM.dd_HH:mm:ss,SSS}-%5p [THRD:%t] %-25c{2} (%M:%L) - %m%n"/>
         </layout>
     </appender>
 

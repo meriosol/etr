@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.meriosol.etr.domain">
+
+    <class name="Event" table="events">
+        <meta attribute="class-description">
+            This class contains Event OR mapping.
+        </meta>
+        <id name="id" type="long" column="id">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="category" class="Event$Category" column="category_code"
+                     cascade="save-update" not-null="false" lazy="false" fetch="join"/>
+
+        <property name="severity" column="severity">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.meriosol.etr.domain.Event$Severity</param>
+            </type>
+        </property>
+
+        <property name="source" column="source" type="string"/>
+        <property name="processId" column="process_id" type="string"/>
+        <property name="title" column="title" type="string"/>
+        <property name="created" column="created" type="timestamp"/>
+    </class>
+
+</hibernate-mapping>
