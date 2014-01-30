@@ -43,7 +43,7 @@ If you perform tests for e.g. **apistudy** module, you notice JSON constructs in
 </pre>
 
 These are basically duration and (heap) memory consumption metrics. Idea was to report rough metrics for potential resource consumption estimates of different approaches.
-If to gather these reports in some DB (MongoDB?), interesting stats can be revealed for combinations of approaches and underlying DBs.
+If to gather these reports in some DB (MongoDB?), interesting stats can be revealed for combinations of approaches and underlying databases.
  
 ### Some notable features touched there:
  - Transaction support.
