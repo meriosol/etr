@@ -6,7 +6,7 @@
 
 	<groupId>com.meriosol</groupId>
 	<artifactId>etr-jse7-sql</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>1.0.0-RELEASE</version>
 	<packaging>pom</packaging>
 
 	<name>ETR for Java SE7</name>
@@ -51,6 +51,7 @@
 		<module>approaches/hibernate/spring/xml</module>
 		<module>approaches/hibernate/spring/annot</module>
 		<module>approaches/hibernate/spring/jpa/annot</module>
+		<module>approaches/hibernate/jpa/annot</module>
 	</modules>
 
     <scm>

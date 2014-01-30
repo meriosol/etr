@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.meriosol</groupId>
         <artifactId>etr-jse7-sql</artifactId>
-        <version>0.0.3-SNAPSHOT</version>
+        <version>1.0.0-RELEASE</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -18,8 +18,9 @@
     <dependencies>
         <dependency>
             <groupId>com.meriosol</groupId>
-            <artifactId>etr-hibernate-spring-jpa-annot</artifactId>
-			<!-- TIP: Uncomment particular persistence approach you'd like to test:
+            <artifactId>etr-mocked</artifactId>
+			<!-- TIP: Copy particular persistence approach you'd like to test in artifactId tag.
+            <artifactId>etr-hibernate-jpa-annot</artifactId>
             <artifactId>etr-hibernate-spring-jpa-annot</artifactId>
             <artifactId>etr-hibernate-spring-annot</artifactId>
             <artifactId>etr-hibernate-spring-xml</artifactId>
@@ -31,7 +32,7 @@
             <artifactId>etr-jdbc</artifactId>
             <artifactId>etr-mocked</artifactId>
 			-->
-            <version>0.0.3-SNAPSHOT</version>
+            <version>1.0.0-RELEASE</version>
         </dependency>
     </dependencies>
 

@@ -1,0 +1,45 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+
+    <persistence-unit name="com.meriosol.etr.dao.jpa">
+        <description>
+            Persistence unit for the JPA of the Hibernate JPA explore.
+        </description>
+
+        <!-- Entity POJOs: -->
+        <class>com.meriosol.etr.dao.entity.EventEntity</class>
+        <class>com.meriosol.etr.dao.entity.EventCategoryEntity</class>
+
+        <properties>
+            <!-- DB: -->
+            <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/eventium" />
+            <property name="javax.persistence.jdbc.user" value="etracker" />
+            <property name="javax.persistence.jdbc.password" value="shmetracker" />
+            <!-- ================================ -->
+            <!--  Samples:
+            Derby:
+            <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/eventium" />
+            <property name="javax.persistence.jdbc.user" value="etracker" />
+            <property name="javax.persistence.jdbc.password" value="shmetracker" />
+            MySQL:
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/eventium" />
+            <property name="javax.persistence.jdbc.user" value="etracker" />
+            <property name="javax.persistence.jdbc.password" value="shmetracker" />
+            PgSQL:
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/eventium" />
+            <property name="javax.persistence.jdbc.user" value="etracker" />
+            <property name="javax.persistence.jdbc.password" value="shmetracker" />
+            -->
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="validate"/>
+        </properties>
+
+    </persistence-unit>
+
+</persistence>

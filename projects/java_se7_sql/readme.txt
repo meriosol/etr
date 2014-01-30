@@ -20,15 +20,21 @@ For instance, if you plan to test jdbc, set this:
     <dependencies>
         <dependency>
             <groupId>com.meriosol</groupId>
-            <artifactId>etr-jdbc</artifactId>
+            <artifactId>etr-mocked</artifactId>
 			<!-- TIP: Uncomment particular persistence approach you'd like to test:
+            <artifactId>etr-hibernate-jpa-annot</artifactId>
+            <artifactId>etr-hibernate-spring-jpa-annot</artifactId>
+            <artifactId>etr-hibernate-spring-annot</artifactId>
+            <artifactId>etr-hibernate-spring-xml</artifactId>
+            <artifactId>etr-hibernate-xml</artifactId>
+            <artifactId>etr-spring-templates</artifactId>
             <artifactId>etr-mybatis-annot-spring</artifactId>
             <artifactId>etr-mybatis-annot</artifactId>
             <artifactId>etr-mybatis-xml</artifactId>
             <artifactId>etr-jdbc</artifactId>
             <artifactId>etr-mocked</artifactId>
 			-->
-            <version>0.0.3-SNAPSHOT</version>
+            <version>1.0.0-RELEASE</version>
         </dependency>
     </dependencies>
 
@@ -60,27 +66,41 @@ Results :
 
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+
+Results :
+
+Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
+
 [INFO] ------------------------------------------------------------------------
 [INFO] Reactor Summary:
 [INFO]
-[INFO] ETR for Java SE7 .................................. SUCCESS [0.466s]
-[INFO] ETR Commons ....................................... SUCCESS [6.095s]
-[INFO] ETR API ........................................... SUCCESS [1.041s]
-[INFO] ETR mybatis Annotations Spring .................... SUCCESS [2.128s]
-[INFO] ETR API Study ..................................... SUCCESS [6.060s]
-[INFO] ETR mocked ........................................ SUCCESS [1.730s]
-[INFO] ETR jdbc .......................................... SUCCESS [1.218s]
-[INFO] ETR mybatis XML ................................... SUCCESS [1.171s]
-[INFO] ETR mybatis Annotations ........................... SUCCESS [3.533s]
+[INFO] ETR for Java SE7 .................................. SUCCESS [0.515s]
+[INFO] ETR Commons ....................................... SUCCESS [7.265s]
+[INFO] ETR API ........................................... SUCCESS [1.179s]
+[INFO] ETR hibernate/jpa annotations ..................... SUCCESS [2.074s]
+[INFO] ETR API Study ..................................... SUCCESS [21.390s]
+[INFO] ETR mocked ........................................ SUCCESS [1.947s]
+[INFO] ETR jdbc .......................................... SUCCESS [1.593s]
+[INFO] ETR mybatis XML ................................... SUCCESS [1.574s]
+[INFO] ETR mybatis Annotations ........................... SUCCESS [19.924s]
+[INFO] ETR mybatis Annotations Spring .................... SUCCESS [2.740s]
+[INFO] ETR Spring ........................................ SUCCESS [2.855s]
+[INFO] ETR hibernate XML ................................. SUCCESS [1.803s]
+[INFO] ETR hibernate/spring XML .......................... SUCCESS [2.441s]
+[INFO] ETR hibernate/spring annotations .................. SUCCESS [1.907s]
+[INFO] ETR hibernate/spring/jpa annotations .............. SUCCESS [2.780s]
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time: 23.719s
-[INFO] Finished at: Sat Jan 25 03:32:29 EST 2014
-[INFO] Final Memory: 48M/135M
-[INFO] ------------------------------------------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[INFO] Total time: 1:12.409s
+[INFO] Finished at: Thu Jan 30 04:07:56 EST 2014
+[INFO] Final Memory: 76M/209M
+[INFO] ------------------------------------------------------------------------~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+To review code, you can load IDEA(CE is free, for now v13.02 is used) and open maven pom there.
 #-------------------------------
 
  
