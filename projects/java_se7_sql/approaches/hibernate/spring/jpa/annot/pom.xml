@@ -8,16 +8,17 @@
         <groupId>com.meriosol</groupId>
         <artifactId>etr-jse7-sql</artifactId>
         <version>0.0.3-SNAPSHOT</version>
-        <relativePath>../../../../pom.xml</relativePath>
+        <relativePath>../../../../../pom.xml</relativePath>
     </parent>
     <properties>
         <org.hibernate.version>4.3.0.Final</org.hibernate.version>
         <spring.version>4.0.0.RELEASE</spring.version>
+        <cglib.version>2.2.2</cglib.version>
     </properties>
 
-	<artifactId>etr-hibernate-spring-annot</artifactId>
-    <name>ETR hibernate/spring annotations</name>
-    <description>ETR hibernate annotations with help of Spring.</description>
+	<artifactId>etr-hibernate-spring-jpa-annot</artifactId>
+    <name>ETR hibernate/spring/jpa annotations</name>
+    <description>ETR hibernate annotations with help of Spring and via JPA.</description>
 
    <dependencies>
         <dependency>
@@ -29,6 +30,7 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>${org.hibernate.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
        <dependency>
@@ -55,12 +57,17 @@
             <version>${spring.version}</version>
             <!-- TODO: cause will come with all needed Spring dependencies such as spring-core and spring-beans, maybe worth to remove those dep-s above-->
         </dependency>
-         <!-- TODO: maybe entitymanager is not needed here, remove?..-->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>${org.hibernate.version}</version>
             <!-- NOTE: will come with Hibernate core-->
+        </dependency>
+
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>${cglib.version}</version>
         </dependency>
 
     </dependencies>

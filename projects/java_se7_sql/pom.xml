@@ -50,6 +50,7 @@
 		<module>approaches/hibernate/xml</module>
 		<module>approaches/hibernate/spring/xml</module>
 		<module>approaches/hibernate/spring/annot</module>
+		<module>approaches/hibernate/spring/jpa/annot</module>
 	</modules>
 
     <scm>
