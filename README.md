@@ -33,7 +33,7 @@ Combinations of ORM and persistence frameworks embraced so far:
 > Combination hibernate-spring-jpa-annotations requires minimal configuration and boilerplate code as it can be seen from that subproject.
 
 ### Performance metrics
-If you perform tests ffrom e.g. apistudy module, you notice in log file JSON constrcust like this one:
+If you perform tests for e.g. **apistudy** module, you notice JSON constructs in log file, like this one:
 <pre>
  {name: "EventDaoTest__MockedImpl", created: "2014-01-30 04:14:05.063", totalDuration: 11,  milestones:
      {
@@ -45,7 +45,7 @@ If you perform tests ffrom e.g. apistudy module, you notice in log file JSON con
  } 
 </pre>
 
-These are basically duration and (heap) memory consumption metrics. Idea was to report rough metrics fpr potential resource consumption estimates of different approaches.
+These are basically duration and (heap) memory consumption metrics. Idea was to report rough metrics for potential resource consumption estimates of different approaches.
 If to gather these reports in some DB (MongoDB?), interesting stats can be revealed for combinations of approaches and underlying DBs.
  
 ### Some notable features touched there:
