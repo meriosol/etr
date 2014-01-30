@@ -49,6 +49,7 @@
         <module>approaches/spring/templates</module>
 		<module>approaches/hibernate/xml</module>
 		<module>approaches/hibernate/spring/xml</module>
+		<module>approaches/hibernate/spring/annot</module>
 	</modules>
 
     <scm>

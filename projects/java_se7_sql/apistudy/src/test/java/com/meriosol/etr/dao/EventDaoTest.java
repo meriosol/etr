@@ -91,7 +91,8 @@ public class EventDaoTest {
             assertNotNull(String.format("Events for maxEventCount '%s' should not be null!", maxEventCount), events);
             assertTrue(String.format("Event list size should be <= maxEventCount '%s' but it's = '%s'!"
                     , maxEventCount, events.size()), events.size() <= maxEventCount);
-            LOG.info("AFTER Retrieve events with max count='{}'. {}", maxEventCount, constructLogStringForEvents(events));
+            LOG.info("AFTER Retrieve events with max count='{}'. '{}' events found. Details: {}", maxEventCount
+                    , events.size(), constructLogStringForEvents(events));
         } finally {
             this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.END);
         }
@@ -121,9 +122,9 @@ public class EventDaoTest {
                         , DateUtil.formatDateWithDefaultFormat(created), event.getId()
                         , DateUtil.formatDateWithDefaultFormat(endDate)), createdTime <= endDate.getTime());
             }
-            LOG.info("AFTER Retrieve events for a range startDate='{}', endDate='{}'. {}"
+            LOG.info("AFTER Retrieve events for a range startDate='{}', endDate='{}'. '{}' events found. Details: {}"
                     , DateUtil.formatDateWithDefaultFormat(startDate)
-                    , DateUtil.formatDateWithDefaultFormat(endDate), constructLogStringForEvents(events));
+                    , DateUtil.formatDateWithDefaultFormat(endDate), events.size(), constructLogStringForEvents(events));
         } finally {
             this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.END);
         }
@@ -150,9 +151,9 @@ public class EventDaoTest {
                         , DateUtil.formatDateWithDefaultFormat(created), event.getId()
                         , DateUtil.formatDateWithDefaultFormat(endDate)), createdTime <= endDate.getTime());
             }
-            LOG.info("AFTER Retrieve events for a range startDate='{}', endDate='{}'. {}"
+            LOG.info("AFTER Retrieve events for a range startDate='{}', endDate='{}'. '{}' events found. Details: {}"
                     , DateUtil.formatDateWithDefaultFormat(startDate), DateUtil.formatDateWithDefaultFormat(endDate)
-                    , constructLogStringForEvents(events));
+                    , events.size(), constructLogStringForEvents(events));
         } finally {
             this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.END);
         }
@@ -179,9 +180,9 @@ public class EventDaoTest {
                         , DateUtil.formatDateWithDefaultFormat(created), event.getId()
                         , DateUtil.formatDateWithDefaultFormat(startDate)), createdTime > startDate.getTime());
             }
-            LOG.info("AFTER Retrieve events for a range startDate='{}', endDate='{}'. {}"
+            LOG.info("AFTER Retrieve events for a range startDate='{}', endDate='{}'. '{}' events found. Details: {}"
                     , DateUtil.formatDateWithDefaultFormat(startDate), DateUtil.formatDateWithDefaultFormat(endDate)
-                    , constructLogStringForEvents(events));
+                    , events.size(), constructLogStringForEvents(events));
         } finally {
             this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.END);
         }
@@ -318,6 +319,7 @@ public class EventDaoTest {
          */
         Event buildEvent() {
             Event.Category category = new Event.Category("MESSAGE", "");
+
             Event.Severity severity = Event.Severity.INFO;
             String source = "sample_src";
             String processId = "sample_proc";
