@@ -34,15 +34,16 @@ Combinations of ORM and persistence frameworks embraced so far:
 
 ### Performance metrics
 If you perform tests ffrom e.g. apistudy module, you notice in log file JSON constrcust like this one:
-
-> {name: "EventDaoTest__MockedImpl", created: "2014-01-30 04:14:05.063", totalDuration: 11,  milestones:
->     {
->         {name: "BEGIN", durationSinceStart: 0, durationSincePrev: 0, memory:{max: 1804, total: 122, used: 9}}
->         {name: "testEventsRetrieveForPeriodWithEndDateNotNull.BEGIN", durationSinceStart: 1, durationSincePrev: 1, memory:{max: 1804, total: 122, used: 9}}
->         {name: "testEventsRetrieveForPeriodWithEndDateNotNull.END", durationSinceStart: 11, durationSincePrev: 10, memory:{max: 1804, total: 122, used: 9}}
->         {name: "END", durationSinceStart: 11, durationSincePrev: 0, memory:{max: 1804, total: 122, used: 9}}
->     }
-> } 
+<pre>
+ {name: "EventDaoTest__MockedImpl", created: "2014-01-30 04:14:05.063", totalDuration: 11,  milestones:
+     {
+         {name: "BEGIN", durationSinceStart: 0, durationSincePrev: 0, memory:{max: 1804, total: 122, used: 9}}
+         {name: "testEventsRetrieveForPeriodWithEndDateNotNull.BEGIN", durationSinceStart: 1, durationSincePrev: 1, memory:{max: 1804, total: 122, used: 9}}
+         {name: "testEventsRetrieveForPeriodWithEndDateNotNull.END", durationSinceStart: 11, durationSincePrev: 10, memory:{max: 1804, total: 122, used: 9}}
+         {name: "END", durationSinceStart: 11, durationSincePrev: 0, memory:{max: 1804, total: 122, used: 9}}
+     }
+ } 
+</pre>
 
 These are basically duration and (heap) memory consumption metrics. Idea was to report rough metrics fpr potential resource consumption estimates of different approaches.
 If to gather these reports in some DB (MongoDB?), interesting stats can be revealed for combinations of approaches and underlying DBs.
