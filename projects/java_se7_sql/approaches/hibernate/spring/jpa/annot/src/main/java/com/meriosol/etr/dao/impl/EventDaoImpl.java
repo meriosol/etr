@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
@@ -28,7 +29,7 @@ import java.util.List;
 @Service("EventDaoService")
 public class EventDaoImpl implements EventDao {
     private static final Logger LOG = LoggerFactory.getLogger(EventDaoImpl.class);
-    private static final Integer DEFAULT_MAX_EVENT_COUNT = 10000; // normally client should query max 100
+    private static final Integer DEFAULT_MAX_EVENT_COUNT = 50; // normally client should query max 100
 
     @Autowired
     private EntityManager entityManager;
@@ -38,12 +39,12 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public String getDaoName() {
-        return "HibernateSpringAnnotImpl";
+        return "HibernateSpringJpaAnnotImpl";
     }
 
     @Override
     public String getDaoDescription() {
-        return "Hibernate Annotations Spring implementation";
+        return "Hibernate Annotations Spring implementation via JPA";
     }
 
     /**
@@ -70,7 +71,7 @@ public class EventDaoImpl implements EventDao {
         EventEntity eventEntity = EventEntityTransformUtil.transform(event);
         EventEntity mergedEventEntity = this.entityManager.merge(eventEntity);
         this.entityManager.persist(mergedEventEntity);
-        return EventEntityTransformUtil.transform(eventEntity);
+        return EventEntityTransformUtil.transform(mergedEventEntity);
     }
 
     /**
@@ -82,7 +83,32 @@ public class EventDaoImpl implements EventDao {
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public Event retrieveEvent(Long eventId) {
-        EventEntity eventEntity = this.entityManager.createQuery("from EventEntity where id = " + eventId, EventEntity.class).getSingleResult();
+        // Ways:
+        // 1. JPA 1 style:
+        // EventEntity eventEntity = this.entityManager.createQuery("from EventEntity where id = " + eventId, EventEntity.class).getSingleResult();
+        // 2. Criteria style (for type safe query maniacs):
+        // TODO: use metamodel when ready:
+//        Metamodel metamodel = this.entityManager.getMetamodel();
+//        EntityType<EventEntity> eventEntityModel = metamodel.entity(EventEntity.class);
+        CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+        CriteriaQuery<EventEntity> cq = cb.createQuery(EventEntity.class);
+        Root<EventEntity> eventEntityRoot = cq.from(EventEntity.class);
+        cq.select(eventEntityRoot);
+        String pkFieldName = "id";
+        String idParamName = "id";
+        cq.where(cb.equal(eventEntityRoot.<Long>get(pkFieldName)
+                , cb.parameter(Long.class, idParamName)));
+
+        Query query = this.entityManager.createQuery(cq);
+        query.setParameter(idParamName, eventId);
+
+        EventEntity eventEntity = null;
+        try {
+            eventEntity = (EventEntity) query.getSingleResult();
+        }catch(NoResultException e) {
+            LOG.info("No entity found for eventId='{}'. In some cases it can be normal", eventId);
+        }
+
         return EventEntityTransformUtil.transform(eventEntity);
     }
 
@@ -221,8 +247,9 @@ public class EventDaoImpl implements EventDao {
         }
 
         EventEntity eventEntity = EventEntityTransformUtil.transform(event);
-        this.entityManager.persist(eventEntity);
-        return EventEntityTransformUtil.transform(eventEntity);
+        EventEntity mergedEventEntity = this.entityManager.merge(eventEntity);
+        this.entityManager.persist(mergedEventEntity);
+        return EventEntityTransformUtil.transform(mergedEventEntity);
     }
 
     /**
@@ -254,7 +281,6 @@ public class EventDaoImpl implements EventDao {
 
         Root rootEventEntity = delete.from(EventEntity.class);
 
-        // Alt 2 (not between):
         delete.where(cb.equal(rootEventEntity.<Long>get(pkFieldName)
                 , cb.parameter(Long.class, idParamName)));
 
