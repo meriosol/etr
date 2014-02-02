@@ -84,7 +84,8 @@ class JsonPerformanceReportEmitter implements PerformanceReportEmitter {
      * @return Report for Milestone list
      */
     private static String emitMilestones(List<Milestone> milestones) {
-        StringBuilder sb = new StringBuilder(FieldName.Milestone.ELEMENT + Chr.PAIR_DELIM + "\n    " + Chr.ARR_OP + "\n");
+        StringBuilder sb = new StringBuilder(Chr.STRING_QUOTE + FieldName.Milestone.ELEMENT + Chr.STRING_QUOTE
+                + Chr.PAIR_DELIM + "\n    " + Chr.ARR_OP + "\n");
         if (milestones != null && milestones.size() > 0) {
             Milestone begin = milestones.get(0);
             Milestone previous = begin;

@@ -32,14 +32,14 @@ Combinations of ORM and persistence frameworks embraced so far:
 ### Performance metrics
 If you perform tests for e.g. **apistudy** module, you notice JSON constructs in log file, like this one:
 ```JSON
- {"name": "EventDaoTest__JdbcImpl", "created": "2014-02-01 19:30:42.582", "totalDuration": 29,  milestones:
+{"name": "EventDaoTest__JdbcImpl", "created": "2014-02-01 20:14:18.582", "totalDuration": 32,  "milestones":
     [
         {"name": "BEGIN", "durationSinceStart": 0, "durationSincePrev": 0, "memory": {"max": 1804, "total": 122, "used": 19}},
         {"name": "testEventCreateAndUpdate.BEGIN", "durationSinceStart": 0, "durationSincePrev": 0, "memory": {"max": 1804, "total": 122, "used": 19}},
-        {"name": "testEventCreateAndUpdate.AFTER_createTestingEvent", "durationSinceStart": 16, "durationSincePrev": 16, "memory": {"max": 1804, "total": 122, "used": 19}},
-        {"name": "testEventCreateAndUpdate.AFTER_event_update", "durationSinceStart": 29, "durationSincePrev": 13, "memory": {"max": 1804, "total": 122, "used": 19}},
-        {"name": "testEventCreateAndUpdate.END", "durationSinceStart": 29, "durationSincePrev": 0, "memory": {"max": 1804, "total": 122, "used": 19}},
-        {"name": "END", "durationSinceStart": 29, "durationSincePrev": 0, "memory": {"max": 1804, "total": 122, "used": 19}}
+        {"name": "testEventCreateAndUpdate.AFTER_createTestingEvent", "durationSinceStart": 18, "durationSincePrev": 18, "memory": {"max": 1804, "total": 122, "used": 19}},
+        {"name": "testEventCreateAndUpdate.AFTER_event_update", "durationSinceStart": 32, "durationSincePrev": 14, "memory": {"max": 1804, "total": 122, "used": 19}},
+        {"name": "testEventCreateAndUpdate.END", "durationSinceStart": 32, "durationSincePrev": 0, "memory": {"max": 1804, "total": 122, "used": 19}},
+        {"name": "END", "durationSinceStart": 32, "durationSincePrev": 0, "memory": {"max": 1804, "total": 122, "used": 19}}
     ]
 }
 ```
