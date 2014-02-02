@@ -32,14 +32,16 @@ Combinations of ORM and persistence frameworks embraced so far:
 ### Performance metrics
 If you perform tests for e.g. **apistudy** module, you notice JSON constructs in log file, like this one:
 ```JSON
- {name: "EventDaoTest__MockedImpl", created: "2014-01-30 04:14:05.063", totalDuration: 11,  milestones:
-     {
-         {name: "BEGIN", durationSinceStart: 0, durationSincePrev: 0, memory:{max: 1804, total: 122, used: 9}}
-         {name: "testEventsRetrieveForPeriodWithEndDateNotNull.BEGIN", durationSinceStart: 1, durationSincePrev: 1, memory:{max: 1804, total: 122, used: 9}}
-         {name: "testEventsRetrieveForPeriodWithEndDateNotNull.END", durationSinceStart: 11, durationSincePrev: 10, memory:{max: 1804, total: 122, used: 9}}
-         {name: "END", durationSinceStart: 11, durationSincePrev: 0, memory:{max: 1804, total: 122, used: 9}}
-     }
- } 
+ {"name": "EventDaoTest__JdbcImpl", "created": "2014-02-01 19:30:42.582", "totalDuration": 29,  milestones:
+    [
+        {"name": "BEGIN", "durationSinceStart": 0, "durationSincePrev": 0, "memory": {"max": 1804, "total": 122, "used": 19}},
+        {"name": "testEventCreateAndUpdate.BEGIN", "durationSinceStart": 0, "durationSincePrev": 0, "memory": {"max": 1804, "total": 122, "used": 19}},
+        {"name": "testEventCreateAndUpdate.AFTER_createTestingEvent", "durationSinceStart": 16, "durationSincePrev": 16, "memory": {"max": 1804, "total": 122, "used": 19}},
+        {"name": "testEventCreateAndUpdate.AFTER_event_update", "durationSinceStart": 29, "durationSincePrev": 13, "memory": {"max": 1804, "total": 122, "used": 19}},
+        {"name": "testEventCreateAndUpdate.END", "durationSinceStart": 29, "durationSincePrev": 0, "memory": {"max": 1804, "total": 122, "used": 19}},
+        {"name": "END", "durationSinceStart": 29, "durationSincePrev": 0, "memory": {"max": 1804, "total": 122, "used": 19}}
+    ]
+}
 ```
 
 These are basically duration and (heap) memory consumption metrics. Idea was to report rough metrics for potential resource consumption estimates of different approaches.

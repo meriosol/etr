@@ -1,0 +1,6 @@
+// (Meriosol) Added for derbytools:   
+grant codeBase "${derby.install.url}derbytools.jar"
+{
+  permission java.util.PropertyPermission "*", "read,write";
+};
+  

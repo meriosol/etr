@@ -6,5 +6,6 @@
 setLocal
 call _env
 @echo To exit from derby CLI, enter quit;
-call ij
+%JAVA_HOME%\bin\java -cp %CLIENT_CPATH% %JAVA_OPTS% org.apache.derby.tools.ij
+
 endLocal

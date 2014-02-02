@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class EventDaoImpl implements EventDao {
     private static final Logger LOG = LoggerFactory.getLogger(EventDaoImpl.class);
-    private static final Integer DEFAULT_MAX_EVENT_COUNT = 10000; // normally client should query max 100
+    private static final Integer DEFAULT_MAX_EVENT_COUNT = 20; // normally client should query max 100
     private SessionFactory sessionFactory;
 
     public EventDaoImpl() {
