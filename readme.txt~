@@ -44,8 +44,10 @@ Project is in status "pet, for play around", can be removed from VCS at any time
 
 6. Version history
 ----------
+0.0.1.SNAPSHOT | 2014-01-14
+ - Inception. UML model and HTML docs added.
+0.0.2.SNAPSHOT | 2014-01-15
+ - Folder 'configs' added. All SQL scripts were tested on win7 env, tables created.
 0.0.1.RELEASE | 2014-01-22
  - Mocked and JDBC approaches were finished. Performance tracker was added.
-1.0.0.RELEASE | 2014-01-28
- - All planned Java7/SQL approaches were added and tested for all DBs.
 ----------
