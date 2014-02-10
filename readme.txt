@@ -9,7 +9,7 @@ For detailed doc please see doc/html/index.html
 1. High level overview
 For 1st iterations some of these combinations will be tried:
   (lang: Java SE v7) (frmk: JDBC v4+ | JPA v2+ | Spring v4+ | Hibernate v4+ | Mybatis v3+) 
-  (DB: SQL: (derby v10+ | mysql v5+| pgsql v9+)) (config: XML | Annotations).
+  (DB: SQL: (derby v10+ | mysql v5+| pgsql v9+), NoSQL: (Cassandra v2+)) (config: XML | Annotations).
 
 2. Design
 Main classes to play around:
@@ -28,7 +28,7 @@ NOTE: large size field will be added in next iterations, be aware..
               For UML 'WhiteStar UML' free app is used for now.
  3.4. projects: Case studies grouped by technologies used. They are generally have maven root poms, can be opened in e.g. IDEA IDE.
                 They, in turn, have deep dir structures to show usage combinations. Hope you don't get lost :)..  
-      - java_se7_sql: For SQL DBs, using Java SE 7.
+      - java_se7_sql: For SQL DBs(now NoSQL too), using Java SE 7.
  3.5. runtimes: DB runtime launch samples
        - javadb: JavaDB(apache derby) runtime folder. Both windows and linux env-s are embraced. 
 	 Env specific folders can be copied somewhere outside this code tree and used as foundation for sample database (eventium).
@@ -48,4 +48,6 @@ Project is in status "pet, for play around", can be removed from VCS at any time
  - Mocked and JDBC approaches were finished. Performance tracker was added.
 1.0.0.RELEASE | 2014-01-28
  - All planned Java7/SQL approaches were added and tested for all DBs.
+1.1.0.RELEASE | 2014-02-10
+ - Cassandra/CQL approach is added and tested.
 ----------

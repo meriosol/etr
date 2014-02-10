@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.meriosol</groupId>
         <artifactId>etr-jse7-sql</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.1.0-RELEASE</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>com.meriosol</groupId>
-            <artifactId>etr-cassandra-cql</artifactId>
+            <artifactId>etr-mocked</artifactId>
 			<!-- TIP: Copy particular persistence approach you'd like to test in artifactId tag.
             <artifactId>etr-cassandra-cql</artifactId>
             <artifactId>etr-hibernate-jpa-annot</artifactId>
@@ -33,7 +33,7 @@
             <artifactId>etr-jdbc</artifactId>
             <artifactId>etr-mocked</artifactId>
 			-->
-            <version>1.0.1-SNAPSHOT</version>
+            <version>1.1.0-RELEASE</version>
         </dependency>
     </dependencies>
 
