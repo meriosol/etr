@@ -18,8 +18,9 @@
     <dependencies>
         <dependency>
             <groupId>com.meriosol</groupId>
-            <artifactId>etr-jdbc</artifactId>
+            <artifactId>etr-cassandra-cql</artifactId>
 			<!-- TIP: Copy particular persistence approach you'd like to test in artifactId tag.
+            <artifactId>etr-cassandra-cql</artifactId>
             <artifactId>etr-hibernate-jpa-annot</artifactId>
             <artifactId>etr-hibernate-spring-jpa-annot</artifactId>
             <artifactId>etr-hibernate-spring-annot</artifactId>

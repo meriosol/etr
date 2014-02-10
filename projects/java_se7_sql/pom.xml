@@ -10,7 +10,7 @@
 	<packaging>pom</packaging>
 
 	<name>ETR for Java SE7</name>
-	<description>Event tracker / JavaSE7 edition for SQL DBs. 
+	<description>Event tracker / JavaSE7 edition for SQL DBs(update: NoSQL DBs are to be added too, likely renamings coming). 
 	For now derby,mysql,pgsql are embraced.
 	From frmk-s prospective 'native se' jdbc, 'JEE' jpa, hibernate, mybatis
 	, spring and their combinations are tried out.
@@ -52,6 +52,7 @@
 		<module>approaches/hibernate/spring/annot</module>
 		<module>approaches/hibernate/spring/jpa/annot</module>
 		<module>approaches/hibernate/jpa/annot</module>
+		<module>approaches/cassandra/cql</module>
 	</modules>
 
     <scm>

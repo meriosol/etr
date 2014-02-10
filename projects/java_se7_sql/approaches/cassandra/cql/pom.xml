@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+	
+    <parent>
+        <groupId>com.meriosol</groupId>
+        <artifactId>etr-jse7-sql</artifactId>
+        <version>1.0.1-SNAPSHOT</version>
+        <relativePath>../../../pom.xml</relativePath>
+    </parent>
+
+	<artifactId>etr-cassandra-cql</artifactId>
+    <name>ETR Cassandra CQL</name>
+    <description>ETR via NoSQL DB Cassandra, CQL driver(Datastax)</description>
+
+    <properties>
+        <!-- Dep-s lib versions: -->
+        <cassandra.cql.version>1.0.3</cassandra.cql.version>
+        <joda.version>2.3</joda.version>
+    </properties>
+   <dependencies>
+        <dependency>
+            <groupId>com.meriosol</groupId>
+            <artifactId>etr-api</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+        </dependency>
+        
+        <!-- TODO: consider hector for accessing cassandra keyspaces. -->
+        <!-- Datastax cassandra: -->
+        <dependency>
+            <groupId>com.datastax.cassandra</groupId>
+            <artifactId>cassandra-driver-core</artifactId>
+            <version>${cassandra.cql.version}</version>
+        </dependency>
+
+        <!-- For more reliable DateTime: -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>
