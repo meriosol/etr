@@ -1,0 +1,18 @@
+<add>
+	<doc>
+		<field name="code">START</field>
+		<field name="name">Start</field>
+	</doc>
+	<doc>
+		<field name="code">INTERACT</field>
+		<field name="name">Interact</field>
+	</doc>
+	<doc>
+		<field name="code">MESSAGE</field>
+		<field name="name">Message</field>
+	</doc>
+	<doc>
+		<field name="code">FINISH</field>
+		<field name="name">Finish</field>
+	</doc>
+</add>

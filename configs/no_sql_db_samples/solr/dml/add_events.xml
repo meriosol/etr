@@ -1,0 +1,49 @@
+<add>
+	<!--
+	<doc>
+		<field name="id">1000001</field>
+		<field name="title">Initial test1 start</field>
+		<field name="category_code">START</field>
+		<field name="severity">INFO</field>
+		<field name="source">local</field>
+		<field name="process_id">00001</field>
+		<field name="created">2014-03-01T20:10:01.000Z</field>
+	</doc>
+	-->
+	<doc>
+		<field name="id">1000002</field>
+		<field name="title">Some warning test1 message</field>
+		<field name="category_code">MESSAGE</field>
+		<field name="severity">WARN</field>
+		<field name="source">local</field>
+		<field name="process_id">00001</field>
+		<field name="created">2014-03-01T20:10:02.000Z</field>
+	</doc>
+	<doc>
+		<field name="id">1000003</field>
+		<field name="title">Interaction test1</field>
+		<field name="category_code">INTERACT</field>
+		<field name="severity">INFO</field>
+		<field name="source">local</field>
+		<field name="process_id">00001</field>
+		<field name="created">2014-03-01T20:10:03.000Z</field>
+	</doc>
+	<doc>
+		<field name="id">1000004</field>
+		<field name="title">'Some error test1 message</field>
+		<field name="category_code">MESSAGE</field>
+		<field name="severity">ERROR</field>
+		<field name="source">local</field>
+		<field name="process_id">00001</field>
+		<field name="created">2014-03-01T20:10:04.000Z</field>
+	</doc>
+	<doc>
+		<field name="id">1000005</field>
+		<field name="title">Test1 complete</field>
+		<field name="category_code">FINISH</field>
+		<field name="severity">INFO</field>
+		<field name="source">local</field>
+		<field name="process_id">00001</field>
+		<field name="created">2014-03-01T20:10:05.000Z</field>
+	</doc>
+</add>
