@@ -11,13 +11,13 @@
         <relativePath>../../../pom.xml</relativePath>
     </parent>
 
-	<artifactId>etr-cassandra-cql</artifactId>
-    <name>ETR Cassandra CQL</name>
-    <description>ETR via NoSQL DB Cassandra, CQL driver(Datastax)</description>
+	<artifactId>etr-solr-direct</artifactId>
+    <name>ETR Solr Direct</name>
+    <description>ETR Solr Direct, using SolrJ</description>
 
     <properties>
         <!-- Dep-s lib versions: -->
-        <cassandra.cql.version>1.0.3</cassandra.cql.version>
+        <solr.version>4.7.0</solr.version>
         <joda.version>2.3</joda.version>
     </properties>
    <dependencies>
@@ -27,12 +27,11 @@
             <version>2.0.0-RELEASE</version>
         </dependency>
         
-        <!-- TODO: consider hector for accessing cassandra keyspaces. -->
-        <!-- Datastax cassandra: -->
+        <!-- Solr: -->
         <dependency>
-            <groupId>com.datastax.cassandra</groupId>
-            <artifactId>cassandra-driver-core</artifactId>
-            <version>${cassandra.cql.version}</version>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-solrj</artifactId>
+            <version>${solr.version}</version>
         </dependency>
 
         <!-- For more reliable DateTime: -->

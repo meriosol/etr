@@ -1,15 +1,18 @@
 @echo off
 
-@rem NOTE: start solr server before loading data, make sure cores are in good shape and happy to accept new data.
+@rem NOTE: Start solr server before loading data, make sure cores are in good shape and happy to accept new data.
 if "%OS%" == "Windows_NT" setlocal
 
 call _env.bat
+set SCRIPT_DIR=%CD%
+
+@rem TODO: Consider more production ready setup.
 
 set EXAMPLE_DOCS_SOLR_DIR=%SOLR_HOME%/example/exampledocs
 set POST_JAR_NAME=post.jar
 
 @ rem DML files:
-set DML_DIR=F:\alkr\configs\for_event_tracker\solr\dml
+set DML_DIR=%SCRIPT_DIR%\..\..\..\..\configs\no_sql_db_samples\solr\dml
 set EVENT_CATEGORIES_DATA_PATH=%DML_DIR%\add_event_categories.xml
 set EVENT_DATA_PATH=%DML_DIR%\add_events.xml
 
@@ -17,7 +20,7 @@ set EVENT_DATA_PATH=%DML_DIR%\add_events.xml
 set EVENT_CATEGORIES_CORE=event_categories
 set EVENTS_CORE=events
 
-@rem Base UPDATE URL parts:
+@rem Base UPDATE URL parts (assuming port remained default):
 set URL_PREFIX=http://localhost:8983/solr
 set URL_SUFFIX=update?commit=true&wt=xml
 @rem NOTE: UPDATE URL is: %URL_PREFIX%/<CORE_NAME>/%URL_SUFFIX% 

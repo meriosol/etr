@@ -23,6 +23,7 @@ NOTE: large size field will be added in next iterations, be aware..
 3. Folders overview
  3.1. configs: Backend configs.  
        - sql_db_samples: has OS command samples, DDL/DML scripts for managing sample DBs and ETR tables.
+       - no_sql_db_samples: has OS command samples, DDL/DML scripts for managing sample ETR NoSQL DBs.
  3.2. docs: Project docs. Dir docs/html has mini site explaining different aspects of case studies for ETR.
  3.3. models: System/DB Design models. UML and ERD are main contenders. 
               For UML 'WhiteStar UML' free app is used for now.
@@ -50,4 +51,7 @@ Project is in status "pet, for play around", can be removed from VCS at any time
  - All planned Java7/SQL approaches were added and tested for all DBs.
 1.1.0.RELEASE | 2014-02-10
  - Cassandra/CQL approach is added and tested.
+2.0.0.RELEASE | 2014-03-05
+ - Last planned approach - Solr is added and tested. 
+   More polishing is expected to be performed though..and unplanned additions if time allows (e.g. MongoDB, Neo4J).
 ----------

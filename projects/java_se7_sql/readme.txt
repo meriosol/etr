@@ -34,7 +34,7 @@ For instance, if you plan to test jdbc, set this:
             <artifactId>etr-jdbc</artifactId>
             <artifactId>etr-mocked</artifactId>
 			-->
-            <version>1.1.0-RELEASE</version>
+            <version>2.0.0-RELEASE</version>
         </dependency>
     </dependencies>
 
