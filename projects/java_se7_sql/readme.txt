@@ -21,7 +21,9 @@ For instance, if you plan to test jdbc, set this:
         <dependency>
             <groupId>com.meriosol</groupId>
             <artifactId>etr-mocked</artifactId>
-			<!-- TIP: Uncomment particular persistence approach you'd like to test:
+			<!-- TIP: Copy particular persistence approach you'd like to test in artifactId tag.
+            <artifactId>etr-solr-direct</artifactId>
+            <artifactId>etr-cassandra-cql</artifactId>
             <artifactId>etr-hibernate-jpa-annot</artifactId>
             <artifactId>etr-hibernate-spring-jpa-annot</artifactId>
             <artifactId>etr-hibernate-spring-annot</artifactId>
@@ -34,7 +36,7 @@ For instance, if you plan to test jdbc, set this:
             <artifactId>etr-jdbc</artifactId>
             <artifactId>etr-mocked</artifactId>
 			-->
-            <version>2.0.0-RELEASE</version>
+            <version>2.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -45,12 +47,12 @@ NOTE: each impl should have ....dao.EventDaoFactory class, which should return a
 
 3.1. Prerequisites (as of Jan 2014):
  - Java SE 7 +.
- - Maven 3.0.5 +. 
+ - Maven 3.1 +.
  - Sample DB schemas got installed. NOTE: the simplest is javadb (no real DB is needed to be installed).
  
 3.2. Command line maven test sample:
 export JAVA_HOME='/path/to/Java/jdk1.7'
-M2_HOME=/path/to/apache-maven-3.0.5
+M2_HOME=/path/to/apache-maven-3.1.1
 M2=$M2_HOME/bin 
 MAVEN_OPTS='-Xmx1024m -XX:MaxPermSize=256m'
 PATH=$PATH:$M2

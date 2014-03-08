@@ -6,10 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.session.TransactionIsolationLevel;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +40,7 @@ public class EventCategoryMapperTest {
     public void tearDown() throws Exception {
     }
 
-    @Test
+    @Test @Ignore
     public void testEventCategoryRetrieveByCode() {
         final String module = "testEventCategoryRetrieveByCode";
         assertNotNull("sessionFactory should not be null!", this.sessionFactory);
