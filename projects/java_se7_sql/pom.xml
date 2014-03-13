@@ -6,7 +6,7 @@
 
 	<groupId>com.meriosol</groupId>
 	<artifactId>etr-jse7-sql</artifactId>
-	<version>2.0.1-SNAPSHOT</version>
+	<version>2.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>ETR for Java SE7</name>
@@ -27,7 +27,12 @@
         <!-- TODO: extract to properties file -->
         <!-- Skip artifact deployment -->
         <maven.deploy.skip>true</maven.deploy.skip>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
+        <jdk.version>1.7</jdk.version>
+        <mvn.compiler.version>3.1</mvn.compiler.version>
+        <mvn.clean.version>2.5</mvn.clean.version>
+
         <!-- Dep-s lib versions: -->
         <org.slf4j.version>1.7.5</org.slf4j.version>
         <log4j.version>1.2.17</log4j.version>
@@ -111,7 +116,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Sample databases. -->
+		<!-- Sample databases. TODO: recently NoSQL DBs added, they have own lib dep-s... -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -147,14 +152,36 @@
 			</testResource>
 		</testResources>
 		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-				</configuration>
-			</plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${mvn.compiler.version}</version>
+                <configuration>
+                    <compilerArgs>
+                        <arg>-Xlint</arg>
+                    </compilerArgs>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>${mvn.clean.version}</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${basedir}</directory>
+                            <includes>
+                                <include>**/tmp</include>
+                                <include>**/*.tmp</include>
+                                <include>**/*.log</include>
+                            </includes>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+
 		</plugins>
 	</build>
 </project>

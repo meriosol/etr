@@ -40,7 +40,7 @@ public class EventDaoMockedImpl implements EventDao {
 
     @Override
     public String getDaoDescription() {
-        return "Mocked implementaion. No real DB access is performed.";
+        return "Mocked implementation. No real DB access is performed.";
     }
 
     /**

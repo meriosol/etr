@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.meriosol</groupId>
         <artifactId>etr-jse7-sql</artifactId>
-        <version>2.0.1-SNAPSHOT</version>
+        <version>2.2-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -34,7 +34,18 @@
             <artifactId>etr-jdbc</artifactId>
             <artifactId>etr-mocked</artifactId>
 			-->
-            <version>2.0.1-SNAPSHOT</version>
+            <version>2.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.meriosol</groupId>
+            <artifactId>mutasker</artifactId>
+            <version>0.2-SNAPSHOT</version>
+            <!-- NOTE: in order to enable this dependency work you need to install mutasker project from github:
+            git clone git@github.com:meriosol/mutasker.git
+            cd mutasker
+            mvn install
+            TODO: if that project proves it's really useful, install it in publicly available repo(some nexus like for instance).
+            -->
         </dependency>
     </dependencies>
 
