@@ -54,5 +54,5 @@ USE eventium;
 
 SELECT * from event_categories;
 
-For exit, use quite or exit.
+For exit, use quit or exit.
 exit;
