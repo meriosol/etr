@@ -1,10 +1,9 @@
 PgSQL DB commands for eventium schema(event tracking DB).
 Started: [2014-01-14]
 
-[win]
-etr_pgsql_adm_cmds - for admin commands
+Admin commands:
   - startdb
-etr_pgsql_cmd - for CLI commands (and some admin too)
+CLI commands (and some admin too):
   - client, stopdb
 
 0. Init server DB
@@ -44,16 +43,16 @@ psql -U username -d myDataBase -a -f myInsertFile
 -----
 
 4.1. Create tables: 
-\i F:/alkr/configs/for_event_tracker/pgsql/sql/create_tables.sql;
+\i enter_full_path_to_sql/sql/create_tables.sql;
 
 4.2. Fill them out with test data:
-\i F:/alkr/configs/for_event_tracker/pgsql/sql/import_test_data.sql;
+\i enter_full_path_to_sql/sql/import_test_data.sql;
 
 4.3. Clean all tables:
-\i F:/alkr/configs/for_event_tracker/pgsql/sql/clean_tables.sql;
+\i enter_full_path_to_sql/sql/clean_tables.sql;
 
 4.4. Drop tables:
-\i F:/alkr/configs/for_event_tracker/pgsql/sql/drop_tables.sql;
+\i enter_full_path_to_sql/sql/drop_tables.sql;
 
 
 

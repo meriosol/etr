@@ -1,3 +1,3 @@
 @rem MySQL init vars
 
-set MYSQL_HOME=D:\alwr\progs\mysql-5.6.14-winx64
+set MYSQL_HOME=path_to_mysql_distr\mysql-5.6.14-winx64

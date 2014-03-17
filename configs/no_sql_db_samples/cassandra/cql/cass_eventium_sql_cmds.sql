@@ -1,5 +1,5 @@
--- Java DB DMLs for eventium DB
--- [2014-01-14]
+-- Cassandra DB DMLs for eventium DB
+-- [2014-02-10]
 --  In cassandra client(cqlsh):
 USE eventium;
 
