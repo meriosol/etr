@@ -15,6 +15,8 @@ Connected to Test Cluster at localhost:9160.
 Use HELP for help.
 cqlsh>
 
+CAUTION: cql files have Unix EOL, so for win env they'll likely need unix2dos conversion.
+
 1.2. Create keyspace:
 SOURCE 'full_path_cql/cql/create_db.sql'
 

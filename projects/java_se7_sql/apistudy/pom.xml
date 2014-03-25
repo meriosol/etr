@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>com.meriosol</groupId>
-            <artifactId>etr-mocked</artifactId>
+            <artifactId>etr-jdbc</artifactId>
 			<!-- TIP: Copy particular persistence approach you'd like to test in artifactId tag.
             <artifactId>etr-solr-direct</artifactId>
             <artifactId>etr-cassandra-cql</artifactId>
