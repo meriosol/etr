@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
-<title>Event tracker</title>
-<link href="css/et.css" rel="stylesheet" type="text/css"/>
+<title>Event tracker (ETR)</title>
+<link href="css/main.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 
 <body>
-<h1>Event tracker</h1>
+<h1>Event tracker (ETR)</h1>
 
 <table>
 	<tbody>
@@ -23,71 +23,103 @@
 		<tr>
 			<td>Goal:</td>
 			<td>
-			Based on sample of event logging entity show how different combinations of industry popular
-			persistence frameworks(frmk-s)/approaches can be used to handle this basic entity CRUD in different DBs.</td>
+			Based on sample of event domain model show how different combinations of industry popular
+			(Java) frameworks(frmk-s)/approaches can be used to handle events. For persistence entity CRUD operations in different DBs to be explored.</td>
 		</tr>
 	</tbody>
 </table>
 
-	 
-<h2>Introduction</h2>
-There are tons of approaches to work with databases persistence. It's easy to get lost among them even if you're seasoned developer.
+<h2>Contents</h2>
+<ul>
+	<li><a href="#Introduction">Introduction</a></li>
+	<li><a href="#1_Requirements">1. Requirements/wishes/dreams</a></li>
+	<li><a href="#1_1_Language">1.1. Language/frmk combinations</a></li>
+	<li><a href="#1_2_Traits_to_consider">1.2. Traits to consider/embrace in selected persistent frmk-s</a></li>
+	<li><a href="#1_3_Sample_test">1.3. Sample test cases for persistent frmk-s</a></li>
+	<li><a href="#1_4_Implemented_approaches">1.4. Implemented approaches for persistent frmk-s</a></li>
+	<li><a href="#2_Design">2. Design</a></li>
+    <li><a href="#2_1_Class_high_level">2.1. Class high level structure</a></li>
+    <li><a href="#2_1_1_POJOs">2.1.1. POJOs</a></li>
+    <li><a href="#2_1_2_DAOs">2.1.2. DAOs (or Mappers in ORMs)</a></li>
+    <li><a href="#2_2_Data_high_level">2.2. Data high-level structure</a></li>
+    <li><a href="#2_3_Project_structure">2.3. Project structure</a></li>
+    <li><a href="#2_4_Build">2.4. Build</a></li>
+    <li><a href="#3_Disclaimers">3. Disclaimers</a></li>
+    <li><a href="#4_Abbreviations">4. Abbreviations</a></li>
+</ul>
+	
+<h2><a id="Introduction">Introduction</a></h2>
+There are tons of approaches to work with popular frmks e,g, for databases persistence. It's easy to get lost among them even if you're seasoned developer.
 Once you start this endeavour, you realise that documentation varies from frmk to frmk in details and quality, 
 sample code and configs are not for combination you assess, particular versions of frmk-s don't 
-live together well. Forums - though useful, sometimes more confuse than help. It's especially common when the newest frmk versions are emerged.<br> 
+live together well. Forums - though useful, sometimes more confuse than help. It's especially common when the newest frmk versions are emerged
+(notice this set of projects generally grabs the latest stable version of whichever frmk).<br> 
 Another way to look at it: you joined new team. They use some combination of frmk-s which you didn't try. 
-Codebase is large and not easy to grasp at once. Yes, there are books, forums, guru fellows who can help out. But forums can mislead, gurus are busy
+Codebase is large and not easy to grasp at once. Performance optimizations and bug fixes/workarounds can greatly reduce code readability. 
+Yes, there are books, forums, guru fellows who can help out. But forums can mislead(for instance discuss elder frmk versions), gurus are busy
 , and you want to see sample actionable code and run it now, learn in a matter of minutes how 
 typical combination of those frmk-s works, how much config/code it "consumes". This project tries to 
-embrace it via providing code snippets and configs which proven to work for particular DBs and frmk-s(and their versions).  
+embrace it via providing code snippets and configs which proven to work for particular frmk-s(generally the newest on time of addition).  
 
-<h2>1. Requirements (or more like wishes/dreams)</h2>
-Use cases are extremely simple:
+<h2><a id="1_Requirements">1. Requirements/wishes/dreams</a></h2>
+Use cases are extremely simple from high level:
 <div>
 <img src="img/main_use_cases.jpg" alt="Main use cases" />
 </div>
 
-For 'Manage Event' main scenarios are: 'create','update','delete','retrieve'(a few methods e.g. per category or severity). 
+For 'Manage Event' main scenarios are: 'create','update','delete','retrieve'(a few methods e.g. per category or severity, sorted by date, paginated). 
+Actors/users can be humans or machines. As a sample: event producer can generate events and send them to topic/queue. 
+Event consumers can be users who monitor events via dashboards. WebSocket clients can setup tcp 
+connection from browser to topic/queue consumers and listen to new events in real time. 
+Consumers can be also CEP(Complex Event Processing) systems. They can detect predetermined patterns 
+(e.g. 10 ERROR events from one source during 1 minute) and generate alerts(events themselves). Some sort of AI/machine learning can be applied too if time allows. 
+Another area is BPM (Business Process Management). They can be launched by events (or particular steps triggered) or produce events.
+So only imagination(and author lifespan) limits cases where events can be explored.
 
-<h3>1.1. Language/frmk combinations</h3>
-Initial selection:
+<h3><a id="1_1_Language">1.1. Language/frmk combinations</a></h3>
+Current selection snapshot:
 
 <pre>
-(lang: Java SE v7) (frmk: JDBC v4+ | JPA v2+ | Spring v4+ | Hibernate v4+ | Mybatis v3+) (DB: SQL: (derby v10+ | mysql v5+| pgsql v9+)) (config: XML | Annotations).
+(lang: Java SE v7) (frmk: JDBC v4+ | JPA v2+ | Spring v4+ | Hibernate v4+ | Mybatis v3+) 
+(DB: SQL: (derby v10+ | mysql v5+| pgsql v9+) NoSQL: (Cassandra 2+ | Solr 4.7+)) (config: XML | Annotations).
 </pre>
-<p>
-You can ask why not e.g. Oracle, IBM DB2. They are solid, matured DBs. For now they are ignored 
-for the sake of DB setup simplicity(e.g. try to find oracle for win7 64x machine which doesn't eat a few gigs of your HDD). 
-Only immensely popular, easily available and open source DBs are selected.
-</p>
-
-Side notes:
-<ul>
-	<li>It's incredible hard to embrace all combinations, so only some "mainstream" will be selected.</li>
-	<li>"Container less" variations are considered only. JPA is the closest to JavaEE though.
-    It's selected to avoid any clutter of additional configuring and dependencies from any EE container.
-	Despite of it those testing DAOs will likely be used in EE containers for testing web-middleware-backend path.</li>
-	<li>Some of frmk-s can be combined in "chains" e.g. (JPA + Spring + Hibernate). Folders and odcs will help to determine which combinatiopn is supported.</li>
-	<li>No embedded DBs/modes are chosen. They are perceived as too far from PROD ready apps. Apache Derby (or JavaDB as modern name) has embedded mode. 
-    You can test it if you wish.</li> 
-</ul>
-
-
-Next iterations can embrace e.g.:
-<ul>
-	<li>(JavaEE: version: (v6 | v7) ; profile: (web | full))
-	<li>(lang: (Java SE 7 | JVM: (groovy v2+ | scala)) | python | perl | MS.Net: (c#))
-	<li>  (DB: NoSQL: (MongoDB | Solr v4+ | Cassandra 1+ | Neo4j)) 
-     - idea is to embrace major NoSQL DB types: key/value or columnar, document, graph
-	<li>2nd level caching (ehcache as main candidate)	 
-</ul>
 
 <div class="note">  
-NOTE: Well, "Java+SQL" orientation is still expected to prevail.
+TODO: Consider Spring Data for persistence.
 </div>  
+<p>
+You can ask why for DBs there are no e.g. Oracle, IBM DB2. They are solid, matured DBs. For now they are ignored 
+for the sake of DB setup simplicity(e.g. try to find oracle for win7 64x machine which doesn't eat a few gigs of your HDD). 
+Only immensely popular, easily available and open source DBs are selected. 
+</p>
 
+<div class="note">  
+TODO: Well, it would be fair to add at least one of big guys DB (Oracle?) and stored procedures via JDBC can be explored.
+</div>  
+<p>
+	Side notes:
+	<ul>
+		<li>It's incredible hard to embrace all combinations, so only some "mainstream" will be selected.</li>
+		<li>"Container less" variations are considered only. JPA is the closest to JavaEE though.
+		It's selected to avoid any clutter of additional configuring and dependencies from any EE container.
+		Despite of it those testing DAOs will likely be used in EE containers for testing web-middleware-backend path.</li>
+		<li>Some of frmk-s can be combined in "chains" e.g. (JPA + Spring + Hibernate). Folders and odcs will help to determine which combinatiopn is supported.</li>
+		<li>No embedded DBs/modes are chosen. They are perceived as too far from PROD ready apps. Apache Derby (or JavaDB as modern name) has embedded mode. 
+		You can test it if you wish.</li> 
+	</ul>
+</p>
 
-<h3>1.2. Traits to consider/embrace in selected frmk-s</h3>
+<p>
+	Current iteration (Mar 2014) already embraced planned SQL and NoSQL DBs persistence. Next iterations can embrace e.g.:
+	<ul>
+		<li>(JavaEE: version: (v6 | v7) ; profile: (web | full))
+		<li>(lang: (Java SE 7 | JVM: (groovy v2+ | scala)) | python | perl | MS.Net: (c#))
+		<li>  (DB: SQL: (Oracle)) (NoSQL: (MongoDB | Neo4j)) (idea is to embrace major NoSQL DB types: key/value or columnar, document, graph)
+		<li>2nd level caching (notice ehcache is already used in a few persistence combinations)	 
+	</ul>
+</p>
+
+<h3><a id="1_2_Traits_to_consider">1.2. Traits to consider/embrace in selected persistent frmk-s</a></h3>
 <ul>
 	<li>How easy to code/config a solution.</li>
 	<li>Transaction(TX) support for ACID DBs(mostly SQL, but e.g. graph DB neo4j supports ACID too).</li>
@@ -101,25 +133,99 @@ NOTE: Well, "Java+SQL" orientation is still expected to prevail.
 	<li>Large data types support(for now long string is enough; e.g. via Clob or longvarchsr).</li>
 	<li>Performance: latency, throughput.</li>
 	<li>Memory consumption.</li>
-	<li>Multi-threading support(how frmk-s sustain concurrent use).</li>
+	<li>Multi-threading support(how frmk-s sustain concurrent use; mutasker external lib can be used for load tests).</li>
 	<li>Security (secured passwords, connections etc. Can be too large topic for this small project).</li>
 	<li>Caching(consider <em>ehcache</em> as a sample).</li>
 	<li>i18n(e.g. using UTF-8 charset for data).</li>
 </ul>
 
+<h3><a id="1_3_Sample_test">1.3. Sample test cases for persistent frmk-s</a></h3>
+<ul>
+	<li>Create event</li>
+	<li>Update event fields</li>
+	<li>Retrieve event by ID</li>
+	<li>Retrieve limited amount of recent events(useful for feeds)</li>
+	<li>Retrieve events for period (check cases where some or all date params are null)</li>
+	<li>Delete event by ID</li>
+</ul>
+
+<h3><a id="1_4_Implemented_approaches">1.4. Implemented approaches for persistent frmk-s</a></h3>
+Base dir is <b>projects/java_se7_sql/approaches</b>.
+<table>
+	<thead>
+		<tr>
+			<th>Approach</th>
+			<th>Module path</th>
+		</tr>
+	</thead>		
+	<tbody>
+		<tr>
+			<td>Cassandra/CQL</td>
+			<td>cassandra/cql</td>
+		</tr>
+		<tr>
+			<td>Hibernate/JPA/Annotations</td>
+			<td>hibernate/jpa/annot</td>
+		</tr>
+		<tr>
+			<td>Hibernate/Spring/Annotations</td>
+			<td>hibernate/spring/annot</td>
+		</tr>
+		<tr>
+			<td>Hibernate/Spring/JPA/Annotations</td>
+			<td>hibernate/spring/jpa/annot</td>
+		</tr>
+		<tr>
+			<td>Hibernate/Spring/XML</td>
+			<td>hibernate/spring/xml</td>
+		</tr>
+		<tr>
+			<td>Hibernate/XML</td>
+			<td>hibernate/xml</td>
+		</tr>
+		<tr>
+			<td>JDBC</td>
+			<td>jdbc</td>
+		</tr>
+		<tr>
+			<td>MyBatis/Annotations</td>
+			<td>mybatis/annot</td>
+		</tr>
+		<tr>
+			<td>MyBatis/Spring/Annotations</td>
+			<td>mybatis/spring/annot</td>
+		</tr>
+		<tr>
+			<td>MyBatis/XML</td>
+			<td>mybatis/xml</td>
+		</tr>
+		<tr>
+			<td>Solr/Direct</td>
+			<td>solr/direct</td>
+		</tr>
+		<tr>
+			<td>Spring/Templates</td>
+			<td>spring/templates</td>
+		</tr>
+		
+		
+	</tbody>
+</table>
+
+
 It's expected for codebase to show some of them, but not all. Each module should describe what feature set is implemented. 
 
-<h2>2. Design</h2>
+<h2><a id="2_Design">2. Design</a></h2>
 Main idea of design is to create easily 'buildable' mini projects frmk which allows to quickly add and test frmk-s combination.
 To simplify at least one aspect of system entities are planned to be used exactly the same and considered as "frozen".
 
-<h3>2.1. Class high level structure</h3>
-Main classes:
+<h3><a id="2_1_Class_high_level">2.1. Class high level structure</a></h3>
+Domain and DAO classes:
 <div>
 <img src="img/main_classes.jpg" alt="Main classes" />
 </div>
 
-<h4>2.1.1. POJOs</h4>
+<h4><a id="2_1_1_POJOs">2.1.1. POJOs</a></h4>
 Main POJO classes to play with are: 
 <pre>
   Event(id: long, category: EventCategory, severityLevel: enum(INFO/WARN/ERROR/FATAL)
@@ -169,10 +275,10 @@ Another "typical" case is workflow. A field ${processId} can be used to group ev
 A field ${source} can be process name. CEP rules can be implemented somewhere. Sample rule: suspended case after series of 'INTERACT' events.
 Warning about this sleeping process can be sent (e.g. as email, sms, or new event with severityLevel = 'WARN').
 
-<h4>2.1.2. DAOs (or Mappers in ORMs)</h4>
+<h4><a id="2_1_2_DAOs">2.1.2. DAOs (or Mappers in ORMs)</a></h4>
 Core DAO is <b>EventDao</b>. Event categories can have own DAO if time allows. 
 
-<h3>2.2. Data high-level structure</h3>
+<h3><a id="2_2_Data_high_level">2.2. Data high-level structure</a></h3>
 To maximize simplicity for ORM inheritance hierarchy  '<em>1 table per class hierarchy</em>' approach is selected. 
 Tables can look like:
 <div>
@@ -185,28 +291,32 @@ Tables can look like:
         , source varchar(100), process_id varchar(100), title varchar(100), created timestamp, details longvarchar).
 </pre>
 
-<h3>2.3. Project structure</h3>
+<h3><a id="2_3_Project_structure">2.3. Project structure</a></h3>
 Project is organised as directory structure with hierarchy of selected frmk names and approaches.
-For instance if we need to checkout how 'Java SE 7' + Spring JDBC templates + JPA works, structure could be:
-<em>/javase7/spring/jpa</em>. Root dirs e.g. 'javase7' can be considered as "autonomous" group of modules. They can contain 
+
+For instance if we need to checkout how 'Java SE 7' + Spring JDBC templates, path to impl module could be:
+<em>/java_se7_sql/approaches/spring</em>. Root dirs e.g. 'java_se7_sql' can be considered as "autonomous" group of modules. They can contain 
 subtrees of modules with some reusable members (e.g. commons, api).
 
 <div class="note">  
-NOTE: If tree looks too "deep", flattening can be applied. Sample - 'javase7' (it could be e.g. 'lang/java/se/7').
+NOTE: If tree looks too "deep", flattening can be applied. Sample - 'java_se7_sql' (it could be e.g. 'lang/java/se/7/sql').
 </div>  
 
-<h3>2.4. Build</h3>
+<h3><a id="2_4_Build">2.4. Build</a></h3>
 For now main build tool is <b>maven</b> v3+, but gradle is in considerations too.<br>
-OS specific scripts will be provided only for win7+(and maybe cygwin) and linux(bash).
-For DBs basic setup instructions will be written(hope so). 
-DDLs and DMLs with initial data used in tests will be added as e.g. SQL scripts / DB. 
+Typical command is <b>'mvn -e clean test'</b>.
+OS specific scripts will be provided for win7+(and maybe cygwin) and linux(sh) for now. 
+They should be consider as hints/tips and main artefacts are DDL/DML files.
+For DBs basic setup instructions can be found in corresponding <b>configs</b> subdirs. 
+DDLs and DMLs with initial data used in tests were added as e.g. SQL scripts.
+For example, if you need to create ETR tables in Postgresql, check <b>configs/sql_db_samples/pgsql/sql/create_tables.sql</b>.  
 
 <div>
 <img src="img/testing_workflow_basics.jpg" alt="Test workflow" />
 </div>
 
 
-<h2>3. Disclaimers</h2>
+<h2><a id="3_Disclaimers">3. Disclaimers</a></h2>
 This section describes what this project is NOT about and what to be aware of while perusing its artifacts.
 <ul id="lines">
 	<li>Code and configs are for quick start in particular combination of frmk-s only.
@@ -224,7 +334,7 @@ This section describes what this project is NOT about and what to be aware of wh
 	<li>Project is in status "pet, for play around", can be removed at any time without warning.</li>	
 </ul>
 
-<h2>4. Abbreviations</h2>
+<h2><a id="4_Abbreviations">4. Abbreviations</a></h2>
 
 <table>
 	<thead>
@@ -320,7 +430,7 @@ This section describes what this project is NOT about and what to be aware of wh
 
 <div class="footer">
 <hr>
-| Version: 0.5 | Updated: 2014-01-14 | &copy; MerioSol, 2014 |
+| Version: 0.6 | Updated: 2014-03-28 | &copy; MerioSol, 2014 |
 </div>
 
 </body>

@@ -68,5 +68,5 @@ Another performance meter is actually external reusable library [MuTasker](https
 
 
 ## More docs
- - Look for readme.txt in different folders. THey provide context specifi guidelines.
- - See also (in web browser once clone repo) [HTML docs](docs/html/index.html).
+ - Look for readme.txt in different folders. They provide context specifi guidelines.
+ - See also [PDF](docs/pdf/etr.pdf)(generated from HTML docs) or [HTML docs themselves](docs/html/index.html) (in web browser once you clone git repo).
