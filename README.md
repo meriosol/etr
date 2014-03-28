@@ -5,12 +5,14 @@ Inception year: <tt>2014</tt>
 
 ## Goal
 Based on sample of event logging entity show how different combinations of industry popular
-frameworks/approaches can be used to handle this basic entity CRUD in different DBs.
+frameworks/approaches can be used to handle this basic entity CRUD in different architectures, ranging from container-less Java SE to web full blown JEE stacks; web services(both SOAP and RESTful/Multimedia APIs), async messaging(through JMS / message beans), even non Java event producers and consumers.
 
 ## Overview
-Long term goal is to use basic domain model for events and their categories to show how they can be stored, transferred or shown.
-Main emphasize of project is to check how combination of view/store approaches works from non-functional prospective, 
-how system needs to be configured for optimal use, what is more productive for development etc.
+Through use basic domain model for events and their categories this set of projects shows how they can be stored, transferred and viewed.
+Event model was selected as mmore or less generic and abstract. Events are eveywhere. Modern UIs are full of event handling. Interaction with backend is shifting from request/response paradigm towards async notificatioon/push(WebSocket is the one of the hottest topics among teams who develops close to realtime web/mobile apps).
+
+Main emphasize of this project is to check how combination of view/store approaches works from non-functional prospective, 
+how system needs to be configured for optimal use, what is more productive for development etc. It should allow to start quickly more practical projects where event processing is significant part of system.
 
 Subprojects can be considered as autonomous bundles of *configuration* + *code* + *tests*.
 
@@ -26,10 +28,23 @@ Combinations of ORM and persistence frameworks embraced so far:
  - mybatis-annotations
  - mybatis-xml
  - plain old hardcore jdbc
+ - cassandra-cql
+ - solr-direct
 
-> NOTE: Combination **hibernate-spring-jpa-annotations** contains the least configuration and boilerplate code as it can be seen from that subproject.
+### Some notable features touched there:
+ - Transaction support.
+ - Auto-incremented PKs.
+ - Java enum handling.
+ - Date fields.
+ - Many-to-one entity relationships (event->category). 
+ - Different databases (only runtime dependencies on them).
+ - Configuration (e.g. DB connection settings).
+ - DDL and DML scripts for sample tables/cores and basic data load.
+ - Versions quick pic: Java SE7, JDBC 4, JPA 2, Spring 4.0.+, Mybatis 3.2.+, Hibernate 4.3.+, MySQL 5+, Postgres 9+, Cassandra 2+, Solr 4.7+.
 
-### Performance metrics
+> NOTE: For SQL DBs persistence combination **hibernate-spring-jpa-annotations** looks like contain the least configuration and boilerplate code as it can be seen from that subproject.
+
+## Performance metrics
 If you perform tests for e.g. **apistudy** module, you notice JSON constructs in log file, like this one:
 ```JSON
 {"name": "EventDaoTest__JdbcImpl", "created": "2014-02-01 20:14:18.582", "totalDuration": 32,  "milestones":
@@ -45,19 +60,13 @@ If you perform tests for e.g. **apistudy** module, you notice JSON constructs in
 ```
 
 These are basically duration and (heap) memory consumption metrics. Idea was to report rough metrics for potential resource consumption estimates of different approaches.
-If to gather these reports in some DB (MongoDB?), interesting stats can be revealed for combinations of approaches and underlying databases.
- 
-### Some notable features touched there:
- - Transaction support.
- - Auto-incremented PKs.
- - Enum handling.
- - Date fields.
- - Many-to-one entity relationships (event->category). 
- - Different databases (only runtime dependencies on them).
- - Configuration of "unstable" artifacts (from env view e.g. DB connection settings).
- - DDL and DML scripts for sample tables and basic data load.
- - Versions quick pic: Java SE7, JDBC 4, JPA 2, Spring 4.0.+, Mybatis 3.2.+, Hibernate 4.3.+, MySQL 5+, Postgres 9+.
+If to gather these reports in some DB (MongoDB?), interesting stats can be revealed for combinations of approaches and underlying backend systems.
+
+### MuTasker
+Another performance meter is actually external reusable library [MuTasker](https://github.com/meriosol/mutasker) - multithreaded "tasker". This lib utilizes Java Concurrency package and provides a few abstracts to deal with generic tasks. Gathering of execution time performance stats and load testing itself are main features of this lib.
+> NOTE: In order to build ETR, because of dependency on **mutasker** in **apistudy** module you need to clone and install this lib on your machine first.
+
 
 ## More docs
- - Look for readme.txt in different folders.
- - See (in web browser once clone repo) [HTML docs](docs/html/index.html).
+ - Look for readme.txt in different folders. THey provide context specifi guidelines.
+ - See also (in web browser once clone repo) [HTML docs](docs/html/index.html).
