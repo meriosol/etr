@@ -1,11 +1,11 @@
 package com.meriosol.etr.dao;
 
-import com.meriosol.etr.dao.impl.EventDaoImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * NOTE: This factory singleton is expected to present in each DAO approach.
+ *
  * @author meriosol
  * @version 0.1
  * @since 15/01/14
@@ -25,7 +25,7 @@ public class EventDaoFactory {
      */
     public EventDao loadEventDao() {
         ApplicationContext context = new ClassPathXmlApplicationContext("com/meriosol/etr/dao/applicationContext.xml");
-        return (EventDao)context.getBean("EventDaoService");
+        return (EventDao) context.getBean("EventDaoService");
     }
 
 }

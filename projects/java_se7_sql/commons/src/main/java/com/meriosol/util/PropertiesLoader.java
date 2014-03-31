@@ -18,7 +18,6 @@ public class PropertiesLoader {
     }
 
     /**
-     *
      * @param filePath
      * @return Properties loaded from file path
      * @throws EtrException
@@ -41,7 +40,6 @@ public class PropertiesLoader {
     }
 
     /**
-     *
      * @param filePath
      * @return Properties loaded from file path
      * @throws EtrException
@@ -64,7 +62,6 @@ public class PropertiesLoader {
     }
 
     /**
-     *
      * @param resourcePath
      * @return Properties   loaded from classpath
      * @throws EtrException
@@ -87,7 +84,6 @@ public class PropertiesLoader {
     }
 
     /**
-     *
      * @param xmlResourcePath
      * @return Properties   loaded from classpath
      * @throws EtrException

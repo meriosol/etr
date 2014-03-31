@@ -5,14 +5,12 @@ import com.datastax.driver.core.Metadata;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.policies.ConstantReconnectionPolicy;
 import com.datastax.driver.core.policies.DowngradingConsistencyRetryPolicy;
-import com.meriosol.exception.EtrException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Properties;
-
 /**
  * Singleton factory for retrieving new Cassandra session.
+ *
  * @author meriosol
  * @version 0.1
  * @since 09/02/14
@@ -43,18 +41,17 @@ class DbSessionFactory {
         String username = this.dbSessionSettingsHolder.getUsername();
         String password = this.dbSessionSettingsHolder.getPassword();
 
-        return obtainNewSession(hosts,keyspace,username,password);
+        return obtainNewSession(hosts, keyspace, username, password);
     }
 
     /**
-     *
      * @return Session
      */
-    Session obtainNewSession(String hosts,String keyspace,String username,String password) {
+    Session obtainNewSession(String hosts, String keyspace, String username, String password) {
         String[] hostsArray = hosts.split(","); // TODO: think of trim()
         Cluster cluster = Cluster.builder()
                 .addContactPoints(hostsArray).withCredentials(username, password)
-                // .withSSL() // uncomment if using client to node encryption
+                        // .withSSL() // uncomment if using client to node encryption
                 .withRetryPolicy(DowngradingConsistencyRetryPolicy.INSTANCE)
                 .withReconnectionPolicy(new ConstantReconnectionPolicy(100L))
                 .build();

@@ -9,6 +9,7 @@ import java.util.Properties;
 
 /**
  * Singleton factory for retrieving new JDBC connection.
+ *
  * @author meriosol
  * @version 0.1
  * @since 17/01/14
@@ -31,7 +32,6 @@ class DbConnectionFactory {
     }
 
     /**
-     *
      * @param dbUrl Connection URL e.g. 'jdbc:derby://localhost:1527/Sample1DB'.
      * @param props Generally only user/password
      * @return Connection

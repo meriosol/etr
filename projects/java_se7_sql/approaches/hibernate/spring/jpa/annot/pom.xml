@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-	
+
     <parent>
         <groupId>com.meriosol</groupId>
         <artifactId>etr-jse7-sql</artifactId>
@@ -16,11 +16,11 @@
         <cglib.version>2.2.2</cglib.version>
     </properties>
 
-	<artifactId>etr-hibernate-spring-jpa-annot</artifactId>
+    <artifactId>etr-hibernate-spring-jpa-annot</artifactId>
     <name>ETR hibernate/spring/jpa annotations</name>
     <description>ETR hibernate annotations with help of Spring and via JPA.</description>
 
-   <dependencies>
+    <dependencies>
         <dependency>
             <groupId>com.meriosol</groupId>
             <artifactId>etr-api</artifactId>
@@ -33,12 +33,12 @@
             <scope>runtime</scope>
         </dependency>
 
-       <dependency>
-           <groupId>commons-dbcp</groupId>
-           <artifactId>commons-dbcp</artifactId>
-           <version>1.4</version>
-           <scope>runtime</scope>
-       </dependency>
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+            <scope>runtime</scope>
+        </dependency>
 
         <!-- Spring: -->
         <dependency>
@@ -64,13 +64,13 @@
             <!-- NOTE: will come with Hibernate core-->
         </dependency>
 
-       <!-- TODO: remove cause no need since spring 3.2
-       <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-            <version>${cglib.version}</version>
-        </dependency>
-        -->
+        <!-- TODO: remove cause no need since spring 3.2
+        <dependency>
+             <groupId>cglib</groupId>
+             <artifactId>cglib</artifactId>
+             <version>${cglib.version}</version>
+         </dependency>
+         -->
 
     </dependencies>
 

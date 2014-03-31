@@ -48,9 +48,9 @@
     <!-- ~Apache logs -->
 
     <root>
-        <priority value="warn" />
-        <appender-ref ref="STDOUT.appender" />
-        <appender-ref ref="rolling.file.appender" />
+        <priority value="warn"/>
+        <appender-ref ref="STDOUT.appender"/>
+        <appender-ref ref="rolling.file.appender"/>
     </root>
 
 </log4j:configuration>

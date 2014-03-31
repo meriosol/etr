@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-	
+
     <parent>
         <groupId>com.meriosol</groupId>
         <artifactId>etr-jse7-sql</artifactId>
@@ -11,15 +11,16 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-	<artifactId>etr-api-study</artifactId>
+    <artifactId>etr-api-study</artifactId>
     <name>ETR API Study</name>
-    <description>ETR API study module. It should have dependency on some of 'approaches' modules before test.</description>
+    <description>ETR API study module. It should have dependency on some of 'approaches' modules before test.
+    </description>
 
     <dependencies>
         <dependency>
             <groupId>com.meriosol</groupId>
             <artifactId>etr-jdbc</artifactId>
-			<!-- TIP: Copy particular persistence approach you'd like to test in artifactId tag.
+            <!-- TIP: Copy particular persistence approach you'd like to test in artifactId tag.
             <artifactId>etr-solr-direct</artifactId>
             <artifactId>etr-cassandra-cql</artifactId>
             <artifactId>etr-hibernate-jpa-annot</artifactId>
@@ -33,7 +34,7 @@
             <artifactId>etr-mybatis-xml</artifactId>
             <artifactId>etr-jdbc</artifactId>
             <artifactId>etr-mocked</artifactId>
-			-->
+            -->
             <version>2.2-SNAPSHOT</version>
         </dependency>
         <dependency>

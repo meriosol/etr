@@ -222,31 +222,31 @@ To simplify at least one aspect of system entities are planned to be used exactl
 <h3><a id="2_1_Class_high_level">2.1. Class high level structure</a></h3>
 Domain and DAO classes:
 <div>
-<img src="img/main_classes.jpg" alt="Main classes" />
+<img src="img/etr_main_persistence_classes.jpg" alt="Main persistence classes" />
+</div>
+DAO interfaces - more details: 
+<div>
+<img src="img/etr_dao_interfaces_detailed.jpg" alt="DAO interfaces" />
 </div>
 
 <h4><a id="2_1_1_POJOs">2.1.1. POJOs</a></h4>
 Main POJO classes to play with are: 
 <pre>
-  Event(id: long, category: EventCategory, severityLevel: enum(INFO/WARN/ERROR/FATAL)
+  Event(id: long, category: Event.Category, severityLevel: enum(INFO/WARN/ERROR/FATAL)
         , source: string, processId: string, title: short_string, created: date_time).
 </pre>
 
 Supplement entity is dict of event categories: 
 <pre>
-  EventCategory(code: string, name: string). 
+  Event.Category(code: string, name: string). 
 </pre>
-
-<div class="note">  
-NOTE: Name likely be reduced to just Category(but it's confusing in larger table set). 
-</div>  
 
 These classes are suitable for lists and eager relationships mapping.<br>
 For more detailed info subclasses are to be used(likely in the next iteration):
 
 <pre>
   DetailedEvent extends Event (info: long_string).
-  DetailedEventCategory extends EventCategory(desc: long_string).
+  DetailedEvent.Category extends Event.Category(desc: long_string).
 </pre>
    
 They are expected to be used only for individual entity editing.  
@@ -254,17 +254,17 @@ They are expected to be used only for individual entity editing.
 Sample:
 <pre>
   Event(id: 123439887656, categoryCode: "START", severityLevel: "INFO", source: "server1"
-        , processId: "PRC2387613", title: "System 123 get started", created: "2014-01-13H03:31:12.349"").
-  EventCategory(code: "START", name: "Start")
-  EventCategory(code: "INTERACT", name: "Interaction")
-  EventCategory(code: "STOP", name: "Stop")
+        , processId: "PRC2387613", title: "System 123 get started", created: "2014-01-13H03:31:12.349Z").
+  Event.Category(code: "START", name: "Start")
+  Event.Category(code: "INTERACT", name: "Interaction")
+  Event.Category(code: "STOP", name: "Stop")
 
   DetailedEvent(id: 123439887656, categoryCode: "START", severityLevel: "INFO", processId: "PRC2387613"
              ,  title: "System 123 get started" , created: "2014-01-13H03:31:12.349", info: "E.g. XML with details of start.").
   
-  DetailedEventCategory(code: "START", name: "Start", desc: "Activity started.")
-  DetailedEventCategory(code: "INTERACT", name: "Interaction", desc: "Interaction performed.")
-  DetailedEventCategory(code: "STOP", name: "Stop", desc: "Activity started", desc: "Activity stopped.")
+  DetailedEvent.Category(code: "START", name: "Start", desc: "Activity started.")
+  DetailedEvent.Category(code: "INTERACT", name: "Interaction", desc: "Interaction performed.")
+  DetailedEvent.Category(code: "STOP", name: "Stop", desc: "Activity started", desc: "Activity stopped.")
 </pre>
   
 Practicality of this entity set in everyday life is doubtful, but at least 
@@ -331,7 +331,7 @@ This section describes what this project is NOT about and what to be aware of wh
 	<li>This project assumes you have basic knowledge in back-end development area, familiar at least with Java, SQL.</li>
 	<li>At least from beginning only the most popular modern and stable frmk-s versions to be selected. 
 		Elder versions maybe get addressed when project itself comes to age. Funny part is: these now modern versions will be old soon :).</li>
-	<li>Project is in status "pet, for play around", can be removed at any time without warning.</li>	
+	<li>Project is in status "pet PoC, to play around", can be removed at any time without warning.</li>	
 </ul>
 
 <h2><a id="4_Abbreviations">4. Abbreviations</a></h2>
@@ -430,7 +430,7 @@ This section describes what this project is NOT about and what to be aware of wh
 
 <div class="footer">
 <hr>
-| Version: 0.6 | Updated: 2014-03-28 | &copy; MerioSol, 2014 |
+| Version: 0.7 | Updated: 2014-03-30 | &copy; MerioSol, 2014 |
 </div>
 
 </body>

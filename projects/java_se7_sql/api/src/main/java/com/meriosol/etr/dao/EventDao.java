@@ -14,7 +14,7 @@ import java.util.List;
  * @version 0.1
  * @since 15/01/14
  */
-public interface EventDao  extends BaseDao {
+public interface EventDao extends BaseDao {
     /**
      * Input invariant1: event.id should be null in input event. It's assumed backend deals with ID generation.<br>
      * Output invariant1: id should appear in returned object event.<br>

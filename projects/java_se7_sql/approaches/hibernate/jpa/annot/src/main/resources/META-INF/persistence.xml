@@ -14,10 +14,10 @@
 
         <properties>
             <!-- DB: -->
-            <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/eventium" />
-            <property name="javax.persistence.jdbc.user" value="etracker" />
-            <property name="javax.persistence.jdbc.password" value="shmetracker" />
+            <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/eventium"/>
+            <property name="javax.persistence.jdbc.user" value="etracker"/>
+            <property name="javax.persistence.jdbc.password" value="shmetracker"/>
             <!-- ================================ -->
             <!--  Samples:
             Derby:

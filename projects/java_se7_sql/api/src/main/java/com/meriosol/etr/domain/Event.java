@@ -82,7 +82,7 @@ public class Event implements Serializable {
     }
 
     public enum Severity {
-        INFO,WARN,ERROR,FATAL;
+        INFO, WARN, ERROR, FATAL;
     }
 
 

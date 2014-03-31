@@ -117,7 +117,9 @@
     </update>
 
     <delete id="delete">
-        delete from <include refid="eventsTableName"/> where id = #{eventId}
+        delete from
+        <include refid="eventsTableName"/>
+        where id = #{eventId}
     </delete>
 
 </mapper>

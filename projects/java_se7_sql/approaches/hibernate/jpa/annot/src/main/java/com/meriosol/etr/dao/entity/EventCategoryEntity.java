@@ -7,6 +7,7 @@ import javax.persistence.Table;
 
 /**
  * ~100% Event.Category class, but has hibernate annotations.
+ *
  * @author meriosol
  * @version 0.1
  * @since 29/01/14

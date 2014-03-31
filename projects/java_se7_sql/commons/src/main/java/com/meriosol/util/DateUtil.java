@@ -19,7 +19,7 @@ public class DateUtil {
     }
 
     public static synchronized Date parseFullDateWithDefaultFormat(String dateString) throws ParseException {
-        return dateString != null ? DEFAULT_FULL_DATE_FORMATTER.parse(dateString): null;
+        return dateString != null ? DEFAULT_FULL_DATE_FORMATTER.parse(dateString) : null;
     }
 
     public static synchronized String formatDateWithDefaultFormat(Date date) throws ParseException {

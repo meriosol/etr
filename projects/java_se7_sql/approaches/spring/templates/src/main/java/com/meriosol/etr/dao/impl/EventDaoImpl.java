@@ -119,7 +119,8 @@ public class EventDaoImpl implements EventDao {
                         return ps;
                     }
                 },
-                keyHolder);
+                keyHolder
+        );
         Number generatedKey = keyHolder.getKey();
         if (generatedKey != null) {
             event.setId(generatedKey.longValue());

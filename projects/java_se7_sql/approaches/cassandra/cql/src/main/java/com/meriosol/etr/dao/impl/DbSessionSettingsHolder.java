@@ -38,9 +38,11 @@ class DbSessionSettingsHolder {
     public String getKeyspace() {
         return getDbConfigProperty(ConfigNames.Cql.KEYSPACE);
     }
+
     public String getUsername() {
         return getDbConfigProperty(ConfigNames.Cql.USERNAME);
     }
+
     public String getPassword() {
         return getDbConfigProperty(ConfigNames.Cql.PASSWORD);
     }

@@ -105,7 +105,7 @@ public class EventDaoImpl implements EventDao {
         EventEntity eventEntity = null;
         try {
             eventEntity = (EventEntity) query.getSingleResult();
-        }catch(NoResultException e) {
+        } catch (NoResultException e) {
             LOG.info("No entity found for eventId='{}'. In some cases it can be normal", eventId);
         }
 

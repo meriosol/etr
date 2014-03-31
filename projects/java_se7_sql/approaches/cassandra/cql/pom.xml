@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-	
+
     <parent>
         <groupId>com.meriosol</groupId>
         <artifactId>etr-jse7-sql</artifactId>
@@ -11,7 +11,7 @@
         <relativePath>../../../pom.xml</relativePath>
     </parent>
 
-	<artifactId>etr-cassandra-cql</artifactId>
+    <artifactId>etr-cassandra-cql</artifactId>
     <name>ETR Cassandra CQL</name>
     <description>ETR via NoSQL DB Cassandra, CQL driver(Datastax)</description>
 
@@ -20,13 +20,13 @@
         <cassandra.cql.version>1.0.3</cassandra.cql.version>
         <joda.version>2.3</joda.version>
     </properties>
-   <dependencies>
+    <dependencies>
         <dependency>
             <groupId>com.meriosol</groupId>
             <artifactId>etr-api</artifactId>
             <version>2.2-SNAPSHOT</version>
         </dependency>
-        
+
         <!-- TODO: consider hector for accessing cassandra keyspaces. -->
         <!-- Datastax cassandra: -->
         <dependency>

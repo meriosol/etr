@@ -4,7 +4,10 @@ import com.meriosol.etr.domain.Event;
 import com.meriosol.exception.EtrException;
 import com.meriosol.performance.PerformanceTracker;
 import com.meriosol.util.DateUtil;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -2,6 +2,7 @@ package com.meriosol.performance;
 
 /**
  * Keeps sessionName and time for particular code execution milestone.
+ *
  * @author meriosol
  * @version 0.1
  * @since 21/01/14

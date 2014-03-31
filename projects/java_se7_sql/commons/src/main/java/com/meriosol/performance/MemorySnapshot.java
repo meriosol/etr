@@ -2,6 +2,7 @@ package com.meriosol.performance;
 
 /**
  * Keeps memory state (NOTE: returns data in megabytes).
+ *
  * @author meriosol
  * @version 0.1
  * @since 21/01/14

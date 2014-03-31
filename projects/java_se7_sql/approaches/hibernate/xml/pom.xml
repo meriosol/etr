@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-	
+
     <parent>
         <groupId>com.meriosol</groupId>
         <artifactId>etr-jse7-sql</artifactId>
@@ -14,11 +14,11 @@
         <org.hibernate.version>4.3.0.Final</org.hibernate.version>
     </properties>
 
-	<artifactId>etr-hibernate-xml</artifactId>
+    <artifactId>etr-hibernate-xml</artifactId>
     <name>ETR hibernate XML</name>
     <description>ETR hibernate XML</description>
 
-   <dependencies>
+    <dependencies>
         <dependency>
             <groupId>com.meriosol</groupId>
             <artifactId>etr-api</artifactId>

@@ -11,9 +11,6 @@ import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -206,7 +203,7 @@ public class EventDaoImpl implements EventDao {
         solrQuery.setStart(0);
         solrQuery.setRows(maxEventCount);
 
-        return loadEvents(solrQuery,solrServer);
+        return loadEvents(solrQuery, solrServer);
     }
 
 
@@ -247,7 +244,7 @@ public class EventDaoImpl implements EventDao {
         solrQuery.setStart(0);
         solrQuery.setRows(DEFAULT_MAX_EVENT_COUNT);
 
-        return loadEvents(solrQuery,solrServer);
+        return loadEvents(solrQuery, solrServer);
     }
 
     /**
@@ -291,11 +288,11 @@ public class EventDaoImpl implements EventDao {
         SolrInputDocument solrDocument = new SolrInputDocument();
         solrDocument.addField("id", event.getId());
 
-        addFieldForPartialUpdate(solrDocument,"title", event.getTitle());
-        addFieldForPartialUpdate(solrDocument,"category_code",categoryCode);
-        addFieldForPartialUpdate(solrDocument,"severity", severityCode);
-        addFieldForPartialUpdate(solrDocument,"source", event.getSource());
-        addFieldForPartialUpdate(solrDocument,"process_id", event.getProcessId());
+        addFieldForPartialUpdate(solrDocument, "title", event.getTitle());
+        addFieldForPartialUpdate(solrDocument, "category_code", categoryCode);
+        addFieldForPartialUpdate(solrDocument, "severity", severityCode);
+        addFieldForPartialUpdate(solrDocument, "source", event.getSource());
+        addFieldForPartialUpdate(solrDocument, "process_id", event.getProcessId());
 
         try {
             UpdateResponse response = solrServer.add(solrDocument);
@@ -425,7 +422,7 @@ public class EventDaoImpl implements EventDao {
         return this.solrServerFactory.findSolrServer(SolrCoreCode.EVENTS);
     }
 
-    private List<Event> loadEvents(SolrQuery solrQuery,SolrServer solrServer) {
+    private List<Event> loadEvents(SolrQuery solrQuery, SolrServer solrServer) {
         QueryResponse response = null;
         List<Event> events = new ArrayList<>();
         try {
@@ -449,8 +446,6 @@ public class EventDaoImpl implements EventDao {
         solrDocument.addField(fieldName, partialUpdate);
         return solrDocument;
     }
-
-
 
 
 }

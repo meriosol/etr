@@ -4,6 +4,7 @@ import com.meriosol.etr.dao.impl.EventDaoImpl;
 
 /**
  * NOTE: This factory singleton is expected to present in each DAO approach.
+ *
  * @author meriosol
  * @version 0.1
  * @since 15/01/14

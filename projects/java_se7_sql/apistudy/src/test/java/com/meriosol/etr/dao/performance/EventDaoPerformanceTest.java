@@ -74,7 +74,7 @@ public class EventDaoPerformanceTest {
             int iterationAmount = 10;
             // CAUTION: be careful with this iteration amount (memory/CPU can be overloaded).
 
-            int workersAmount = 100;
+            int workersAmount = 20;
             // CAUTION: be careful with this thread amount (memory/CPU can be overloaded).
 
             List<Task<Event>> tasks = new ArrayList<>(workersAmount);

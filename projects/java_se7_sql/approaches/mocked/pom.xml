@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-	
+
     <parent>
         <groupId>com.meriosol</groupId>
         <artifactId>etr-jse7-sql</artifactId>
@@ -11,11 +11,11 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-	<artifactId>etr-mocked</artifactId>
+    <artifactId>etr-mocked</artifactId>
     <name>ETR mocked</name>
     <description>ETR mocked. No real DB calls to be performed.</description>
 
-   <dependencies>
+    <dependencies>
         <dependency>
             <groupId>com.meriosol</groupId>
             <artifactId>etr-api</artifactId>

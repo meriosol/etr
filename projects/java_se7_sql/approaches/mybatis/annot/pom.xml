@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-	
+
     <parent>
         <groupId>com.meriosol</groupId>
         <artifactId>etr-jse7-sql</artifactId>
@@ -16,31 +16,31 @@
         <cglib.version>2.2.2</cglib.version>
     </properties>
 
-	<artifactId>etr-mybatis-annot</artifactId>
+    <artifactId>etr-mybatis-annot</artifactId>
     <name>ETR mybatis Annotations</name>
     <description>ETR mybatis Annotations</description>
 
-   <dependencies>
+    <dependencies>
         <dependency>
             <groupId>com.meriosol</groupId>
             <artifactId>etr-api</artifactId>
             <version>2.2-SNAPSHOT</version>
         </dependency>
-       <dependency>
-           <groupId>org.mybatis</groupId>
-           <artifactId>mybatis</artifactId>
-           <version>${mybatis.version}</version>
-       </dependency>
-       <dependency>
-           <groupId>cglib</groupId>
-           <artifactId>cglib</artifactId>
-           <version>${cglib.version}</version>
-       </dependency>
-       <dependency>
-           <groupId>org.mybatis.caches</groupId>
-           <artifactId>mybatis-ehcache</artifactId>
-           <version>${mybatis-cache.version}</version>
-       </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${mybatis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>${cglib.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.caches</groupId>
+            <artifactId>mybatis-ehcache</artifactId>
+            <version>${mybatis-cache.version}</version>
+        </dependency>
 
     </dependencies>
 

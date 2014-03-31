@@ -7,5 +7,6 @@ package com.meriosol.etr.dao;
  */
 public interface BaseDao {
     String getDaoName();
+
     String getDaoDescription();
 }

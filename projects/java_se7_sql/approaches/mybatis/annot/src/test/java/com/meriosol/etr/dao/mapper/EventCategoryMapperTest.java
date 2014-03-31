@@ -40,7 +40,8 @@ public class EventCategoryMapperTest {
     public void tearDown() throws Exception {
     }
 
-    @Test @Ignore
+    @Test
+    @Ignore
     public void testEventCategoryRetrieveByCode() {
         final String module = "testEventCategoryRetrieveByCode";
         assertNotNull("sessionFactory should not be null!", this.sessionFactory);

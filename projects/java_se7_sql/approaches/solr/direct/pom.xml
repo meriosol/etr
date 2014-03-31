@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-	
+
     <parent>
         <groupId>com.meriosol</groupId>
         <artifactId>etr-jse7-sql</artifactId>
@@ -11,7 +11,7 @@
         <relativePath>../../../pom.xml</relativePath>
     </parent>
 
-	<artifactId>etr-solr-direct</artifactId>
+    <artifactId>etr-solr-direct</artifactId>
     <name>ETR Solr Direct</name>
     <description>ETR Solr Direct, using SolrJ</description>
 
@@ -20,13 +20,13 @@
         <solr.version>4.7.0</solr.version>
         <joda.version>2.3</joda.version>
     </properties>
-   <dependencies>
+    <dependencies>
         <dependency>
             <groupId>com.meriosol</groupId>
             <artifactId>etr-api</artifactId>
             <version>2.2-SNAPSHOT</version>
         </dependency>
-        
+
         <!-- Solr: -->
         <dependency>
             <groupId>org.apache.solr</groupId>

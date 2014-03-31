@@ -8,7 +8,7 @@ import java.util.List;
  * Usage: add named track milestones in code. Each time code reaches this milestone, tracker saves time.
  * In the end tracker provides report about milestone timelines.
  * You can compare them for different frameworks/DBs combinations and conclude roughly what's acceptable for you to use.<br>
- *     TODO: make it thread-safe if it's planned to be used in mthread env-s
+ * TODO: make it thread-safe if it's planned to be used in mthread env-s
  *
  * @author meriosol
  * @version 0.1
@@ -39,7 +39,6 @@ public class PerformanceTracker {
     }
 
     /**
-     *
      * @return When tracker object was created, in msecs.
      */
     public long getCreated() {
@@ -55,7 +54,6 @@ public class PerformanceTracker {
     }
 
     /**
-     *
      * @param name Milestone name
      */
     public void addMilestone(String name) {
@@ -70,7 +68,6 @@ public class PerformanceTracker {
     }
 
     /**
-     *
      * @return Stats about performance in form of report(e.g. in JSON format).
      */
     public String emitReport() {
@@ -80,7 +77,6 @@ public class PerformanceTracker {
     }
 
     /**
-     *
      * @return Duration in msecs
      */
     public long getTrackingDuration() {
@@ -88,7 +84,7 @@ public class PerformanceTracker {
         int milestonesSize = this.milestones.size();
         if (milestonesSize > 1) {
             Milestone startMilestone = this.milestones.get(0);
-            Milestone endMilestone = this.milestones.get(milestonesSize-1);
+            Milestone endMilestone = this.milestones.get(milestonesSize - 1);
             duration = endMilestone.getTime() - startMilestone.getTime();
         }
         return duration;

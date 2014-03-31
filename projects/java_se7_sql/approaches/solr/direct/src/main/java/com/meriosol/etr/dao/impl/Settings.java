@@ -72,7 +72,7 @@ class Settings {
     }
 
     private static String getSolrCorePropertyName(SolrCoreCode solrCoreCode) {
-       return solrCoreNameMap.get(solrCoreCode);
+        return solrCoreNameMap.get(solrCoreCode);
     }
 
     private String getSolrCorePropertyValue(SolrCoreCode solrCoreCode) {
@@ -97,7 +97,6 @@ class Settings {
         }
         return this.dbConfigStorage;
     }
-
 
 
 }

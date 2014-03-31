@@ -2,21 +2,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.meriosol</groupId>
-	<artifactId>etr-jse7-sql</artifactId>
-	<version>2.2-SNAPSHOT</version>
-	<packaging>pom</packaging>
+    <groupId>com.meriosol</groupId>
+    <artifactId>etr-jse7-sql</artifactId>
+    <version>2.2-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-	<name>ETR for Java SE7</name>
-	<description>Event tracker / JavaSE7 edition for SQL DBs(update: NoSQL DBs are to be added too, likely renamings coming). 
-	For now derby,mysql,pgsql are embraced.
-	From frmk-s prospective 'native se' jdbc, 'JEE' jpa, hibernate, mybatis
-	, spring and their combinations are tried out.
-    For now it's assumed no JEE	container will be used for testing, but who knows about next iterations..
-	</description>
-	<inceptionYear>2014</inceptionYear>
+    <name>ETR for Java SE7</name>
+    <description>Event tracker / JavaSE7 edition for SQL DBs(update: NoSQL DBs are to be added too, likely renamings
+        coming).
+        For now derby,mysql,pgsql are embraced.
+        From frmk-s prospective 'native se' jdbc, 'JEE' jpa, hibernate, mybatis
+        , spring and their combinations are tried out.
+        For now it's assumed no JEE container will be used for testing, but who knows about next iterations..
+    </description>
+    <inceptionYear>2014</inceptionYear>
     <!--
 	<licenses></licenses>
 	<organization>MerioSol</organization>
@@ -52,14 +53,14 @@
         <module>approaches/mybatis/annot</module>
         <module>approaches/mybatis/spring/annot</module>
         <module>approaches/spring/templates</module>
-		<module>approaches/hibernate/xml</module>
-		<module>approaches/hibernate/spring/xml</module>
-		<module>approaches/hibernate/spring/annot</module>
-		<module>approaches/hibernate/spring/jpa/annot</module>
-		<module>approaches/hibernate/jpa/annot</module>
-		<module>approaches/cassandra/cql</module>
+        <module>approaches/hibernate/xml</module>
+        <module>approaches/hibernate/spring/xml</module>
+        <module>approaches/hibernate/spring/annot</module>
+        <module>approaches/hibernate/spring/jpa/annot</module>
+        <module>approaches/hibernate/jpa/annot</module>
+        <module>approaches/cassandra/cql</module>
         <module>approaches/solr/direct</module>
-	</modules>
+    </modules>
 
     <scm>
         <url>scm:git:git@github.com:meriosol/etr.git</url>
@@ -67,12 +68,12 @@
         <tag>HEAD</tag>
     </scm>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${org.slf4j.version}</version>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${org.slf4j.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -88,11 +89,11 @@
             <scope>runtime</scope>
         </dependency>
 
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
-			<scope>runtime</scope>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+            <scope>runtime</scope>
             <exclusions>
                 <exclusion>
                     <groupId>javax.jms</groupId>
@@ -107,51 +108,51 @@
                     <artifactId>jmxri</artifactId>
                 </exclusion>
             </exclusions>
-		</dependency>
+        </dependency>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-		<!-- Sample databases. TODO: recently NoSQL DBs added, they have own lib dep-s... -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>${postgresql.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbyclient</artifactId>
-			<version>${derbyclient.version}</version>
-			<scope>runtime</scope>
-		</dependency>
+        <!-- Sample databases. TODO: recently NoSQL DBs added, they have own lib dep-s... -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derbyclient</artifactId>
+            <version>${derbyclient.version}</version>
+            <scope>runtime</scope>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
 
-	<build>
-		<testResources>
-			<testResource>
-				<filtering>false</filtering>
-				<directory>src/test/java</directory>
-				<includes>
-					<include>**/*.xml</include>
-				</includes>
-			</testResource>
-			<testResource>
-				<directory>src/test/resources</directory>
-			</testResource>
-		</testResources>
-		<plugins>
+    <build>
+        <testResources>
+            <testResource>
+                <filtering>false</filtering>
+                <directory>src/test/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+        <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${mvn.compiler.version}</version>
@@ -182,6 +183,6 @@
                 </configuration>
             </plugin>
 
-		</plugins>
-	</build>
+        </plugins>
+    </build>
 </project>

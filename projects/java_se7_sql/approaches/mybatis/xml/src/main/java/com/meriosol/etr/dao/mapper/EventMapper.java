@@ -3,12 +3,12 @@ package com.meriosol.etr.dao.mapper;
 import com.meriosol.etr.domain.Event;
 import org.apache.ibatis.session.RowBounds;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 /**
  * NOTE: This interface resembles <code>EventDao</code>, but with tiny signature deviations.
+ *
  * @author meriosol
  * @version 0.1
  * @since 22/01/14
@@ -35,7 +35,7 @@ public interface EventMapper {
      * Output invariant2:  should be List.size <= maxEventCount.<br>
      *
      * @param rowBounds pagination object.<br>
-     *                      NOTE: If null provided, all events to be returned (CAUTION: dangerous case if DB is very large).
+     *                  NOTE: If null provided, all events to be returned (CAUTION: dangerous case if DB is very large).
      * @return List of events.
      */
     List<Event> retrieveRecentEvents(RowBounds rowBounds);

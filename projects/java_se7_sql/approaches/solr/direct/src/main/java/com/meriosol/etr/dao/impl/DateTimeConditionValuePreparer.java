@@ -8,6 +8,7 @@ import java.util.Date;
 
 /**
  * Util class for creating validly formatted date fields for filter conditions in solr queries.
+ *
  * @author meriosol
  * @version 0.1
  * @since 04/03/14

@@ -7,6 +7,7 @@ import java.util.Properties;
 
 /**
  * Loads(lazily) and keeps DB connection properties.
+ *
  * @author meriosol
  * @version 0.1
  * @since 17/01/14
@@ -18,12 +19,14 @@ class DbConnectionSettingsHolder {
 
     private interface ConfigNames {
         String PREFIX = "jdbc";
+
         interface Jdbc {
             String DRIVER = PREFIX + ".driver";
             String URL = PREFIX + ".url";
             String USERNAME = PREFIX + ".username";
             String PASSWORD = PREFIX + ".password";
         }
+
         String USERNAME = "user";
         String PASSWORD = "password";
     }
