@@ -44,8 +44,10 @@
     <li><a href="#2_2_Data_high_level">2.2. Data high-level structure</a></li>
     <li><a href="#2_3_Project_structure">2.3. Project structure</a></li>
     <li><a href="#2_4_Build">2.4. Build</a></li>
-    <li><a href="#3_Disclaimers">3. Disclaimers</a></li>
-    <li><a href="#4_Abbreviations">4. Abbreviations</a></li>
+	<li><a href="#3_Persistence_DAO">3. Persistence DAO approaches overview</a></li>
+	<li><a href="#3_1_JDBC">3.1. JDBC</a></li>
+    <li><a href="#4_Disclaimers">4. Disclaimers</a></li>
+    <li><a href="#5_Abbreviations">5. Abbreviations</a></li>
 </ul>
 	
 <h2><a id="Introduction">Introduction</a></h2>
@@ -315,9 +317,46 @@ For example, if you need to create ETR tables in Postgresql, check <b>configs/sq
 <img src="img/testing_workflow_basics.jpg" alt="Test workflow" />
 </div>
 
+<h2><a id="3_Persistence_DAO">3. Persistence DAO approaches overview</a></h2>
+Java persistence has handful major paths and a lot of impl frmk-s. The lowest level is JDBC. It has 4 driver types. 
+This project will embrace type 4 (pure Java driver). One step above of abstraction is JPA spec. It gradually replaced JEE entity beans. 
+You'll see a few impls here. ORM allows to move abstraction up and developers can (theoretically) focus in Java dev rather than diving in SQL. 
+In reality many business DB structures, especially legacy ones, have so "ORM incompatible" features (denormalization, absence of OO inheritance support), 
+enterprise dev-s still need to dive on SQL (and/or stored procedures) level.<br>
+Because there are tons of docs about persistence around, only short descriptions of approaches are provided below. 
+Key config artefacts, classes, sample code snippets for one particular DAO operations (e.g. retrieve event) are provided. 
+Code, context specific readme files and configs are considered here as detailed actionable docs.
+<p>
+	JDBC connection config note: pretty often you can find <b>db.properties</b> file in resources folder.
+	It has sample connection config info e.g. for derby: 
+	<pre>
+# JDBC connection:
+jdbc.driver=org.apache.derby.jdbc.ClientDriver
+jdbc.url=jdbc:derby://localhost:1527/eventium
+jdbc.username=etracker
+jdbc.password=some_password
+	</pre>
+	For other DBs you only need to copy/paste their specific values from similar db* files.
+</p>
 
-<h2><a id="3_Disclaimers">3. Disclaimers</a></h2>
-This section describes what this project is NOT about and what to be aware of while perusing its artifacts.
+OK, let's get started.
+
+<h3><a id="3_1_JDBC">3.1. JDBC</a></h3>
+Class <b>EventDaoImpl</b> uses <b>DbConnectionFactoryl</b>.It, in turn, goes fo DB settings to <b>db.properties</b> via <b>DbConnectionSettingsHolder</b>.
+For 1 time category loading <b>EventCategoryCache</b> is used. For now no 2nd level caching is used to make things simple.<br>
+Code fragment for <b>retrieveEvent</b>:
+	<pre>
+String queryString = "select id, title, category_code, severity, source, process_id, created from events where id = ?";
+try (PreparedStatement statement = connection.prepareStatement(queryString,
+		ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+	statement.setLong(1, eventId);
+	ResultSet resultSet = statement.executeQuery();
+	boolean firstExist = resultSet.first();
+	</pre>
+Notice Java SE7 style for resource allocation.
+
+<h2><a id="4_Disclaimers">4. Disclaimers</a></h2>
+This section describes what this project is NOT about and what to be aware of while perusing its artefacts.
 <ul id="lines">
 	<li>Code and configs are for quick start in particular combination of frmk-s only.
 		Production ready code definitely requires more polishing, e.g. "what if"s handling, NOP situation catching etc.</li>
@@ -334,7 +373,7 @@ This section describes what this project is NOT about and what to be aware of wh
 	<li>Project is in status "pet PoC, to play around", can be removed at any time without warning.</li>	
 </ul>
 
-<h2><a id="4_Abbreviations">4. Abbreviations</a></h2>
+<h2><a id="5_Abbreviations">5. Abbreviations</a></h2>
 
 <table>
 	<thead>

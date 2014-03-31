@@ -391,7 +391,7 @@ public class EventDaoImpl implements EventDao {
             throw new IllegalArgumentException(module + " - Connection should not be null!");
         }
         Event result = null;
-        String queryString = "select id, title,category_code, severity, source, process_id, created from events where id = ?";
+        String queryString = "select id, title, category_code, severity, source, process_id, created from events where id = ?";
         try (PreparedStatement statement = connection.prepareStatement(queryString,
                 ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             statement.setLong(1, eventId);
