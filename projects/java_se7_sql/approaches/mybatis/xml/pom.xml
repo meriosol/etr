@@ -12,6 +12,7 @@
     </parent>
     <properties>
         <mybatis.version>3.2.3</mybatis.version>
+        <mybatis-cache.version>1.0.2</mybatis-cache.version>
         <cglib.version>2.2.2</cglib.version>
     </properties>
 
@@ -34,6 +35,12 @@
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
             <version>${cglib.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.caches</groupId>
+            <artifactId>mybatis-ehcache</artifactId>
+            <version>${mybatis-cache.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
     </dependencies>

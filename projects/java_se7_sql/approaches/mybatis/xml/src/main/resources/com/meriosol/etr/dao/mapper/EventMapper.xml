@@ -3,6 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.meriosol.etr.dao.mapper.EventMapper">
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+
     <sql id="eventsTableName">events</sql>
     <sql id="eventCategoriesTableName">event_categories</sql>
     <sql id="baseEventFields">title, category_code, severity , source , process_id, created</sql>

@@ -46,6 +46,13 @@
     <li><a href="#2_4_Build">2.4. Build</a></li>
 	<li><a href="#3_Persistence_DAO">3. Persistence DAO approaches overview</a></li>
 	<li><a href="#3_1_JDBC">3.1. JDBC</a></li>
+	<li><a href="#3_2_MyBatis">3.2. MyBatis</a></li>
+	<li><a href="#3_2_1_MyBatis_XML">3.2.1. MyBatis XML</a></li>
+	<li><a href="#3_2_2_MyBatis_Annot">3.2.2. MyBatis Annotations</a></li>
+	<li><a href="#3_2_3_MyBatis_Annot_Spring">3.2.3. MyBatis Annotations with Spring DI</a></li>
+
+	
+	
     <li><a href="#4_Disclaimers">4. Disclaimers</a></li>
     <li><a href="#5_Abbreviations">5. Abbreviations</a></li>
 </ul>
@@ -355,121 +362,255 @@ try (PreparedStatement statement = connection.prepareStatement(queryString,
 	</pre>
 Notice Java SE7 style for resource allocation.
 
+<h3><a id="3_2_MyBatis">3.2. MyBatis</a></h3>
+MyBatis (former iBatis) is ORM suitable to deal with complex DB structures (especially legacy). 
+Dev-s need to know SQL. But it means more power and freedom in finding balanced OO-DB mappings.
+
+<h3><a id="3_2_1_MyBatis_XML">3.2.1. MyBatis XML</a></h3>
+XML is classical config approach. File <b>mybatis-config.xml</b> has link to DB properties and mappers. Fragment:
+	<pre>
+&lt;configuration&gt;
+    &lt;properties resource=&quot;com/meriosol/etr/dao/db.properties&quot; /&gt;
+    &lt;mappers&gt;
+        &lt;mapper resource=&quot;com/meriosol/etr/dao/mapper/EventMapper.xml&quot;/&gt;
+    &lt;/mappers&gt;
+	</pre>	
+	
+File <b>EventMapper.xml</b> stores SQL expressions e.g. for event retrieval:
+	<pre>
+&lt;mapper namespace=&quot;com.meriosol.etr.dao.mapper.EventMapper&quot;&gt;
+	&lt;sql id=&quot;eventsTableName&quot;&gt;events&lt;/sql&gt;
+	&lt;sql id=&quot;eventCategoriesTableName&quot;&gt;event_categories&lt;/sql&gt;
+	&lt;sql id=&quot;baseEventFields&quot;&gt;title, category_code, severity , source , process_id, created&lt;/sql&gt;
+
+	&lt;sql id=&quot;joinedSelectBaseForEvents&quot;&gt;select e.id as &quot;event_id&quot;, e.title as &quot;event_title&quot;, ec.code as &quot;category_code&quot;,
+		ec.name as &quot;category_name&quot;,
+		e.severity as &quot;event_severity&quot;, e.source as &quot;event_source&quot;,e.process_id as &quot;event_process_id&quot;, e.created as
+		&quot;event_created&quot;
+		from
+		&lt;include refid=&quot;eventsTableName&quot;/&gt;
+		e left join
+		&lt;include refid=&quot;eventCategoriesTableName&quot;/&gt;
+		ec on e.category_code = ec.code
+	&lt;/sql&gt;
+	...
+	&lt;select id=&quot;retrieveEvent&quot; resultMap=&quot;eventResultMap&quot;&gt;
+		&lt;include refid=&quot;joinedSelectBaseForEvents&quot;/&gt; where id = #{id}
+	&lt;/select&gt;
+	&lt;resultMap id=&quot;eventResultMap&quot; type=&quot;Event&quot;&gt;
+		&lt;id property=&quot;id&quot; column=&quot;event_id&quot;/&gt;
+		&lt;result property=&quot;title&quot; column=&quot;event_title&quot;/&gt;
+	...
+	</pre>	
+Interface <b>EventMapper</b> has corresponding method <b>Event retrieveEvent(Long eventId)</b>. 
+MyBatis uses this method name to look through in mapper XML for SQL. Once query get executed, resultset is mapped to Event POJO.
+File <b>ehcache.xml</b> has terracota ehcache config. Fragment:
+	<pre>	
+&lt;ehcache&gt;
+    &lt;diskStore path=&quot;/tmp/etr/ehcache&quot; /&gt;
+
+    &lt;defaultCache maxElementsInMemory=&quot;10000&quot; eternal=&quot;false&quot;
+                  timeToIdleSeconds=&quot;120&quot; timeToLiveSeconds=&quot;120&quot; overflowToDisk=&quot;true&quot;
+                  diskSpoolBufferSizeMB=&quot;30&quot; maxElementsOnDisk=&quot;10000000&quot;
+                  diskPersistent=&quot;false&quot; diskExpiryThreadIntervalSeconds=&quot;120&quot;
+                  memoryStoreEvictionPolicy=&quot;LRU&quot;/&gt;
+	</pre>	
+
+In order to load MyBatis classes DAO impl uses:
+	<pre>	
+    ... inputStream = Resources.getResourceAsStream(MYBATIS_RESOURCE_CONFIG);
+        this.sessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+    </pre>    
+
+Retrieve event then looks like:
+    <pre>    
+    public Event retrieveEvent(Long eventId) {
+        Event event;
+        try (SqlSession session = this.sessionFactory.openSession(TransactionIsolationLevel.SERIALIZABLE)) {
+            EventMapper eventMapper = session.getMapper(EventMapper.class);
+            event = eventMapper.retrieveEvent(eventId);
+            session.commit();
+        }
+        return event;
+    }
+    </pre>    
+
+<h3><a id="3_2_2_MyBatis_Annot">3.2.2. MyBatis Annotations</a></h3>
+For annotation use config <b>mybatis-config.xml</b> references to POJO classes e.g.:
+
+    <pre>    
+    &lt;mappers&gt;
+        &lt;mapper class=&quot;com.meriosol.etr.dao.mapper.EventMapper&quot;/&gt;
+        &lt;mapper class=&quot;com.meriosol.etr.dao.mapper.EventCategoryMapper&quot;/&gt;
+    &lt;/mappers&gt;
+    </pre>    
+
+Our familiar retrieve event config moves to that mapper interface:
+
+    <pre>    
+    @Select(DmlCommands.RETRIEVE_EVENT)
+    @Options(useCache = true)
+    @MapKey("id")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "category", column = "category_code", javaType = Event.Category.class
+                    , one = @One(select = "com.meriosol.etr.dao.mapper.EventCategoryMapper.retrieveEventCategory")),
+            @Result(property = "title", column = "title"),
+            @Result(property = "severity", column = "severity"),
+            @Result(property = "source", column = "source"),
+            @Result(property = "processId", column = "process_id"),
+            @Result(property = "created", column = "created")
+    })
+    Event retrieveEvent(Long eventId);
+    </pre>     
+
+For caching annotation is used:
+    <pre>    
+    @CacheNamespace(implementation = org.mybatis.caches.ehcache.EhcacheCache.class)
+    </pre>     
+
+<h3><a id="3_2_3_MyBatis_Annot_Spring">3.2.3. MyBatis Annotations with Spring DI</a></h3>
+Spring can be used to simplify config. File <b>applicationContext.xml</b> has MyBatis config:
+
+    <pre>    
+    &lt;bean id=&quot;sqlSessionFactory&quot; class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+        &lt;property name=&quot;typeAliasesPackage&quot; value=&quot;com.meriosol.etr.domain&quot;/&gt;
+    &lt;/bean&gt;
+
+    &lt;bean class=&quot;org.mybatis.spring.mapper.MapperScannerConfigurer&quot;&gt;
+        &lt;property name=&quot;basePackage&quot; value=&quot;com.meriosol.etr.dao.mapper&quot;/&gt;
+    &lt;/bean&gt;
+    </pre>     
+
+Mapper class is autowired:	
+    <pre>    
+    @Service("EventDaoService")
+    public class EventDaoImpl implements EventDao {
+        private static final Logger LOG = LoggerFactory.getLogger(EventDaoImpl.class);
+        ...
+        @Autowired
+        private EventMapper eventMapper;
+    </pre>     
+
+
+
+
 <h2><a id="4_Disclaimers">4. Disclaimers</a></h2>
 This section describes what this project is NOT about and what to be aware of while perusing its artefacts.
 <ul id="lines">
-	<li>Code and configs are for quick start in particular combination of frmk-s only.
-		Production ready code definitely requires more polishing, e.g. "what if"s handling, NOP situation catching etc.</li>
-	<li>There is no goal to show all advanced features of used frmk-s. More specific projects to be created if time allows.</li>
-	<li>In production systems reusability is one of key non-functional requirements. 
-		This project follows this practice only partially as "side feature" because main goal is 
-		to just show working basic combination, without forcing learner to jump through all hoops/levels of dependencies.
-		Code is expected to be repeated, with reasonable level of sanity. Consider subprojects as relatively independent modules.</li> 	
-	<li>Pragmatism(and a sort of laziness) is strong force to have <em>good enough</em> amount of frmk combinations.
-		Missed combinations are hopefully can be figured out from provided ones. </li>
-	<li>This project assumes you have basic knowledge in back-end development area, familiar at least with Java, SQL.</li>
-	<li>At least from beginning only the most popular modern and stable frmk-s versions to be selected. 
-		Elder versions maybe get addressed when project itself comes to age. Funny part is: these now modern versions will be old soon :).</li>
-	<li>Project is in status "pet PoC, to play around", can be removed at any time without warning.</li>	
+    <li>Code and configs are for quick start in particular combination of frmk-s only.
+        Production ready code definitely requires more polishing, e.g. "what if"s handling, NOP situation catching etc.</li>
+    <li>There is no goal to show all advanced features of used frmk-s. More specific projects to be created if time allows.</li>
+    <li>In production systems reusability is one of key non-functional requirements. 
+        This project follows this practice only partially as "side feature" because main goal is 
+        to just show working basic combination, without forcing learner to jump through all hoops/levels of dependencies.
+        Code is expected to be repeated, with reasonable level of sanity. Consider subprojects as relatively independent modules.</li>     
+    <li>Pragmatism(and a sort of laziness) is strong force to have <em>good enough</em> amount of frmk combinations.
+        Missed combinations are hopefully can be figured out from provided ones. </li>
+    <li>This project assumes you have basic knowledge in back-end development area, familiar at least with Java, SQL.</li>
+    <li>At least from beginning only the most popular modern and stable frmk-s versions to be selected. 
+        Elder versions maybe get addressed when project itself comes to age. Funny part is: these now modern versions will be old soon :).</li>
+    <li>Project is in status "pet PoC, to play around", can be removed at any time without warning.</li>    
 </ul>
 
 <h2><a id="5_Abbreviations">5. Abbreviations</a></h2>
 
 <table>
-	<thead>
-		<tr>
-			<th>Abbrev</th>
-			<th>Definition</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>frmk</td>
-			<td>framework</td>
-		</tr>
-		<tr>
-			<td>config</td>
-			<td>configuration</td>
-		</tr>
-		<tr>
-			<td>CRUD</td>
-			<td>Create/Read/Update/Delete</td>
-		</tr>
-		<tr>
-			<td>NOP</td>
-			<td>Null Pointer (exception)</td>
-		</tr>
-		
-		<tr>
-			<td>OSS</td>
-			<td>Open Source Software</td>
-		</tr>
-		<tr>
-			<td>dict</td>
-			<td>dictionary</td>
-		</tr>
-		<tr>
-			<td>DAO</td>
-			<td>Data Access Object</td>
-		</tr>
-		<tr>
-			<td>ORM</td>
-			<td> Object Relational Mapping</td>
-		</tr>
-		<tr>
-			<td>DB</td>
-			<td>database</td>
-		</tr>
-		<tr>
-			<td>PROD</td>
-			<td>Production</td>
-		</tr>
-		<tr>
-			<td>DEV</td>
-			<td>Development</td>
-		</tr>
-		<tr>
-			<td>TX</td>
-			<td>Transaction</td>
-		</tr>
-		<tr>
-			<td>ACID</td>
-			<td> Atomic Consistent Isolated Durable (about TX)</td>
-		</tr>
-		<tr>
-			<td>PK</td>
-			<td>Primary Key</td>
-		</tr>
-		<tr>
-			<td>FK</td>
-			<td>Foreign Key</td>
-		</tr>
-		<tr>
-			<td>env</td>
-			<td>environment</td>
-		</tr>
-		<tr>
-			<td>param</td>
-			<td>parameter</td>
-		</tr>
-		<tr>
-			<td>dir</td>
-			<td>directory</td>
-		</tr>
-		<tr>
-			<td>desc</td>
-			<td>description</td>
-		</tr>
-		<tr>
-			<td>CEP</td>
-			<td>Complex Event Processing</td>
-		</tr>
-	</tbody>
+    <thead>
+        <tr>
+            <th>Abbrev</th>
+            <th>Definition</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>frmk</td>
+            <td>framework</td>
+        </tr>
+        <tr>
+            <td>config</td>
+            <td>configuration</td>
+        </tr>
+        <tr>
+            <td>CRUD</td>
+            <td>Create/Read/Update/Delete</td>
+        </tr>
+        <tr>
+            <td>NOP</td>
+            <td>Null Pointer (exception)</td>
+        </tr>
+        
+        <tr>
+            <td>OSS</td>
+            <td>Open Source Software</td>
+        </tr>
+        <tr>
+            <td>dict</td>
+            <td>dictionary</td>
+        </tr>
+        <tr>
+            <td>DAO</td>
+            <td>Data Access Object</td>
+        </tr>
+        <tr>
+            <td>ORM</td>
+            <td> Object Relational Mapping</td>
+        </tr>
+        <tr>
+            <td>DB</td>
+            <td>database</td>
+        </tr>
+        <tr>
+            <td>PROD</td>
+            <td>Production</td>
+        </tr>
+        <tr>
+            <td>DEV</td>
+            <td>Development</td>
+        </tr>
+        <tr>
+            <td>TX</td>
+            <td>Transaction</td>
+        </tr>
+        <tr>
+            <td>ACID</td>
+            <td> Atomic Consistent Isolated Durable (about TX)</td>
+        </tr>
+        <tr>
+            <td>PK</td>
+            <td>Primary Key</td>
+        </tr>
+        <tr>
+            <td>FK</td>
+            <td>Foreign Key</td>
+        </tr>
+        <tr>
+            <td>env</td>
+            <td>environment</td>
+        </tr>
+        <tr>
+            <td>param</td>
+            <td>parameter</td>
+        </tr>
+        <tr>
+            <td>dir</td>
+            <td>directory</td>
+        </tr>
+        <tr>
+            <td>desc</td>
+            <td>description</td>
+        </tr>
+        <tr>
+            <td>CEP</td>
+            <td>Complex Event Processing</td>
+        </tr>
+    </tbody>
 </table>
 
 <div class="footer">
 <hr>
-| Version: 0.7 | Updated: 2014-03-30 | &copy; MerioSol, 2014 |
+| Version: 0.8 | Updated: 2014-03-31 | &copy; MerioSol, 2014 |
 </div>
 
 </body>

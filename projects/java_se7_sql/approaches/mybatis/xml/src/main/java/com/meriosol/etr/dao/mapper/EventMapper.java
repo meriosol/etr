@@ -28,7 +28,7 @@ public interface EventMapper {
      * @param eventId
      * @return Event.
      */
-    public Event retrieveEvent(Long eventId);
+    Event retrieveEvent(Long eventId);
 
     /**
      * Output invariant1: Sorting should be by field 'created' desc.<br>

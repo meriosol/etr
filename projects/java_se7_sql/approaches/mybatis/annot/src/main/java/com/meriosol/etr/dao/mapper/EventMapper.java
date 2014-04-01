@@ -67,7 +67,7 @@ public interface EventMapper {
             @Result(property = "processId", column = "process_id"),
             @Result(property = "created", column = "created")
     })
-    public Event retrieveEvent(Long eventId);
+    Event retrieveEvent(Long eventId);
 
     /**
      * Output invariant1: Sorting should be by field 'created' desc.<br>

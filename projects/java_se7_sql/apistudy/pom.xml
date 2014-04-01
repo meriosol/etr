@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>com.meriosol</groupId>
-            <artifactId>etr-jdbc</artifactId>
+            <artifactId>etr-mybatis-annot</artifactId>
             <!-- TIP: Copy particular persistence approach you'd like to test in artifactId tag.
             <artifactId>etr-solr-direct</artifactId>
             <artifactId>etr-cassandra-cql</artifactId>

@@ -4,10 +4,7 @@ import com.meriosol.etr.domain.Event;
 import com.meriosol.exception.EtrException;
 import com.meriosol.performance.PerformanceTracker;
 import com.meriosol.util.DateUtil;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +54,7 @@ public class EventDaoTest {
         }
     }
 
-    @Test
+    @Test @Ignore
     public void testEventCreate() {
         Event event = createTestingEvent();
         assertNotNull("Event should not be null!", event);
@@ -101,7 +98,7 @@ public class EventDaoTest {
         }
     }
 
-    @Test
+    @Test @Ignore
     public void testEventsRetrieveForPeriodWithBothPartsNotNull() throws ParseException {
         final String module = "testEventsRetrieveForPeriodWithBothPartsNotNull";
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
@@ -133,7 +130,7 @@ public class EventDaoTest {
         }
     }
 
-    @Test
+    @Test @Ignore
     public void testEventsRetrieveForPeriodWithEndDateNotNull() throws ParseException {
         final String module = "testEventsRetrieveForPeriodWithEndDateNotNull";
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
@@ -162,7 +159,7 @@ public class EventDaoTest {
         }
     }
 
-    @Test
+    @Test @Ignore
     public void testEventsRetrieveForPeriodWithStartDateNotNull() throws ParseException {
         final String module = "testEventsRetrieveForPeriodWithStartDateNotNull";
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
@@ -191,7 +188,7 @@ public class EventDaoTest {
         }
     }
 
-    @Test
+    @Test @Ignore
     public void testEventsRetrieveForPeriodWithAllDatesNull() throws ParseException {
         final String module = "testEventsRetrieveForPeriodWithAllDatesNull";
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
@@ -213,7 +210,7 @@ public class EventDaoTest {
         }
     }
 
-    @Test
+    @Test @Ignore
     public void testEventCreateAndUpdate() {
         final String module = "testEventCreateAndUpdate";
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
@@ -247,7 +244,7 @@ public class EventDaoTest {
         }
     }
 
-    @Test
+    @Test @Ignore
     public void testEventCreateAndDelete() {
         final String module = "testEventCreateAndDelete";
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
