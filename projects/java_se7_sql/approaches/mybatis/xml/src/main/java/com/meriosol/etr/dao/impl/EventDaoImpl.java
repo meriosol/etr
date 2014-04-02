@@ -26,6 +26,7 @@ public class EventDaoImpl implements EventDao {
     private static final Logger LOG = LoggerFactory.getLogger(EventDaoImpl.class);
     private static final Integer DEFAULT_MAX_EVENT_COUNT = 20; // normally client should query max 100
     private static final String MYBATIS_RESOURCE_CONFIG = "com/meriosol/etr/dao/mybatis-config.xml";
+    public static final int TIME = 100 * 60 * 60 * 24 * 365 * 10;
     private SqlSessionFactory sessionFactory;
 
     public EventDaoImpl() {
@@ -109,7 +110,7 @@ public class EventDaoImpl implements EventDao {
             int offset = 1;
             int limit = Integer.MAX_VALUE;
             if (maxEventCount < Integer.MAX_VALUE) {
-                limit = maxEventCount.intValue();
+                limit = maxEventCount;
             }
             RowBounds rowBounds = new RowBounds(offset, limit);
             events = positionMapper.retrieveRecentEvents(rowBounds);
@@ -145,7 +146,7 @@ public class EventDaoImpl implements EventDao {
             }
         }
         if (startDate == null) {
-            startDate = new Date(System.currentTimeMillis() - 100 * 60 * 60 * 24 * 365 * 10);
+            startDate = new Date(System.currentTimeMillis() - TIME);
         }
         if (endDate == null) {
             endDate = new Date();

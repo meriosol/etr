@@ -18,7 +18,7 @@ import java.util.List;
  */
 class EventByCreatedSliceCrud {
     //private static final Logger LOG = LoggerFactory.getLogger(EventByCreatedSliceCrud.class);
-    private static EventByCreatedSliceCrud instance = new EventByCreatedSliceCrud();
+    private static final EventByCreatedSliceCrud instance = new EventByCreatedSliceCrud();
 
     interface EventSliceEntityNames {
         String TABLE = "event_by_created_slices";

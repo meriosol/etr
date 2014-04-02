@@ -60,13 +60,8 @@ class JsonPerformanceReportEmitter implements PerformanceReportEmitter {
         String sessionNamePair = buildStringPair(FieldName.NAME, ptr.getSessionName());
 
         Date createdDate = new Date(ptr.getCreated());
-        String formattedCreatedDate = "";
-        try {
-            formattedCreatedDate = DateUtil.formatDateWithDefaultFormat(createdDate);
-        } catch (ParseException e) {
-            LOG.error("ParseException while parse created date " + createdDate, e);
-            formattedCreatedDate = createdDate.toString();
-        }
+        String formattedCreatedDate;
+        formattedCreatedDate = DateUtil.formatDateWithDefaultFormat(createdDate);
 
         String createdPair = buildStringPair(FieldName.CREATED, formattedCreatedDate);
         String totalDurationPair = buildNumPair(FieldName.TOTAL_DURATION, ptr.getTrackingDuration());

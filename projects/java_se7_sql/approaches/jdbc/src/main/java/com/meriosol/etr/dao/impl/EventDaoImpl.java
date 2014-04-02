@@ -132,7 +132,7 @@ public class EventDaoImpl implements EventDao {
                     connection.close();
                 }
             } catch (SQLException e) {
-                throw new EtrException(module + " - Connection closing error!", e);
+                LOG.error("{}: Connection closing error!", module, e);
             }
         }
 
@@ -319,7 +319,7 @@ public class EventDaoImpl implements EventDao {
                     connection.close();
                 }
             } catch (SQLException e) {
-                throw new EtrException(module + " - Connection closing error!", e);
+                LOG.error("{}: Connection closing error!", module, e);
             }
         }
 
@@ -372,7 +372,7 @@ public class EventDaoImpl implements EventDao {
                     connection.close();
                 }
             } catch (SQLException e) {
-                throw new EtrException(module + " - Connection closing error!", e);
+                LOG.error("{}: Connection closing error!", module, e);
             }
         }
 

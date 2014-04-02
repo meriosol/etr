@@ -121,9 +121,7 @@ public class EventDaoImpl implements EventDao {
             // Finally update resulting event POJO:
             result.setId(id);
             result.setCreated(created);
-        } catch (SolrServerException e) {
-            throw new EtrException(e);
-        } catch (IOException e) {
+        } catch (SolrServerException | IOException e) {
             throw new EtrException(e);
         }
 
@@ -297,9 +295,7 @@ public class EventDaoImpl implements EventDao {
         try {
             UpdateResponse response = solrServer.add(solrDocument);
             solrServer.commit();
-        } catch (SolrServerException e) {
-            throw new EtrException(e);
-        } catch (IOException e) {
+        } catch (SolrServerException | IOException e) {
             throw new EtrException(e);
         }
 
@@ -340,9 +336,7 @@ public class EventDaoImpl implements EventDao {
             solrServer.deleteById(String.valueOf(eventId));
             //solrServer.deleteByQuery("id:" + id);
             solrServer.commit();
-        } catch (SolrServerException e) {
-            throw new EtrException(e);
-        } catch (IOException e) {
+        } catch (SolrServerException | IOException e) {
             throw new EtrException(e);
         }
 
@@ -441,7 +435,7 @@ public class EventDaoImpl implements EventDao {
 
 
     private static SolrInputDocument addFieldForPartialUpdate(SolrInputDocument solrDocument, String fieldName, Object fieldValue) {
-        Map<String, Object> partialUpdate = new HashMap<String, Object>();
+        Map<String, Object> partialUpdate = new HashMap<>();
         partialUpdate.put("set", fieldValue);
         solrDocument.addField(fieldName, partialUpdate);
         return solrDocument;

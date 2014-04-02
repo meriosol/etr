@@ -10,7 +10,7 @@ import com.meriosol.etr.dao.impl.EventDaoImpl;
  * @since 15/01/14
  */
 public class EventDaoFactory {
-    private static EventDaoFactory eventDaoFactory = new EventDaoFactory();
+    private static final EventDaoFactory eventDaoFactory = new EventDaoFactory();
 
     public static EventDaoFactory getInstance() {
         return eventDaoFactory;

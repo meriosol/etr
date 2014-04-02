@@ -13,7 +13,7 @@ import javax.persistence.Persistence;
  * @since 30/01/14
  */
 public class EventDaoFactory {
-    private static EventDaoFactory eventDaoFactory = new EventDaoFactory();
+    private static final EventDaoFactory eventDaoFactory = new EventDaoFactory();
     private EntityManagerFactory entityManagerFactory;
     private static final String PERSISTENT_UNIT_NAME = "com.meriosol.etr.dao.jpa";
 

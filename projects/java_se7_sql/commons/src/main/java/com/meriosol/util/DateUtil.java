@@ -22,7 +22,7 @@ public class DateUtil {
         return dateString != null ? DEFAULT_FULL_DATE_FORMATTER.parse(dateString) : null;
     }
 
-    public static synchronized String formatDateWithDefaultFormat(Date date) throws ParseException {
+    public static synchronized String formatDateWithDefaultFormat(Date date) {
         return date != null ? DEFAULT_FULL_DATE_FORMATTER.format(date) : "";
     }
 

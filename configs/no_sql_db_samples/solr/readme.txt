@@ -7,7 +7,7 @@ TODO: consider security (auth-n).
 1.1. Copy dir ddl/eventium into cores storage(e.g. /var/lib/solr_cores).
 
 2. To create runtime:
-2.1. Download current versin of solr (for now 4.7.0).
+2.1. Download current version of solr (for now 4.7.0).
 
 2.2. Copy dir runtimes/solr/[OS]/solr_etr to runtimes folder (e.g. /var/lib/runtimes/)
 Replace values in _env to your env specific.

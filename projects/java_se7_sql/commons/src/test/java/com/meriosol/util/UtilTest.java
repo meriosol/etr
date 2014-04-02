@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 public class UtilTest {
     @Test
     public void testJoinCollection() {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add("a");
         list.add("b");
         list.add("c");
@@ -66,7 +66,7 @@ public class UtilTest {
 
     @Test
     public void testJoinOneElementCollection() {
-        List<Integer> list = new ArrayList<Integer>();
+        List<Integer> list = new ArrayList<>();
         String element1 = "1234";
         list.add(Integer.valueOf(element1));
         String delimiter = ",";
@@ -77,7 +77,7 @@ public class UtilTest {
 
     @Test
     public void testJoinEmptyCollection() {
-        Set<Integer> set = new HashSet<Integer>();
+        Set<Integer> set = new HashSet<>();
         String delimiter = " ";
         String joined = Util.join(set, delimiter);
         String expected = "";

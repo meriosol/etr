@@ -26,6 +26,7 @@ import java.util.Map;
 public class EventDaoImpl implements EventDao {
     private static final Logger LOG = LoggerFactory.getLogger(EventDaoImpl.class);
     private static final Integer DEFAULT_MAX_EVENT_COUNT = 20; // normally client should query max 100
+    public static final int SOME_TIME = 100 * 60 * 60 * 24 * 365 * 10;
 
     @Autowired
     private EventMapper eventMapper;
@@ -101,7 +102,7 @@ public class EventDaoImpl implements EventDao {
         int offset = 1;
         int limit = Integer.MAX_VALUE;
         if (maxEventCount < Integer.MAX_VALUE) {
-            limit = maxEventCount.intValue();
+            limit = maxEventCount;
         }
         RowBounds rowBounds = new RowBounds(offset, limit);
         events = this.eventMapper.retrieveRecentEvents(rowBounds);
@@ -122,7 +123,6 @@ public class EventDaoImpl implements EventDao {
     @Override
     @Transactional
     public List<Event> retrieveEventsForPeriod(Date startDate, Date endDate) {
-        final String module = "retrieveEventsForPeriod";
         // TODO: consider cases:
         // (startDate == null, endDate == null)
         // (startDate == null, endDate != null)
@@ -135,7 +135,7 @@ public class EventDaoImpl implements EventDao {
             }
         }
         if (startDate == null) {
-            startDate = new Date(System.currentTimeMillis() - 100 * 60 * 60 * 24 * 365 * 10);
+            startDate = new Date(System.currentTimeMillis() - SOME_TIME);
         }
         if (endDate == null) {
             endDate = new Date();

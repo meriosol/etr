@@ -118,7 +118,7 @@ public class EventDaoPerformanceTest {
 
         @Override
         public Result<Event> execute() {
-            Result<Event> result = null;
+            Result<Event> result;
             long startTime = System.currentTimeMillis();
             String name = "RetrieveEventByIDTask";
             int outputItemsCount = 1;
@@ -132,7 +132,7 @@ public class EventDaoPerformanceTest {
 //                }
             }
             //Params: long startTime, String name, T details, long iterationAmount, long outputItemCount
-            result = new NamedMeasurableTaskResult<Event>(startTime, name, event, this.iterationAmount, outputItemsCount);
+            result = new NamedMeasurableTaskResult<>(startTime, name, event, this.iterationAmount, outputItemsCount);
             return result;
 
         }
@@ -146,7 +146,7 @@ public class EventDaoPerformanceTest {
                 LOG.info("o>> ({}) ====================== Results report: V", testName);
                 LOG.info("o>> ({}) '{}' results found..", testName, results.size());
 
-                TaskResultStats<Event> stats = new TaskResultStats<Event>(Collections.unmodifiableList(results), workUnitName);
+                TaskResultStats<Event> stats = new TaskResultStats<>(Collections.unmodifiableList(results), workUnitName);
                 String statsBasicInfo = stats.prepareBasicStatsReportForDurations();
                 LOG.info("\n{}", statsBasicInfo);
 

@@ -24,7 +24,7 @@ public class PropertiesLoader {
      */
     public static Properties loadPropertiesFromFile(String filePath) throws EtrException {
         Properties properties = new Properties();
-        Reader reader = null;
+        Reader reader;
         try {
             reader = new FileReader(filePath);
         } catch (FileNotFoundException e) {
@@ -46,7 +46,7 @@ public class PropertiesLoader {
      */
     public static Properties loadPropertiesFromXmlFile(String filePath) throws EtrException {
         Properties properties = new Properties();
-        InputStream inputStream = null;
+        InputStream inputStream;
         try {
             inputStream = new FileInputStream(filePath);
         } catch (FileNotFoundException e) {

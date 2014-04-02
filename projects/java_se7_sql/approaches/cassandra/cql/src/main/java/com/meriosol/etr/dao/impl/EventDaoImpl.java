@@ -23,6 +23,7 @@ public class EventDaoImpl implements EventDao {
     private static final Logger LOG = LoggerFactory.getLogger(EventDaoImpl.class);
     private static final Integer DEFAULT_MAX_EVENT_COUNT = 20; // normally client should query max 100
     private static final String EVENT_COLUMNS = "id, title, category_code, severity, source, process_id, " + EventEntityNames.Column.CREATED;
+    public static final int TIME = 100 * 60 * 60 * 24 * 365 * 10;
     private DbSessionFactory dbSessionFactory;
     private EventCategoryCache eventCategoryCache;
     private EventByCreatedSliceCrud eventByCreatedSliceCrud;
@@ -100,7 +101,7 @@ public class EventDaoImpl implements EventDao {
         }
 
         // Created:
-        Long createdTime = null;
+        Long createdTime;
         Date created = event.getCreated();
         if (created == null) {
             created = new Date();
@@ -182,7 +183,7 @@ public class EventDaoImpl implements EventDao {
             }
         }
         if (startDate == null) {
-            startDate = new Date(System.currentTimeMillis() - 100 * 60 * 60 * 24 * 365 * 10);
+            startDate = new Date(System.currentTimeMillis() - TIME);
         }
         if (endDate == null) {
             endDate = new Date();

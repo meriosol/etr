@@ -85,7 +85,7 @@ public class EtrException extends RuntimeException {
     }
 
     private static List<Integer> buildErrorCodeList(Integer errorCode) {
-        List<Integer> errorCodeList = new ArrayList<Integer>(1);
+        List<Integer> errorCodeList = new ArrayList<>(1);
         errorCodeList.add(errorCode);
         return errorCodeList;
     }

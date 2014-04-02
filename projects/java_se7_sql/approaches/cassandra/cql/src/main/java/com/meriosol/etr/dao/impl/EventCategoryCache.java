@@ -25,7 +25,7 @@ class EventCategoryCache {
     private Map<String, Event.Category> categories = null;
     private static final String CATEGORIES_QUERY = "select code, name from event_categories";
 
-    private static EventCategoryCache instance = new EventCategoryCache();
+    private static final EventCategoryCache instance = new EventCategoryCache();
 
     static EventCategoryCache getInstance() {
         return instance;

@@ -4,7 +4,7 @@ package com.meriosol.etr.dao.impl;
  * Supported Solr core names. Introduced for type safe core short name referencing.
  * TODO: it only adds burden of supporting core in code. Likely String could work better (but 'type safety' get lost then).
  *
- * @author akrotov
+ * @author meriosol
  * @version 0.1
  * @since 04/03/14
  */

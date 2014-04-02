@@ -28,6 +28,7 @@ import java.util.List;
 public class EventDaoImpl implements EventDao {
     private static final Logger LOG = LoggerFactory.getLogger(EventDaoImpl.class);
     private static final Integer DEFAULT_MAX_EVENT_COUNT = 20; // normally client should query max 100
+    public static final int SOME_TIME = 100 * 60 * 60 * 24 * 365 * 10;
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -140,7 +141,7 @@ public class EventDaoImpl implements EventDao {
             }
         }
         if (startDate == null) {
-            startDate = new Date(System.currentTimeMillis() - 100 * 60 * 60 * 24 * 365 * 10);
+            startDate = new Date(System.currentTimeMillis() - SOME_TIME);
         }
         if (endDate == null) {
             endDate = new Date();

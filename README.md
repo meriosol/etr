@@ -5,16 +5,22 @@ Inception year: <tt>2014</tt>
 
 ## Goal
 Based on sample of event logging entity show how different combinations of industry popular
-frameworks/approaches can be used to handle this basic entity CRUD in different architectures, ranging from container-less Java SE to web full blown JEE stacks; web services(both SOAP and RESTful/Multimedia APIs), async messaging(through JMS / message beans), even non Java event producers and consumers.
+frameworks/approaches can be used to handle this basic entity CRUD in different architectures, 
+ranging from container-less Java SE to web full blown JEE stacks; web services(both SOAP and RESTful/Multimedia APIs), 
+async messaging(through JMS / message beans), even non Java event producers and consumers.
 
 ## Overview
 Through use basic domain model for events and their categories this set of projects shows how they can be stored, transferred and viewed.
-Event model was selected as mmore or less generic and abstract. Events are eveywhere. Modern UIs are full of event handling. Interaction with backend is shifting from request/response paradigm towards async notificatioon/push(WebSocket is the one of the hottest topics among teams who develops close to realtime web/mobile apps).
+Event model was selected as more or less generic and abstract. Events are everywhere. Modern UIs are full of event handling. 
+Interaction with backend is shifting from request/response paradigm towards async notification/push.
+WebSocket over TCP/IP is the one of the hottest topics among teams who develops close to realtime web/mobile apps. So it would be cool to see how it work out for real-time events.
 
 Main emphasize of this project is to check how combination of view/store approaches works from non-functional prospective, 
-how system needs to be configured for optimal use, what is more productive for development etc. It should allow to start quickly more practical projects where event processing is significant part of system.
+how systems need to be configured for optimal use, what is more productive for development etc. 
+It should allow to start quickly more practical projects where event processing is significant part of solution.
 
-Subprojects can be considered as autonomous bundles of *configuration* + *code* + *tests*.
+Subprojects can be considered as autonomous bundles of *configuration* + *code* + *tests*. 
+Tests will be designed in way which more leaned towards "set this particular config and launch test" in contrast to automatic unit tests (popular in CI like Jenkins). 
 
 ## Persistence subprojects
 Combinations of ORM and persistence frameworks embraced so far:
@@ -31,18 +37,18 @@ Combinations of ORM and persistence frameworks embraced so far:
  - cassandra-cql
  - solr-direct
 
-### Some notable features touched there:
+### Some notable features touched in persistence modules:
  - Transaction support.
  - Auto-incremented PKs.
  - Java enum handling.
  - Date fields.
  - Many-to-one entity relationships (event->category). 
- - Different databases (only runtime dependencies on them).
- - Configuration (e.g. DB connection settings).
+ - Different databases (only runtime dependencies on them as mandatory feature).
+ - Configuration (e.g. DB connection settings). The lesser hard-coded params the better(but as this is research project, no ideal "configure all" is expected).
  - DDL and DML scripts for sample tables/cores and basic data load.
  - Versions quick pic: Java SE7, JDBC 4, JPA 2, Spring 4.0.+, Mybatis 3.2.+, Hibernate 4.3.+, MySQL 5+, Postgres 9+, Cassandra 2+, Solr 4.7+.
 
-> NOTE: For SQL DBs persistence combination **hibernate-spring-jpa-annotations** looks like contain the least configuration and boilerplate code as it can be seen from that subproject.
+> NOTE: For SQL DBs persistence combination **etr-hibernate-spring-xml** looks like contains the least configuration and boilerplate code as it can be seen from that subproject.
 
 ## Performance metrics
 If you perform tests for e.g. **apistudy** module, you notice JSON constructs in log file, like this one:
@@ -63,10 +69,11 @@ These are basically duration and (heap) memory consumption metrics. Idea was to 
 If to gather these reports in some DB (MongoDB?), interesting stats can be revealed for combinations of approaches and underlying backend systems.
 
 ### MuTasker
-Another performance meter is actually external reusable library [MuTasker](https://github.com/meriosol/mutasker) - multithreaded "tasker". This lib utilizes Java Concurrency package and provides a few abstracts to deal with generic tasks. Gathering of execution time performance stats and load testing itself are main features of this lib.
+Another performance meter is actually external reusable library [MuTasker](https://github.com/meriosol/mutasker) (multi-threaded "tasker"). 
+This lib utilizes Java Concurrency package and provides a few abstracts to deal with generic tasks. 
+Gathering of execution time performance stats and load testing itself are main features of this lib.
 > NOTE: In order to build ETR, because of dependency on **mutasker** in **apistudy** module you need to clone and install this lib on your machine first.
 
-
 ## More docs
- - Look for readme.txt in different folders. They provide context specifi guidelines.
+ - Look for readme.txt in different folders. They provide context specific guidelines.
  - See also [PDF](docs/pdf/etr.pdf)(generated from HTML docs) or [HTML docs themselves](docs/html/index.html) (in web browser once you clone git repo).

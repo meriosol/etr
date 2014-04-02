@@ -125,11 +125,7 @@ public class Util {
      * @return trimmed value
      */
     public static String trimIfNotNull(String value) {
-        if (value != null) {
-            return value.trim();
-        } else {
-            return value;
-        }
+        return value != null ?  value.trim() : null;
     }
 
     /**

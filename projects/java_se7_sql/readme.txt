@@ -1,4 +1,4 @@
-Case study: Java SE 7 , SQL DBs
+Case study: Java SE 7 , SQL and NoSQL DBs
 Inception: [2014-01-15] 
 
 #-------------------------------
@@ -36,7 +36,7 @@ For instance, if you plan to test jdbc, set this:
             <artifactId>etr-jdbc</artifactId>
             <artifactId>etr-mocked</artifactId>
 			-->
-            <version>2.2-SNAPSHOT</version>
+            <version>2.2-RELEASE</version>
         </dependency>
     </dependencies>
 
@@ -102,7 +102,7 @@ Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
 [INFO] Final Memory: 76M/209M
 [INFO] ------------------------------------------------------------------------~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To review code, you can load IDEA(CE is free, for now v13.02 is used) and open maven pom there.
+To review code, you can load IDEA(CE is free) and open maven pom there.
 #-------------------------------
 
  

@@ -15,7 +15,7 @@ import java.util.Properties;
  * @since 17/01/14
  */
 class DbConnectionFactory {
-    private static DbConnectionFactory connectionFactory = new DbConnectionFactory();
+    private static final DbConnectionFactory connectionFactory = new DbConnectionFactory();
     private DbConnectionSettingsHolder dbConnectionSettingsHolder = null;
 
 
@@ -37,7 +37,7 @@ class DbConnectionFactory {
      * @return Connection
      */
     Connection obtainNewConnection(String dbUrl, Properties props) {
-        Connection conn = null;
+        Connection conn;
         try {
             conn = DriverManager.getConnection(dbUrl, props);
         } catch (SQLException e) {

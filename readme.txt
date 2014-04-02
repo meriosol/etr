@@ -32,6 +32,9 @@ NOTE: large size field will be added in next iterations, be aware..
       - java_se7_sql: For SQL DBs(now NoSQL too), using Java SE 7.
  3.5. runtimes: DB runtime launch samples
        - javadb: JavaDB(apache derby) runtime folder. Both windows and linux env-s are embraced. 
+       - cassandra: Cassandra runtime folder. Both windows and linux env-s are embraced.
+       - solr: Solr runtime folder. Both windows and linux env-s are embraced.
+	   
 	 Env specific folders can be copied somewhere outside this code tree and used as foundation for sample database (eventium).
  
 4. Build/test  

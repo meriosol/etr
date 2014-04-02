@@ -29,7 +29,7 @@ class EventCategoryCache {
 
     private static final String CATEGORIES_QUERY = "*:*";
 
-    private static EventCategoryCache instance = new EventCategoryCache();
+    private static final EventCategoryCache instance = new EventCategoryCache();
 
     static EventCategoryCache getInstance() {
         return instance;

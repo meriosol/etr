@@ -43,7 +43,6 @@ public class EventCategoryMapperTest {
     @Test
     @Ignore
     public void testEventCategoryRetrieveByCode() {
-        final String module = "testEventCategoryRetrieveByCode";
         assertNotNull("sessionFactory should not be null!", this.sessionFactory);
         // CAUTION: DB should be initialized with events starting from 1000001.
         String sampleEventCategoryCode = "MESSAGE";
@@ -65,7 +64,7 @@ public class EventCategoryMapperTest {
     //--------------------------------
     // Utils:
     private void initSessionFactory() {
-        InputStream inputStream = null;
+        InputStream inputStream;
         try {
             inputStream = Resources.getResourceAsStream(MYBATIS_RESOURCE_CONFIG);
             this.sessionFactory = new SqlSessionFactoryBuilder().build(inputStream);

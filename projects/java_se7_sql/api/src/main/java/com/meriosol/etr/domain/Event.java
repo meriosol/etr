@@ -3,7 +3,6 @@ package com.meriosol.etr.domain;
 import com.meriosol.util.DateUtil;
 
 import java.io.Serializable;
-import java.text.ParseException;
 import java.util.Date;
 
 /**
@@ -58,11 +57,7 @@ public class Event implements Serializable {
             if (o == null || getClass() != o.getClass()) return false;
 
             Category category = (Category) o;
-
-            if (!code.equals(category.code)) return false;
-            if (!name.equals(category.name)) return false;
-
-            return true;
+            return code.equals(category.code) && name.equals(category.name);
         }
 
         @Override
@@ -82,7 +77,7 @@ public class Event implements Serializable {
     }
 
     public enum Severity {
-        INFO, WARN, ERROR, FATAL;
+        INFO, WARN, ERROR, FATAL
     }
 
 
@@ -167,11 +162,7 @@ public class Event implements Serializable {
     public String toString() {
         String createdFormatted = null;
         if (this.created != null) {
-            try {
-                createdFormatted = DateUtil.formatDateWithDefaultFormat(created);
-            } catch (ParseException e) {
-                createdFormatted = this.created.toString(); // just try basic one then..
-            }
+            createdFormatted = DateUtil.formatDateWithDefaultFormat(created);
         }
 
         return "Event{" +

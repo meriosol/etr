@@ -50,9 +50,18 @@
 	<li><a href="#3_2_1_MyBatis_XML">3.2.1. MyBatis XML</a></li>
 	<li><a href="#3_2_2_MyBatis_Annot">3.2.2. MyBatis Annotations</a></li>
 	<li><a href="#3_2_3_MyBatis_Annot_Spring">3.2.3. MyBatis Annotations with Spring DI</a></li>
-
-	
-	
+	<li><a href="#3_3_Spring">3.3. Spring JDBC templates</a></li>
+	<li><a href="#3_4_Hibernate">3.4. Hibernate</a></li>
+	<li><a href="#3_4_1_Hibernate">3.4.1. Hibernate XML</a></li>
+	<li><a href="#3_4_2_Hibernate_JPA">3.4.2. Hibernate JPA</a></li>
+	<li><a href="#3_4_3_Hibernate_Spring">3.4.3. Hibernate Spring</a></li>
+	<li><a href="#3_4_3_1_Hibernate_Spring_XML">3.4.3.1. Hibernate Spring XML</a></li>
+	<li><a href="#3_4_3_2_Hibernate_Spring_Annot">3.4.3.2. Hibernate Spring Annotations</a></li>
+	<li><a href="#3_4_3_3_Hibernate_Spring_Annot_JPA">3.4.3.3. Hibernate Spring Annotations JPA</a></li>
+	<li><a href="#3_5_NoSQL_DBs">3.5. NoSQL DBs</a></li>
+	<li><a href="#3_5_1_NoSQL_Cassandra">3.5.1. NoSQL Cassandra</a></li>
+	<li><a href="#3_5_2_NoSQL_Solr">3.5.2. NoSQL Solr</a></li>
+	<li><a href="#3_6_Performance">3.6. Performance</a></li>
     <li><a href="#4_Disclaimers">4. Disclaimers</a></li>
     <li><a href="#5_Abbreviations">5. Abbreviations</a></li>
 </ul>
@@ -112,7 +121,7 @@ TODO: Well, it would be fair to add at least one of big guys DB (Oracle?) and st
 		<li>"Container less" variations are considered only. JPA is the closest to JavaEE though.
 		It's selected to avoid any clutter of additional configuring and dependencies from any EE container.
 		Despite of it those testing DAOs will likely be used in EE containers for testing web-middleware-backend path.</li>
-		<li>Some of frmk-s can be combined in "chains" e.g. (JPA + Spring + Hibernate). Folders and odcs will help to determine which combinatiopn is supported.</li>
+		<li>Some of frmk-s can be combined in "chains" e.g. (JPA + Spring + Hibernate). Folders and odcs will help to determine which combination is supported.</li>
 		<li>No embedded DBs/modes are chosen. They are perceived as too far from PROD ready apps. Apache Derby (or JavaDB as modern name) has embedded mode. 
 		You can test it if you wish.</li> 
 	</ul>
@@ -328,7 +337,7 @@ For example, if you need to create ETR tables in Postgresql, check <b>configs/sq
 Java persistence has handful major paths and a lot of impl frmk-s. The lowest level is JDBC. It has 4 driver types. 
 This project will embrace type 4 (pure Java driver). One step above of abstraction is JPA spec. It gradually replaced JEE entity beans. 
 You'll see a few impls here. ORM allows to move abstraction up and developers can (theoretically) focus in Java dev rather than diving in SQL. 
-In reality many business DB structures, especially legacy ones, have so "ORM incompatible" features (denormalization, absence of OO inheritance support), 
+In reality many business DB structures, especially legacy ones, have so "ORM incompatible" features (de-normalization, absence of OO inheritance support), 
 enterprise dev-s still need to dive on SQL (and/or stored procedures) level.<br>
 Because there are tons of docs about persistence around, only short descriptions of approaches are provided below. 
 Key config artefacts, classes, sample code snippets for one particular DAO operations (e.g. retrieve event) are provided. 
@@ -349,7 +358,7 @@ jdbc.password=some_password
 OK, let's get started.
 
 <h3><a id="3_1_JDBC">3.1. JDBC</a></h3>
-Class <b>EventDaoImpl</b> uses <b>DbConnectionFactoryl</b>.It, in turn, goes fo DB settings to <b>db.properties</b> via <b>DbConnectionSettingsHolder</b>.
+Class <b>EventDaoImpl</b> uses <b>DbConnectionFactoryl</b>.It, in turn, goes for DB settings to <b>db.properties</b> via <b>DbConnectionSettingsHolder</b>.
 For 1 time category loading <b>EventCategoryCache</b> is used. For now no 2nd level caching is used to make things simple.<br>
 Code fragment for <b>retrieveEvent</b>:
 	<pre>
@@ -493,14 +502,451 @@ Mapper class is autowired:
         private EventMapper eventMapper;
     </pre>     
 
+<h3><a id="3_3_Spring">3.3. Spring JDBC templates</a></h3>
+Spring context config fragment:
+    <pre>    
+    &lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+    &lt;/bean&gt;
+    &lt;context:component-scan base-package=&quot;com.meriosol.etr.dao.impl&quot;/&gt;
+    &lt;context:annotation-config/&gt;
+    &lt;tx:annotation-driven/&gt;
+    </pre>     
+
+DAO impl is annotated as service. Spring finds it via component scanning. Dependencies:	
+    <pre>    
+@Service("EventDaoService")
+public class EventDaoImpl implements EventDao {
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
+    private EventCategoryCache eventCategoryCache;
+    </pre>
+	
+Class <b>NamedParameterJdbcTemplate</b> is useful for cases when named param map is preferable way to set params.
+Event load method uses this template:
+    <pre>    
+    interface DmlCommands {
+        String BASE_SELECT = "select id, category_code, title, severity , source , process_id, created " +
+                "from events ";
+        String RETRIEVE_EVENT = BASE_SELECT + " where id = :id";
+	....	
+    @Transactional
+    public Event retrieveEvent(Long eventId) {
+        Map<String, Long> namedParameters = Collections.singletonMap("id", eventId);
+        try {
+            return this.namedParameterJdbcTemplate.queryForObject(DmlCommands.RETRIEVE_EVENT
+					, namedParameters, new EventMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+    </pre>     
+	
+<h3><a id="3_4_Hibernate">3.4. Hibernate</a></h3>
+Hibernate ORM is immensely popular, de-facto standard for cases where you can manage DB structure, adjust it to domain class hierarchies. 
+Ideas from it lead to Java EE JPA spec. SQL like lang - HQL is used to describe queries.
+ 
+<h3><a id="3_4_1_Hibernate">3.4.1. Hibernate XML</a></h3>
+Main config file for Hibernate / XML approach is <b>hibernate.cfg.xml</b>. In its session factory element there are mapper config links:
+
+    <pre>    
+&lt;hibernate-configuration&gt;
+    &lt;session-factory&gt;
+        &lt;!-- Database connection settings --&gt;
+        &lt;property name=&quot;connection.driver_class&quot;&gt;org.apache.derby.jdbc.ClientDriver&lt;/property&gt;
+        &lt;property name=&quot;connection.url&quot;&gt;jdbc:derby://localhost:1527/eventium&lt;/property&gt;
+        &lt;property name=&quot;connection.username&quot;&gt;etracker&lt;/property&gt;
+        &lt;property name=&quot;connection.password&quot;&gt;some_password&lt;/property&gt;
+		...
+
+        &lt;mapping resource=&quot;com/meriosol/etr/dao/hibernate/Event.hbm.xml&quot;/&gt;
+        &lt;mapping resource=&quot;com/meriosol/etr/dao/hibernate/EventCategory.hbm.xml&quot;/&gt;
+    &lt;/session-factory&gt;
+    </pre>    
+
+Notice DB config settings are right there. I didn't find way to extract them into "traditional" <b>db.properties</b>.<br>
+Mapper file <b>Event.hbm.xml</b> fragment:
+    <pre>    
+&lt;hibernate-mapping package=&quot;com.meriosol.etr.domain&quot;&gt;
+    &lt;class name=&quot;Event&quot; table=&quot;events&quot;&gt;
+        &lt;id name=&quot;id&quot; type=&quot;long&quot; column=&quot;id&quot;&gt;
+            &lt;generator class=&quot;native&quot;/&gt;
+        &lt;/id&gt;
+
+        &lt;many-to-one name=&quot;category&quot; class=&quot;Event$Category&quot; column=&quot;category_code&quot;
+                     cascade=&quot;save-update&quot; not-null=&quot;false&quot; lazy=&quot;false&quot; fetch=&quot;join&quot;/&gt;
+        &lt;property name=&quot;severity&quot; column=&quot;severity&quot;&gt;
+            &lt;type name=&quot;org.hibernate.type.EnumType&quot;&gt;
+                &lt;param name=&quot;enumClass&quot;&gt;com.meriosol.etr.domain.Event$Severity&lt;/param&gt;
+            &lt;/type&gt;
+        &lt;/property&gt;
+	...				 
+   </pre>    
+This mapper binds domain class <b>Event</b> with table <b>events</b>. For ID value generation native DB vendor feature is to be used.<br>
+Many-to-one relationship for field <b>category</b> is bound as <b>events.category_code</b> to <b>Event.Category</b>
+(Event$Category in config because '$' should be used for static nested classes) 
+and <b>event_categories.code</b> DB field (as described in <b>EventCategory.hbm.xml</b>).<br>
+
+DAO impl class has reference to session factory that initialized like this:
+    <pre>    
+	Configuration configuration = new Configuration();
+	configuration.configure();
+	ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+	this.sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+    </pre>    
+
+Fragment of event retrieval:
+    <pre>    
+	session = this.sessionFactory.openSession();
+	transaction = session.beginTransaction();
+	event = (Event) session.get(Event.class, eventId);
+	transaction.commit();
+    </pre>    
+   
+<h3><a id="3_4_2_Hibernate_JPA">3.4.2. Hibernate JPA</a></h3>
+Quite interesting combination. JPA spec was mainly based on ideas from different ORMs including Hibernate. 
+So, what we have as a result (at least on basic level), let's see below.<br>
+Main config file <b>persistence.xml</b> has mappers(annotation approach here) and DB connection settings:
+    <pre>
+&lt;persistence-unit name=&quot;com.meriosol.etr.dao.jpa&quot;&gt;
+        &lt;class&gt;com.meriosol.etr.dao.entity.EventEntity&lt;/class&gt;
+        &lt;class&gt;com.meriosol.etr.dao.entity.EventCategoryEntity&lt;/class&gt;
+
+        &lt;properties&gt;
+            &lt;property name=&quot;javax.persistence.jdbc.driver&quot; value=&quot;org.apache.derby.jdbc.ClientDriver&quot;/&gt;
+    </pre>    
+
+Because this time annotation approach is used and by system it's paramount to remain domain POJOs intact, artificial entities were created.
+Fragment of EventEntity: 
+    <pre>
+@Entity
+@Table(name = "events")
+public class EventEntity {
+    @Id
+    @Column(name = "id", insertable = true, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_code", nullable = true, insertable = true, updatable = true)
+    private EventCategoryEntity category;
+
+    @Column(name = "severity", insertable = true, nullable = true, updatable = true)
+    @Enumerated(EnumType.STRING)
+    private Event.Severity severity;
+	...
+    </pre>
+	
+Some concerns regarding annotations:
+<ul>
+	<li>One of concerns is using changeable names in annotations. What if some of DBs has table name <b>mucho_eventos</b> for example?</li>
+	<li>Another concern is how not to get lost in annotated POJOS in really big enterprise systems. Especially without IDE support.</li>
+	<li>When configs are spread around classes it's a bit hard to troubleshoot / fix in non-trivial systems(especially with legacy DBs).</li>
+</ul>
+
+Factory <b>EventDaoFactory</b> init-s <b>javax.persistence.EntityManagerFactory</b>:
+    <pre>
+	...
+    private static final String PERSISTENT_UNIT_NAME = "com.meriosol.etr.dao.jpa";
+	...
+    private EventDaoFactory() {
+        this.entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENT_UNIT_NAME);
+    }
+    </pre>
+
+DAO impl then uses it e.g. for event loading:
+    <pre>
+	entityManager = this.entityManagerFactory.createEntityManager();
+	transaction = entityManager.getTransaction();
+	transaction.begin();
+
+	CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+	CriteriaQuery<EventEntity> cq = cb.createQuery(EventEntity.class);
+	Root<EventEntity> eventEntityRoot = cq.from(EventEntity.class);
+	cq.select(eventEntityRoot);
+	String pkFieldName = "id";
+	String idParamName = "id";
+	cq.where(cb.equal(eventEntityRoot.<Long>get(pkFieldName) , cb.parameter(Long.class, idParamName)));
+
+	Query query = entityManager.createQuery(cq);
+	query.setParameter(idParamName, eventId);
+
+	try {
+		eventEntity = (EventEntity) query.getSingleResult();
+	} catch (NoResultException e) {
+		LOG.info("No entity found for eventId='{}'. In some cases it can be normal", eventId);
+	}
+
+	transaction.commit();
+    </pre>
+
+Well, JPA criteria API is type safe, but a heck verbose, even for simple cases. 
+I had hard time to figure out how to build queries for more advanced ones. Let's call Spring for help.
+
+<h3><a id="3_4_3_Hibernate_Spring">3.4.3. Hibernate Spring</a></h3>
+Hibernate+Spring is popular de-facto combination for light-weight(vs entity beans / JavaEE) and often "container-less" variants.
+
+<h3><a id="3_4_3_1_Hibernate_Spring_XML">3.4.3.1. Hibernate Spring XML</a></h3>
+In Hibernate samples above you could notice DB connection info had to be set in hibernate xml configs. 
+Spring relieves this config "tension" and now <b>db.properties</b> get back to scene. Along with connection settings it has hibernate specific e.g.:
+    <pre>	
+hibernate.hbm2ddl.auto = false
+hibernate.dialect = org.hibernate.dialect.DerbyTenSevenDialect
+hibernate.cache.provider_class = org.hibernate.cache.internal.NoCacheProvider
+    </pre>	
+
+Spring <b>applicationContext.xml</b> points to this file via placeholder way:
+    <pre>	
+    &lt;context:property-placeholder location=&quot;com/meriosol/etr/dao/db.properties&quot;/&gt;
+    </pre>	
+
+Hibernate session factory in "Spring" style:
+
+    <pre>	
+&lt;bean id=&quot;sessionFactory&quot;
+	  class=&quot;org.springframework.orm.hibernate4.LocalSessionFactoryBean&quot;&gt;
+	&lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+    &lt;property name=&quot;mappingResources&quot;&gt;
+        &lt;list&gt;
+            &lt;value&gt;com/meriosol/etr/dao/hibernate/Event.hbm.xml&lt;/value&gt;
+            &lt;value&gt;com/meriosol/etr/dao/hibernate/EventCategory.hbm.xml&lt;/value&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+    ....
+    </pre>    
+    
+DAO impl is loaded from app context:
+    <pre>    
+    ApplicationContext context = new ClassPathXmlApplicationContext("com/meriosol/etr/dao/applicationContext.xml");
+    return (EventDao) context.getBean("EventDaoService");
+    </pre>    
+
+SessionFactory is autowired in this DAO impl:
+    <pre>    
+@Service("EventDaoService")
+public class EventDaoImpl implements EventDao {
+...
+    @Autowired
+    private SessionFactory sessionFactory;
+    ...
+    </pre>    
+
+All this "jazz" makes event loading deadly simple:
+    <pre>    
+    @Transactional
+    public Event retrieveEvent(Long eventId) {
+        Session session = this.sessionFactory.openSession();
+        return (Event) session.get(Event.class, eventId);
+    }
+    </pre>    
+	
+<h3><a id="3_4_3_2_Hibernate_Spring_Annot">3.4.3.2. Hibernate Spring Annotations</a></h3>
+For annotated classes one small amendment is needed in <b>applicationContext.xml</b> - package scanner:
+    <pre>    
+&lt;bean id=&quot;sessionFactory&quot;
+	  class=&quot;org.springframework.orm.hibernate4.LocalSessionFactoryBean&quot;&gt;
+	&lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+	&lt;property name=&quot;packagesToScan&quot;&gt;
+	    &lt;list&gt;
+            &lt;value&gt;com.meriosol.etr.dao.entity&lt;/value&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+    </pre>    
+
+DAO impl is loaded the same way as in XML approach and SessionFactory is autowired the same way. Event load:
+    <pre>    
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+    public Event retrieveEvent(Long eventId) {
+        Session session = this.sessionFactory.getCurrentSession();
+        EventEntity eventEntity = (EventEntity) session.get(EventEntity.class, eventId);
+        return EventEntityTransformUtil.transform(eventEntity);
+    }
+    </pre>
+    
+<b>EventEntityTransformUtil</b> used to transform <b>EventEntity</b> to basic (annotation free) <b>Event</b>.    
+
+<h3><a id="3_4_3_3_Hibernate_Spring_Annot_JPA">3.4.3.3. Hibernate Spring Annotations JPA</a></h3>	
+This combination is even more incredible than those above. It's where established de-facto meet specs and new additions.<br>
+To avoid repeating the same as above (see Hibernate/Spring) let's pay attention to differences. 
+Major difference is using <b>EntityManagerFactory</b> in <b>applicationContext.xml</b>:
+    <pre>    
+	...
+&lt;bean id=&quot;entityManagerFactory&quot; class=&quot;org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean&quot;&gt;
+	&lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+	&lt;property name=&quot;persistenceUnitName&quot; value=&quot;jpaTest&quot;/&gt;
+	&lt;property name=&quot;packagesToScan&quot;&gt;
+		&lt;list&gt;
+			&lt;value&gt;com.meriosol.etr.dao.entity&lt;/value&gt;
+		&lt;/list&gt;
+	&lt;/property&gt;
+	&lt;property name=&quot;jpaVendorAdapter&quot;&gt;
+		&lt;bean class=&quot;org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter&quot;&gt;
+		&lt;/bean&gt;
+	&lt;/property&gt;
+	
+   &lt;bean id=&quot;entityManager&quot; class=&quot;org.springframework.orm.jpa.support.SharedEntityManagerBean&quot;&gt;
+        &lt;property name=&quot;entityManagerFactory&quot; ref=&quot;entityManagerFactory&quot;/&gt;
+    &lt;/bean&gt;
+	...
+    </pre>    
+
+That entity manager is autowired in DAO impl:
+    <pre> 
+@Service("EventDaoService")
+public class EventDaoImpl implements EventDao {
+    @Autowired
+    private EntityManager entityManager;
+    </pre> 
+
+Event load uses this EntityManager:
+    <pre> 
+@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+public Event retrieveEvent(Long eventId) {
+	CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+	CriteriaQuery<EventEntity> cq = cb.createQuery(EventEntity.class);
+	Root<EventEntity> eventEntityRoot = cq.from(EventEntity.class);
+	cq.select(eventEntityRoot);
+	String pkFieldName = "id";
+	String idParamName = "id";
+	cq.where(cb.equal(eventEntityRoot.<Long>get(pkFieldName), cb.parameter(Long.class, idParamName)));
+
+	Query query = this.entityManager.createQuery(cq);
+	query.setParameter(idParamName, eventId);
+
+	EventEntity eventEntity = null;
+	try {
+		eventEntity = (EventEntity) query.getSingleResult();
+	} catch (NoResultException e) {
+		LOG.info("No entity found for eventId='{}'. In some cases it can be normal", eventId);
+	}
+    </pre> 
 
 
+<h3><a id="3_5_NoSQL_DBs">3.5. NoSQL DBs</a></h3>	
+So far persistence and ORMs described access to relational(or "SQL") DBs. 
+Because of growing popularity of alternative NoSQL world it would be strange not to touch this area.
+Cassandra and Solr were selected because I already used them in some projects. 
+But likely other flavours will be added(e.g. MongoDB with Json storage, Neo4J for graphs).	
+<h3><a id="3_5_1_NoSQL_Cassandra">3.5.1. NoSQL Cassandra</a></h3>	
+Cassandra allows to distribute its keyspaces and "tables"(column families) across many machines with P2P replication with eventual consistency(so don't expect "real-time" one). 
+Let's use 1 host for simplicity now. Familiar config <b>db.properties</b> has now cassandra connection specific properties:
+    <pre>    
+cassandra.hosts=127.0.0.1
+cassandra.keyspace=eventium
+cassandra.username=etracker
+cassandra.password=some_password	
+    </pre>    
 
+DAO impl has a few helpers:
+    <pre>    
+public class EventDaoImpl implements EventDao {
+    private DbSessionFactory dbSessionFactory;
+    private EventCategoryCache eventCategoryCache;
+    private EventByCreatedSliceCrud eventByCreatedSliceCrud;
+    </pre>   
+	
+<b>DbSessionFactory</b> loads Cassandra connection via cluster:
+    <pre>    
+Session obtainNewSession(String hosts, String keyspace, String username, String password) {
+	String[] hostsArray = hosts.split(",");
+	Cluster cluster = Cluster.builder()
+			.addContactPoints(hostsArray).withCredentials(username, password)
+			.withRetryPolicy(DowngradingConsistencyRetryPolicy.INSTANCE)
+			.withReconnectionPolicy(new ConstantReconnectionPolicy(100L))
+			.build();
+	Metadata metadata = cluster.getMetadata();
+	return cluster.connect();
+}
+    </pre>
+
+Event load code fragment shows how this session is used:	
+    <pre>    
+	...
+	String selector = "SELECT " + EVENT_COLUMNS
+			+ " FROM " + getFullEventTableName(keyspace) + " WHERE id = ? LIMIT 1;";
+	PreparedStatement statement = session.prepare(selector);
+	BoundStatement boundStatement = statement.bind(eventId);
+	ResultSet results = session.execute(boundStatement);
+	Row eventRow = null;
+	if (results != null) {
+		eventRow = results.one();
+	}
+    </pre>   
+ 
+Class <b>EventByCreatedSliceCrud</b> is used to load event IDs sorted according to rule "show me the latest first", which is typical for events.<br>
+Tricky thing about column families design is they should be adjusted to particular use cases. 
+For instance in order to load events with sorted severity level, another "table" has to be created and own CRUD supported. I suspect it can make SQL DB dev-s crazy.
+  	
+
+<h3><a id="3_5_2_NoSQL_Solr">3.5.2. NoSQL Solr</a></h3>	
+Solr is distributed reverse indexer of documents(e.g. articles/news). Lucent engine is used for search in indices (Solr cores, almost "tables").<br>
+Solr core has fields which can be indexed or used as (meta)data. Textual fields is only one data type sample supported by engine.
+As with the most previous approaches, we have config <b>db.properties</b>. But with Solr specific properties e.g.:
+    <pre>    
+# Solr connection:
+solr.url=http://localhost:8983/solr
+
+# Solr cores:
+solr.core.event_categories=event_categories
+solr.core.events=events
+    </pre>    
+
+DAO impl uses these helpers:
+    <pre>    
+public class EventDaoImpl implements EventDao {
+    private SolrServerFactory solrServerFactory;
+    private EventCategoryCache eventCategoryCache;
+    </pre>    
+	
+Class <b>SolrServerFactory</b> "knows" how to get connection for particular Solr core. 
+Inner class <b>SolrServerHolder</b> stores <b>Map&lt;SolrCoreCode, SolrServer&gt; servers</b>.
+Solr server is loaded by instantiation of <b>HttpSolrServer</b>:
+    <pre>
+    HttpSolrServer httpSolrServer = new HttpSolrServer(this.settings.getSolrCoreUrl(solrCoreCode)); 
+    </pre> 
+
+Event solr document load code fragment:	
+    <pre>
+    String queryString = "id:" + eventId;
+    SolrQuery solrQuery = new SolrQuery();
+    solrQuery.set("q", queryString);
+
+    Event event = null;
+    QueryResponse response = null;
+    try {
+        response = solrServer.query(solrQuery);
+        if (response != null) {
+            SolrDocumentList results = response.getResults();
+            if (results != null && results.size() > 0) {
+                if (results.size() > 1) {
+                    throw new EtrException(String.format("Too many events found for ID='%s'!", eventId));
+                }
+                SolrDocument solrDocument = results.get(0);
+                event = buildEventFromResultSet(solrDocument);
+            }
+        }
+    } catch (SolrServerException e) {
+        throw new EtrException(e);
+    }
+	...	
+    </pre>  
+	
+For now(April 2014) this is last approach to tackle. If time allows, more ones will be added. 
+	
+<h3><a id="3_6_Performance">3.6. Performance</a></h3>
+Performance is quite big topic itself (along with non-functional such as security, maintainability/extensibility, availability, reliability/durability, flexibility etc).
+In current state of project minimal attention was paid to enhance performance. Only occasionally connection poolers are used, for instance.
+In some future statement execution latency, traffic throughput (size, speed) for statements needs to be explored and in case of bottlenecks fixed. 
+But for beginning all these executions need to be measured.
+<div class="note">  
+TODO: Performance comparison would be nice to see(especially in multi-threaded scenarios). 
+</div>
+	
 <h2><a id="4_Disclaimers">4. Disclaimers</a></h2>
 This section describes what this project is NOT about and what to be aware of while perusing its artefacts.
 <ul id="lines">
     <li>Code and configs are for quick start in particular combination of frmk-s only.
-        Production ready code definitely requires more polishing, e.g. "what if"s handling, NOP situation catching etc.</li>
+        Production ready code definitely requires more polishing, e.g. "what if"s handling, NPE situation catching etc.</li>
     <li>There is no goal to show all advanced features of used frmk-s. More specific projects to be created if time allows.</li>
     <li>In production systems reusability is one of key non-functional requirements. 
         This project follows this practice only partially as "side feature" because main goal is 
@@ -510,7 +956,7 @@ This section describes what this project is NOT about and what to be aware of wh
         Missed combinations are hopefully can be figured out from provided ones. </li>
     <li>This project assumes you have basic knowledge in back-end development area, familiar at least with Java, SQL.</li>
     <li>At least from beginning only the most popular modern and stable frmk-s versions to be selected. 
-        Elder versions maybe get addressed when project itself comes to age. Funny part is: these now modern versions will be old soon :).</li>
+        Elder versions maybe get addressed when project itself comes to age. Funny part is: these now modern versions will be old soon.</li>
     <li>Project is in status "pet PoC, to play around", can be removed at any time without warning.</li>    
 </ul>
 
@@ -562,6 +1008,10 @@ This section describes what this project is NOT about and what to be aware of wh
             <td>database</td>
         </tr>
         <tr>
+            <td>DI</td>
+            <td>Dependency Injection</td>
+        </tr>
+        <tr>
             <td>PROD</td>
             <td>Production</td>
         </tr>
@@ -610,7 +1060,7 @@ This section describes what this project is NOT about and what to be aware of wh
 
 <div class="footer">
 <hr>
-| Version: 0.8 | Updated: 2014-03-31 | &copy; MerioSol, 2014 |
+| Version: 0.9 | Updated: 2014-04-02 | &copy; MerioSol, 2014 |
 </div>
 
 </body>

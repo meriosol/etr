@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  */
 class DbSessionFactory {
     private static final Logger LOG = LoggerFactory.getLogger(DbSessionFactory.class);
-    private static DbSessionFactory connectionFactory = new DbSessionFactory();
+    private static final DbSessionFactory connectionFactory = new DbSessionFactory();
     private DbSessionSettingsHolder dbSessionSettingsHolder = null;
 
 

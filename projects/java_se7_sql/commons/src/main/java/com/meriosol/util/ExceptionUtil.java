@@ -21,16 +21,16 @@ public class ExceptionUtil {
      * @return Exception stack trace info
      */
     public static String buildStackTrace(Throwable throwable) {
-        final StringBuffer stackTraceBuffer = new StringBuffer("");
+        final StringBuilder sb = new StringBuilder("");
         if (throwable != null) {
             final String excMessage = throwable.getMessage();
-            stackTraceBuffer.append("==> Exception message: ");
-            stackTraceBuffer.append(excMessage == null ? "" : excMessage);
-            stackTraceBuffer.append("\n");
+            sb.append("==> Exception message: ");
+            sb.append(excMessage == null ? "" : excMessage);
+            sb.append("\n");
             final int causeLevel = 1;
-            stackTraceBuffer.append(buildCauseStackTrace(throwable.getCause(), causeLevel, MAX_CAUSE_LEVEL));
+            sb.append(buildCauseStackTrace(throwable.getCause(), causeLevel, MAX_CAUSE_LEVEL));
         }
-        return stackTraceBuffer.toString();
+        return sb.toString();
     }
 
 
@@ -66,10 +66,14 @@ public class ExceptionUtil {
         final StringBuffer stackTraceBuffer = new StringBuffer("");
         if (causeLevel <= maxCauseLevel) {
             if (cause != null) {
-                stackTraceBuffer.append(" ==> Cause exc message: " + cause.getMessage());
+                stackTraceBuffer.append(" ==> Cause exc message: ");
+                stackTraceBuffer.append(cause.getMessage());
                 stackTraceBuffer.append("\n");
-                stackTraceBuffer.append(" ==> Cause stackTrace for level = " + causeLevel + ":"
-                        + "\n");
+
+                stackTraceBuffer.append(" ==> Cause stackTrace for level = ");
+                stackTraceBuffer.append(causeLevel);
+                stackTraceBuffer.append(":\n");
+
                 stackTraceBuffer.append(buildStackTraceElements(cause.getStackTrace()));
                 // recursive add cause traces
                 stackTraceBuffer.append(buildCauseStackTrace(cause.getCause(), causeLevel + 1,

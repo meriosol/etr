@@ -1,10 +1,12 @@
 package com.meriosol.etr.dao;
 
 import com.meriosol.etr.domain.Event;
-import com.meriosol.exception.EtrException;
 import com.meriosol.performance.PerformanceTracker;
 import com.meriosol.util.DateUtil;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +56,7 @@ public class EventDaoTest {
         }
     }
 
-    @Test @Ignore
+    @Test
     public void testEventCreate() {
         Event event = createTestingEvent();
         assertNotNull("Event should not be null!", event);
@@ -98,7 +100,7 @@ public class EventDaoTest {
         }
     }
 
-    @Test @Ignore
+    @Test
     public void testEventsRetrieveForPeriodWithBothPartsNotNull() throws ParseException {
         final String module = "testEventsRetrieveForPeriodWithBothPartsNotNull";
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
@@ -130,7 +132,7 @@ public class EventDaoTest {
         }
     }
 
-    @Test @Ignore
+    @Test
     public void testEventsRetrieveForPeriodWithEndDateNotNull() throws ParseException {
         final String module = "testEventsRetrieveForPeriodWithEndDateNotNull";
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
@@ -159,7 +161,7 @@ public class EventDaoTest {
         }
     }
 
-    @Test @Ignore
+    @Test
     public void testEventsRetrieveForPeriodWithStartDateNotNull() throws ParseException {
         final String module = "testEventsRetrieveForPeriodWithStartDateNotNull";
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
@@ -188,7 +190,7 @@ public class EventDaoTest {
         }
     }
 
-    @Test @Ignore
+    @Test
     public void testEventsRetrieveForPeriodWithAllDatesNull() throws ParseException {
         final String module = "testEventsRetrieveForPeriodWithAllDatesNull";
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
@@ -198,7 +200,7 @@ public class EventDaoTest {
             Date startDate = null;
 
             List<Event> events = eventDao.retrieveEventsForPeriod(startDate, endDate);
-            assertNotNull(String.format("Events should not be null!", events));
+            assertNotNull("Events should not be null!", events);
             for (Event event : events) {
                 assertNotNull("Event should not be null!", event);
                 Date created = event.getCreated();
@@ -210,7 +212,7 @@ public class EventDaoTest {
         }
     }
 
-    @Test @Ignore
+    @Test
     public void testEventCreateAndUpdate() {
         final String module = "testEventCreateAndUpdate";
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
@@ -220,12 +222,8 @@ public class EventDaoTest {
             Event event = createTestingEvent();
             this.performanceTracker.addMilestone(module + ".AFTER_createTestingEvent");
             // 2. Now update title of this event:
-            String dateString = "";
-            try {
-                dateString = DateUtil.formatDateWithDefaultFormat(new Date());
-            } catch (ParseException e) {
-                throw new EtrException("Parse Exception", e);
-            }
+            String dateString;
+            dateString = DateUtil.formatDateWithDefaultFormat(new Date());
 
             LOG.info("AFTER Create event: {}", event);
             String newTitle = String.format("Updated_title(%s)", dateString);
@@ -244,7 +242,7 @@ public class EventDaoTest {
         }
     }
 
-    @Test @Ignore
+    @Test
     public void testEventCreateAndDelete() {
         final String module = "testEventCreateAndDelete";
         this.performanceTracker.addMilestone(module + "." + PerformanceTracker.LifecycleMilestoneName.BEGIN);
