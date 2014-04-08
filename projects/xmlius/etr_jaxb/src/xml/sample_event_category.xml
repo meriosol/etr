@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<event-category xmlns="http://com/meriosol/etr/schema"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://com/meriosol/etr/schema etr_prototype.xsd" code="CATEG1">
+    <name>Category 1</name>
+</event-category>

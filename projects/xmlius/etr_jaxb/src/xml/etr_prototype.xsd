@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:tns="http://com/meriosol/etr/schema" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://com/meriosol/etr/schema" elementFormDefault="qualified"
+        attributeFormDefault="unqualified" version="v1_PROTOTYPE" id="ETR_PROTOTYPE_20140404">
+    <annotation>
+        <documentation xml:lang="en">
+            This schema represents Event Tracker (ETR) XML validation rules.
+        </documentation>
+    </annotation>
+
+    <element name="event">
+        <annotation>
+            <documentation xml:lang="en">
+                Event data.
+            </documentation>
+        </annotation>
+
+        <complexType>
+            <all>
+                <element ref="tns:event-category" minOccurs="0" maxOccurs="1"/>
+                <element name="source" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                <element name="process-id" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                <element name="title" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            </all>
+            <attribute name="id" use="required" type="xs:long">
+                <annotation>
+                    <documentation xml:lang="en">
+                        Notice ID is mandatory attribute
+                        , but because backend can generate own value, change of this ID value is expected thing.
+                    </documentation>
+                </annotation>
+            </attribute>
+            <attribute name="severity" use="optional">
+                <annotation>
+                    <documentation xml:lang="en">
+                        Severity describes how good or bad things are.
+                        Notice: for now there is enumeration below, but in real life this list can be more flexible.
+                    </documentation>
+                </annotation>
+                <simpleType>
+                    <restriction base="NMTOKEN">
+                        <enumeration value="INFO"/>
+                        <enumeration value="WARN"/>
+                        <enumeration value="ERROR"/>
+                    </restriction>
+                </simpleType>
+            </attribute>
+            <attribute name="created" use="optional" type="xs:dateTime">
+                <annotation>
+                    <documentation xml:lang="en">
+                        Date when Event added into backend.
+                    </documentation>
+                </annotation>
+            </attribute>
+        </complexType>
+    </element>
+
+    <element name="event-category">
+        <annotation>
+            <documentation xml:lang="en">
+                Event category.
+            </documentation>
+        </annotation>
+
+        <complexType>
+            <all>
+                <element name="name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            </all>
+            <attribute name="code" use="required" type="xs:token">
+                <annotation>
+                    <documentation xml:lang="en">
+                        Category code.
+                    </documentation>
+                </annotation>
+            </attribute>
+        </complexType>
+    </element>
+
+    <element name="events">
+        <complexType>
+            <sequence>
+                <element ref="tns:event" minOccurs="0" maxOccurs="1000000"/>
+            </sequence>
+        </complexType>
+        <key name="eventUniqueKey">
+            <selector xpath="./tns:event"/>
+            <field xpath="@id"/>
+        </key>
+    </element>
+
+    <element name="event-categories">
+        <complexType>
+            <sequence>
+                <element ref="tns:event-category" minOccurs="0" maxOccurs="1000"/>
+            </sequence>
+        </complexType>
+        <key name="eventCategoryUniqueKey">
+            <selector xpath="./tns:event-category"/>
+            <field xpath="@code"/>
+        </key>
+    </element>
+
+
+</schema>

@@ -4,7 +4,6 @@ import com.meriosol.etr.domain.Event;
 import com.meriosol.util.DateUtil;
 
 import javax.persistence.*;
-import java.text.ParseException;
 import java.util.Date;
 
 /**
@@ -131,11 +130,7 @@ public class EventEntity {
     public String toString() {
         String createdFormatted = null;
         if (this.created != null) {
-            try {
-                createdFormatted = DateUtil.formatDateWithDefaultFormat(created);
-            } catch (ParseException e) {
-                createdFormatted = this.created.toString(); // just try basic one then..
-            }
+            createdFormatted = DateUtil.formatDateWithDefaultFormat(created);
         }
 
         return "Event{" +

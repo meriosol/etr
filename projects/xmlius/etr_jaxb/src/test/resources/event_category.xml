@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<event-category xmlns="http://com/meriosol/etr/schema" code="CATEG1">
+    <name>Category 1</name>
+</event-category>

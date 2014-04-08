@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.meriosol</groupId>
         <artifactId>etr-jse7-sql</artifactId>
-        <version>2.2-RELEASE</version>
+        <version>2.3-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -19,7 +19,7 @@
         <dependency>
             <groupId>com.meriosol</groupId>
             <artifactId>etr-api</artifactId>
-            <version>2.2-RELEASE</version>
+            <version>2.3-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

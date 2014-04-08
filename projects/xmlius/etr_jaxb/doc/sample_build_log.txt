@@ -1,0 +1,88 @@
+$ mvn -e clean test
+[INFO] Error stacktraces are turned on.
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Building ETR JAXB Generator 0.3-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ etr-jaxb-gen ---
+[INFO] Deleting d:\alwr\projs\github\etr\projects\xmlius\etr_jaxb (includes = [**/tmp, **/*.tmp, **/*.log], excludes = [])
+[INFO]
+[INFO] --- jaxb2-maven-plugin:1.5:xjc (xjc) @ etr-jaxb-gen ---
+[INFO] Generating source...
+[INFO] parsing a schema...
+[INFO] compiling a schema...
+[INFO] com\meriosol\etr\gen\Event.java
+[INFO] com\meriosol\etr\gen\EventCategories.java
+[INFO] com\meriosol\etr\gen\EventCategory.java
+[INFO] com\meriosol\etr\gen\Events.java
+[INFO] com\meriosol\etr\gen\ObjectFactory.java
+[INFO] com\meriosol\etr\gen\package-info.java
+[INFO]
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ etr-jaxb-gen ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO]
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ etr-jaxb-gen ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 9 source files to d:\alwr\projs\github\etr\projects\xmlius\etr_jaxb\target\classes
+[INFO]
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ etr-jaxb-gen ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 0 resource
+[INFO] Copying 5 resources
+[INFO]
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ etr-jaxb-gen ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 2 source files to d:\alwr\projs\github\etr\projects\xmlius\etr_jaxb\target\test-classes
+[INFO]
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ etr-jaxb-gen ---
+[INFO] Surefire report directory: d:\alwr\projs\github\etr\projects\xmlius\etr_jaxb\target\surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running com.meriosol.etr.gen.EventMarshallingTest
+Apr 07, 2014 10:56:23 PM com.meriosol.etr.gen.EventMarshallingTest testEventsMarshalling
+INFO: Events POJO was marshalled into file C:\Users\neos\AppData\Local\Temp\events.out.xml
+Apr 07, 2014 10:56:23 PM com.meriosol.etr.gen.EventMarshallingTest testEventMarshalling
+INFO: Event POJO was marshalled into file C:\Users\neos\AppData\Local\Temp\event.out.xml
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.416 sec
+Running com.meriosol.etr.gen.EventUnmarshallingTest
+Apr 07, 2014 10:56:23 PM com.meriosol.etr.gen.EventUnmarshallingTest testCorrectEventsUnmarshall
+INFO:
+>================================
+  Events(2 found):
+ o Event:{id='1000001', title='Some incredible message', created='2014-04-04T01:02:03.231Z', category='EventCategory:{code='MESSAG
+E', name='Message'}', severity='INFO'}
+ o Event:{id='1000002', title='Some WARN message', created='2014-04-04T01:02:04.234Z', category='EventCategory:{code='MESSAGE', na
+me='null'}', severity='WARN'}
+<================================
+
+Apr 07, 2014 10:56:23 PM com.meriosol.etr.gen.EventUnmarshallingTest testCorrectEventCategoriesUnmarshall
+INFO:
+>================================
+  Event categories(2 found):
+ o EventCategory:{code='CATEG1', name='Category 1'}
+ o EventCategory:{code='CATEG2', name='Category 2'}
+<================================
+
+Apr 07, 2014 10:56:23 PM com.meriosol.etr.gen.EventUnmarshallingTest testCorrectEventCategoryUnmarshall
+INFO: EventCategory:{code='CATEG1', name='Category 1'}
+Apr 07, 2014 10:56:23 PM com.meriosol.etr.gen.EventUnmarshallingTest testCorrectEventUnmarshall
+INFO: Event:{id='1000001', title='Some INFO message', created='2014-04-04T01:02:03.231Z', category='EventCategory:{code='MESSAGE',
+ name='Message'}', severity='INFO'}
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.163 sec
+
+Results :
+
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 7.238s
+[INFO] Finished at: Mon Apr 07 22:56:23 EDT 2014
+[INFO] Final Memory: 13M/159M
+[INFO] ------------------------------------------------------------------------

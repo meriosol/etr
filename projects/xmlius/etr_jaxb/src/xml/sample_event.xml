@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<event xmlns="http://com/meriosol/etr/schema"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://com/meriosol/etr/schema etr_prototype.xsd"
+       id="1000001" severity="INFO" created="2014-04-04T01:02:03.231Z">
+    <event-category code="MESSAGE">
+        <name>Message</name>
+    </event-category>
+    <source>SRC1</source>
+    <process-id>PRC1</process-id>
+    <title>Some INFO message</title>
+</event>

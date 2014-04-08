@@ -6,7 +6,7 @@
 
     <groupId>com.meriosol</groupId>
     <artifactId>etr-jse7-sql</artifactId>
-    <version>2.2-RELEASE</version>
+    <version>2.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>ETR for Java SE7</name>
