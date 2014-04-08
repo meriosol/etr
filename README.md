@@ -69,7 +69,7 @@ These are basically duration and (heap) memory consumption metrics. Idea was to 
 If to gather these reports in some DB (MongoDB?), interesting stats can be revealed for combinations of approaches and underlying backend systems.
 
 ## XML subprojects
-Under path **projects/xmlius**):
+Under path **projects/xmlius**:
  - etr_jaxb
 
 ### Dependency highlights
