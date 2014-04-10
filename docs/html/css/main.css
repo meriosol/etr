@@ -22,22 +22,6 @@ body {
     color: #333333;
 }
 
-h1 {
-  font-size: +4;
-}
-
-h2 {
-  font-size: +3;
-}
-
-h3 {
-  font-size: +2;
-}
-
-h4 {
-  font-size: +1;
-}
-
 pre {
   background: #fef9fe;
 }

@@ -5,7 +5,7 @@
 	<groupId>com.meriosol</groupId>
 	<artifactId>etr-jaxb-gen</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1-RELEASE</version>
+	<version>0.2-SNAPSHOT</version>
 	<name>ETR JAXB Generator</name>
 	<description>${project.name}</description>	
 

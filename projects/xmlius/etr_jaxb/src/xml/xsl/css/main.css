@@ -1,0 +1,27 @@
+body {
+    margin-left: 10;
+    margin-right: 10;
+    font:normal 80% arial,helvetica,sanserif;
+    background-color:#FFFFFF;
+    color:#000000;
+}
+.even_row td {
+    background: #eafff3;
+}
+.odd_row td {
+    background: #fffddd;
+}
+th, td {
+    text-align: left;
+    vertical-align: top;
+}
+th {
+    font-weight:bold;
+    background: #f9dbe8;
+    color: black;
+}
+
+table, th, td {
+    font-size:100%;
+    border: none
+}

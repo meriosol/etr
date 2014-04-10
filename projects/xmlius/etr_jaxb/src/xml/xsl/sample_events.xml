@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml-stylesheet type="text/xsl" href="eventium_grid.xsl"?>
+<events xmlns="http://com/meriosol/etr/schema"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://com/meriosol/etr/schema ../etr_prototype.xsd">
+    <event id="1000001" severity="INFO" created="2014-04-04T01:02:03.231Z">
+        <event-category code="MESSAGE">
+            <name>Message</name>
+        </event-category>
+        <source>SRC451</source>
+        <process-id>PRC1</process-id>
+        <title>Some INFO message</title>
+    </event>
+    <event id="1000002" severity="WARN" created="2014-04-04T01:02:04.234Z">
+        <event-category code="MESSAGE"/>
+        <source>SRC451</source>
+        <process-id>PRC1</process-id>
+        <title>Some WARN message</title>
+    </event>
+    <event id="1000003" severity="ERROR" created="2014-04-07T01:02:04.234Z">
+        <event-category code="ALERT"/>
+        <source>SRC778</source>
+        <process-id>PRC2</process-id>
+        <title>Some ERROR message</title>
+    </event>
+    <event id="1000004" severity="ERROR" created="2014-04-07T01:02:04.899Z">
+        <event-category code="ALERT">
+            <name>Alertius</name>
+        </event-category>
+        <source>SRC718</source>
+        <process-id>PRC2</process-id>
+        <title>Some more ERROR message</title>
+    </event>
+
+</events>
