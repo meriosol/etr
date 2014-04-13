@@ -2,7 +2,7 @@
 <?xml-stylesheet type="text/xsl" href="eventium_grid.xsl"?>
 <events xmlns="http://com/meriosol/etr/schema"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://com/meriosol/etr/schema ../etr_prototype.xsd">
+        xsi:schemaLocation="http://com/meriosol/etr/schema etr_prototype.xsd">
     <event id="1000001" severity="INFO" created="2014-04-04T01:02:03.231Z">
         <event-category code="MESSAGE">
             <name>Message</name>

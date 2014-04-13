@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<events xmlns="http://com/meriosol/etr/schema">
+    <event id="1000001" severity="INFO" created="2014-04-04T01:02:03.231Z">
+        <event-category code="MESSAGE">
+            <name>Message</name>
+        </event-category>
+        <source>SRC1</source>
+        <process-id>PRC1</process-id>
+        <title>Some incredible message</title>
+    </event>
+    <event id="1000002" severity="WARN" created="2014-04-04T01:02:04.234Z">
+        <title>Some WARN message</title>
+        <event-category code="MESSAGE"/>
+        <source>SRC1</source>
+        <process-id>PRC1</process-id>
+    </event>
+    <event id="1000003" severity="ERROR" created="2014-04-04T01:04:04.234Z">
+        <title>Some ERROR message</title>
+        <event-category code="MESSAGE"/>
+        <source>SRC2</source>
+        <process-id>PRC56346</process-id>
+    </event>
+    <event id="1000004" severity="ERROR" created="2014-04-04T01:04:06.234Z">
+        <title>Some more ERROR message</title>
+        <event-category code="MESSAGE"/>
+        <source>SRC2</source>
+        <process-id>PRC_34</process-id>
+    </event>
+</events>
