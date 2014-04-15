@@ -63,7 +63,7 @@ public abstract class EtrBaseState {
     protected void addProperty(Info info, String value) {
         if (info != null && this.tempPropertyKey != null && !"".equals(this.tempPropertyKey)) {
             info.addProperty(this.tempPropertyKey, value);
-            lOG.fine(String.format("~~ In %s / addProperty: For info with name '%s' set key='%s' and value '%s'."
+            lOG.info(String.format("~~ In %s / addProperty: For info with name '%s' set key='%s' and value '%s'."
                     , getStateName(), info.getName(), this.tempPropertyKey, value));
         } else {
             lOG.warning(String.format("~~ In %s / addProperty: either info object is null(%s) or key null/empty (%s)"

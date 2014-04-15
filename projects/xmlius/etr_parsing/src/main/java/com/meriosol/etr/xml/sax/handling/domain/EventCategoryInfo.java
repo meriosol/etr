@@ -54,8 +54,8 @@ public class EventCategoryInfo extends Info {
 
     @Override
     public String toString() {
-        return "EventCategoryInfo{" +
-                "name='" + categoryName + '\'' +
+        return super.toString() + "_EventCategoryInfo{" +
+                "name='" + getCategoryName() + '\'' +
                 '}';
     }
 }

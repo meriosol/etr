@@ -1,5 +1,6 @@
 package com.meriosol.etr.xml.sax.handling.domain;
 
+import com.meriosol.etr.xml.sax.handling.SaxUtil;
 import org.xml.sax.Attributes;
 
 import java.util.Properties;
@@ -64,4 +65,11 @@ public abstract class Info {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Info{" +
+                "attributes=" + SaxUtil.gatherAttributesInfo(attributes) +
+                ", properties=" + properties +
+                '}';
+    }
 }
