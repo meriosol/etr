@@ -118,7 +118,7 @@ public class EventUnmarshallingTest {
             List<EventCategory> eventCategoryList = eventCategories.getEventCategory();
             if (eventCategoryList != null) {
                 sb = new StringBuilder(String.format("\n" +
-                        ">================================\n  Event categories(%d found): \n", eventCategoryList.size()));
+                        ">================================\n  EventState categories(%d found): \n", eventCategoryList.size()));
                 for (int i = 0; i < eventCategoryList.size(); i++) {
                     EventCategory eventCategory = eventCategoryList.get(i);
                     sb.append(" o ").append(printEventCategory(eventCategory)).append("\n");
@@ -131,13 +131,13 @@ public class EventUnmarshallingTest {
         }
 
         String printEvent(Event event) {
-            return String.format("Event:{id='%s', title='%s', created='%s', category='%s', severity='%s'}"
+            return String.format("EventState:{id='%s', title='%s', created='%s', category='%s', severity='%s'}"
                     , event.getId(), event.getTitle(), event.getCreated()
                     , printEventCategory(event.getEventCategory()), event.getSeverity());
         }
 
         String printEventCategory(EventCategory eventCategory) {
-            return String.format("EventCategory:{code='%s', name='%s'}"
+            return String.format("EventCategoryState:{code='%s', name='%s'}"
                     , eventCategory.getCode(), eventCategory.getName());
         }
 

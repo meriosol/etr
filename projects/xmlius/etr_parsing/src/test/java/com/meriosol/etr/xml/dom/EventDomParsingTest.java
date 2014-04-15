@@ -122,7 +122,7 @@ public class EventDomParsingTest {
                 }
 
                 // Build info:
-                elementTextSB.append(String.format("Event:{id='%s', title='%s', created='%s', category='%s', severity='%s'}"
+                elementTextSB.append(String.format("EventState:{id='%s', title='%s', created='%s', category='%s', severity='%s'}"
                         , eventElement.getAttribute("id"), DomUtil.loadChildElementText(eventElement, "title")
                         , eventElement.getAttribute("created")
                         , categoryCode, eventElement.getAttribute("severity")));

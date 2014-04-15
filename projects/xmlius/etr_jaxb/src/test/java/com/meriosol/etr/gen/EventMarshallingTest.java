@@ -58,7 +58,7 @@ public class EventMarshallingTest {
         Event sampleEvent = this.sampleEventsBuilder.createSampleEvent(1000021L, "Some event test001", "MESSAGE");
         etrMarshallHelper.marshall(file, sampleEvent);
 
-        lOG.info("Event POJO was marshalled into file " + file.getAbsolutePath());
+        lOG.info("EventState POJO was marshalled into file " + file.getAbsolutePath());
     }
 
     @Test(expected = NullPointerException.class)
