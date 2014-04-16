@@ -3,6 +3,8 @@ package com.meriosol.etr.xml.sax.handling.state;
 import com.meriosol.etr.xml.sax.handling.domain.EventInfo;
 import org.xml.sax.Attributes;
 
+import java.util.Properties;
+
 /**
  * State for particular opened event.
  *
@@ -25,19 +27,22 @@ public class EventOpenedState extends EtrBaseState {
     }
 
     @Override
-    public void handleEventOpening(Attributes attributes) {
-        initState(attributes);
+    public void handleEventOpening(Properties properties) {
+        initState(properties);
     }
 
     @Override
-    public void handleEventCategoryOpening(Attributes attributes) {
+    public void handleEventCategoryOpening(Properties properties) {
         // NOTE: it's common pattern across code - to create corresponding sub-state and delegate handling to it.
         this.eventCategoryOpenedState = new EventCategoryOpenedState();
-        this.eventCategoryOpenedState.handleEventCategoryOpening((attributes));
+        this.eventCategoryOpenedState.handleEventCategoryOpening(properties);
     }
 
     @Override
     public void handleEventCategoryClosing() {
+        if (this.eventCategoryOpenedState != null) {
+            eventInfo.setEventCategory(this.eventCategoryOpenedState.getEventCategoryInfo());
+        }
         this.eventCategoryOpenedState = null;
     }
 
@@ -78,8 +83,8 @@ public class EventOpenedState extends EtrBaseState {
         return eventInfo;
     }
 
-    private void initState(Attributes attributes) {
-        this.eventInfo = new EventInfo(attributes);
+    private void initState(Properties properties) {
+        this.eventInfo = new EventInfo(properties);
     }
 
     private void cleanupState() {

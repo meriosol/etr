@@ -1,8 +1,5 @@
 package com.meriosol.etr.xml.sax.handling.domain;
 
-import com.meriosol.etr.xml.sax.handling.SaxUtil;
-import org.xml.sax.Attributes;
-
 import java.util.Properties;
 
 /**
@@ -13,37 +10,18 @@ import java.util.Properties;
  * @since 15/04/14
  */
 public abstract class Info {
-    // For XML element attributes
-    private Attributes attributes;
-    // For simple element text values (key is element qname, value - text in that element)
+    // For simple element text values (key is element qname, value - text in that element), for complex element - properties.
     private Properties properties;
 
     protected Info() {
-        this(null, null);
+        this(null);
     }
 
-    protected Info(Attributes attributes, Properties properties) {
-        this.attributes = attributes;
+    protected Info(Properties properties) {
         initProperties(properties);
     }
 
     public abstract String getName();
-
-    protected Info(Attributes attributes) {
-        this(attributes, null);
-    }
-
-    protected Info(Properties properties) {
-        this(null, properties);
-    }
-
-    public Attributes getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(Attributes attributes) {
-        this.attributes = attributes;
-    }
 
     public Properties getProperties() {
         return properties;
@@ -51,6 +29,12 @@ public abstract class Info {
 
     public void addProperty(String key, String value) {
         this.properties.setProperty(key, value);
+    }
+
+    public void addProperties(Properties properties) {
+        if (properties != null) {
+            this.properties.putAll(properties);
+        }
     }
 
     public void cleanProperties() {
@@ -67,9 +51,6 @@ public abstract class Info {
 
     @Override
     public String toString() {
-        return "Info{" +
-                "attributes=" + SaxUtil.gatherAttributesInfo(attributes) +
-                ", properties=" + properties +
-                '}';
+        return "Info{" + " properties: {" + properties + "}}";
     }
 }

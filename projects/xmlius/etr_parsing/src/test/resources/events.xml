@@ -6,7 +6,7 @@
         </event-category>
         <source>SRC1</source>
         <process-id>PRC1</process-id>
-        <title>Some incredible message</title>
+        <title>Some incredible message, 好了</title>
     </event>
     <event id="1000002" severity="WARN" created="2014-04-04T01:02:04.234Z">
         <title>Some WARN message</title>

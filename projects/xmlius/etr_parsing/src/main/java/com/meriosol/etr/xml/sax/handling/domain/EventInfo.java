@@ -19,14 +19,6 @@ public class EventInfo extends Info {
     private String title;
     private EventCategoryInfo eventCategory;
 
-    public EventInfo(Attributes attributes, Properties properties) {
-        super(attributes, properties);
-    }
-
-    public EventInfo(Attributes attributes) {
-        super(attributes);
-    }
-
     public EventInfo(Properties properties) {
         super(properties);
     }
@@ -50,6 +42,14 @@ public class EventInfo extends Info {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setEventCategory(EventCategoryInfo eventCategory) {
+        this.eventCategory = eventCategory;
+    }
+
+    public EventCategoryInfo getEventCategory() {
+        return eventCategory;
     }
 
     @Override

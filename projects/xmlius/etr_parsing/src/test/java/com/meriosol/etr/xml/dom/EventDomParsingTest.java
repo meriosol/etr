@@ -9,12 +9,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.net.URL;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.assertNotNull;
@@ -47,19 +43,7 @@ public class EventDomParsingTest {
     @Test
     public void testCorrectEventsParse() throws ParserConfigurationException, IOException, SAXException {
         String eventsResourcePath = "events.xml";
-        URL eventsResourceUrl = MODULE.getClassLoader().getResource(eventsResourcePath);
-
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        try {
-            dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "file, jar:file");
-        } catch (IllegalArgumentException e) {
-            //jaxp 1.5 feature not supported
-            lOG.warning("Looks like jaxp 1.5 feature not supported: " + e.getMessage());
-        }
-
-        dbf.setNamespaceAware(true);
-        DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
-        Document eventsDoc = documentBuilder.parse(eventsResourceUrl.openStream());
+        Document eventsDoc = DomUtil.loadEtrEvents(eventsResourcePath);
 
         assertNotNull(String.format("Sample events DOM tree doc should not be null for resource path '%s'!", eventsResourcePath), eventsDoc);
         eventsDoc.getDocumentElement().normalize();
@@ -79,7 +63,6 @@ public class EventDomParsingTest {
      */
     private class EventsPrinter {
         /**
-         *
          * @param eventsDoc
          * @return events info
          */
@@ -107,7 +90,6 @@ public class EventDomParsingTest {
         }
 
         /**
-         *
          * @param eventElement
          * @return event info
          */

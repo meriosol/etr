@@ -4,6 +4,7 @@ import com.meriosol.etr.xml.sax.handling.domain.EventInfo;
 import org.xml.sax.Attributes;
 
 import java.util.List;
+import java.util.Properties;
 
 /**
  * State context.
@@ -31,12 +32,12 @@ public class EtrStateContext {
         this.state.handleEventsOpening();
     }
 
-    public void openEvent(Attributes attributes) {
-        this.state.handleEventOpening(attributes);
+    public void openEvent(Properties properties) {
+        this.state.handleEventOpening(properties);
     }
 
-    public void openEventCategory(Attributes attributes) {
-        this.state.handleEventCategoryOpening(attributes);
+    public void openEventCategory(Properties properties) {
+        this.state.handleEventCategoryOpening(properties);
     }
 
     //--------------

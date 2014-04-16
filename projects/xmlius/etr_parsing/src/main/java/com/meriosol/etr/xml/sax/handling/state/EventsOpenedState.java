@@ -4,6 +4,7 @@ import com.meriosol.etr.xml.sax.handling.domain.EventInfo;
 import org.xml.sax.Attributes;
 
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
@@ -35,16 +36,16 @@ public class EventsOpenedState extends EtrBaseState {
     }
 
     @Override
-    public void handleEventOpening(Attributes attributes) {
+    public void handleEventOpening(Properties properties) {
         // NOTE: it's common pattern across code - to create corresponding sub-state and delegate handling to it.
         this.eventOpenedState = new EventOpenedState();
-        this.eventOpenedState.handleEventOpening(attributes);
+        this.eventOpenedState.handleEventOpening(properties);
     }
 
     @Override
-    public void handleEventCategoryOpening(Attributes attributes) {
+    public void handleEventCategoryOpening(Properties properties) {
         if (this.eventOpenedState != null) {
-            this.eventOpenedState.handleEventCategoryOpening(attributes);
+            this.eventOpenedState.handleEventCategoryOpening(properties);
         } else {
             lOG.warning(getStateName() + " CAUTION: eventOpenedState is still null, so category state can not be created.");
         }

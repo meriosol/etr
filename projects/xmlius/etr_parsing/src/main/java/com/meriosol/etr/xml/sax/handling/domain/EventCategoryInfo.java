@@ -13,18 +13,12 @@ import java.util.Properties;
  */
 public class EventCategoryInfo extends Info {
     private interface FieldNames {
+        String CODE = "code";
         String NAME = "name";
     }
 
+    private String code;
     private String categoryName;
-
-    public EventCategoryInfo(Attributes attributes, Properties properties) {
-        super(attributes, properties);
-    }
-
-    public EventCategoryInfo(Attributes attributes) {
-        super(attributes);
-    }
 
     public EventCategoryInfo(Properties properties) {
         super(properties);
@@ -39,6 +33,17 @@ public class EventCategoryInfo extends Info {
         return "EventCategory";
     }
 
+    public String getCode() {
+        if (code != null) {
+            return code;
+        } else {
+            return getProperties().getProperty(FieldNames.CODE);
+        }
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getCategoryName() {
         if (categoryName != null) {
@@ -54,8 +59,9 @@ public class EventCategoryInfo extends Info {
 
     @Override
     public String toString() {
-        return super.toString() + "_EventCategoryInfo{" +
-                "name='" + getCategoryName() + '\'' +
+        return "EventCategoryInfo{" +
+                "code='" + getCode() + '\'' +
+                ", categoryName='" + getCategoryName() + '\'' +
                 '}';
     }
 }

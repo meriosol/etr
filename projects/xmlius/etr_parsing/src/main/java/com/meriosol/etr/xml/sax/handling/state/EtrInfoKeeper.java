@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Keeps ETR info while gathering data. Added for reducing coupling between context and states.
+ * Keeps ETR info while gathering data. Added for reducing coupling and cycle dependencies between context and states.
  */
 public class EtrInfoKeeper {
     private List<EventInfo> eventInfoList;

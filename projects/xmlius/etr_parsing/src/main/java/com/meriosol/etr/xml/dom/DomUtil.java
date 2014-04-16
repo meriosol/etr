@@ -1,9 +1,17 @@
 package com.meriosol.etr.xml.dom;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.net.URL;
 import java.util.logging.Logger;
 
 /**
@@ -16,6 +24,30 @@ import java.util.logging.Logger;
 public class DomUtil {
     private static final Class<DomUtil> MODULE = DomUtil.class;
     private static final Logger lOG = Logger.getLogger(MODULE.getName());
+
+    /**
+     *
+     * @param eventsResourcePath
+     * @return DOM Document for events.
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
+     */
+    public static Document loadEtrEvents(String eventsResourcePath) throws ParserConfigurationException, IOException, SAXException {
+        URL eventsResourceUrl = MODULE.getClassLoader().getResource(eventsResourcePath);
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        try {
+            dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "file, jar:file");
+        } catch (IllegalArgumentException e) {
+            //jaxp 1.5 feature not supported
+            lOG.warning("Looks like jaxp 1.5 feature not supported: " + e.getMessage());
+        }
+
+        dbf.setNamespaceAware(true);
+        DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
+        return documentBuilder.parse(eventsResourceUrl.openStream());
+    }
 
     public static Element loadFirstElementNode(Element parentElement, String childElementName) {
         Element childElement = null;

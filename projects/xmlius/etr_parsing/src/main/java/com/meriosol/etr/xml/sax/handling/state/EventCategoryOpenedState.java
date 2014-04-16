@@ -1,7 +1,9 @@
 package com.meriosol.etr.xml.sax.handling.state;
 
 import com.meriosol.etr.xml.sax.handling.domain.EventCategoryInfo;
-import org.xml.sax.Attributes;
+
+import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  * State for particular opened event category.
@@ -11,6 +13,8 @@ import org.xml.sax.Attributes;
  * @since 15/04/14
  */
 public class EventCategoryOpenedState extends EtrBaseState {
+    private static final Class<EventCategoryOpenedState> MODULE = EventCategoryOpenedState.class;
+    private static final Logger lOG = Logger.getLogger(MODULE.getName());
     private EventCategoryInfo eventCategoryInfo;
 
     @Override
@@ -24,18 +28,18 @@ public class EventCategoryOpenedState extends EtrBaseState {
     }
 
     @Override
-    public void handleEventOpening(Attributes attributes) {
+    public void handleEventOpening(Properties properties) {
         // ignore
     }
 
     @Override
-    public void handleEventCategoryOpening(Attributes attributes) {
-        initState(attributes);
+    public void handleEventCategoryOpening(Properties properties) {
+        initState(properties);
     }
 
     @Override
     public void handleEventCategoryClosing() {
-
+        cleanupState();
     }
 
     @Override
@@ -52,6 +56,8 @@ public class EventCategoryOpenedState extends EtrBaseState {
     public void handleAddingPropertyKey(String key) {
         if (this.eventCategoryInfo != null) {
             setTempPropertyKey(key);
+        } else {
+            lOG.warning(String.format("%s / handleAddingPropertyKey: eventCategoryInfo was not created yet, so key '%s' won't be added.", getStateName(), key));
         }
     }
 
@@ -60,6 +66,8 @@ public class EventCategoryOpenedState extends EtrBaseState {
         // NOTE: If category is opened hence property is for it, not for event.
         if (this.eventCategoryInfo != null) {
             addProperty(this.eventCategoryInfo, text);
+        } else {
+            lOG.warning(String.format("%s / handleAddingText: eventCategoryInfo was not created yet, so text value '%s' won't be added.", getStateName(), text));
         }
     }
 
@@ -70,8 +78,8 @@ public class EventCategoryOpenedState extends EtrBaseState {
         return eventCategoryInfo;
     }
 
-    private void initState(Attributes attributes) {
-        this.eventCategoryInfo = new EventCategoryInfo(attributes);
+    private void initState(Properties properties) {
+        this.eventCategoryInfo = new EventCategoryInfo(properties);
     }
 
     private void cleanupState() {
