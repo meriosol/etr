@@ -18,8 +18,8 @@ import java.util.logging.Logger;
  * @version 0.1
  * @since 15/04/14
  */
-public class EventsSaxHandler extends DefaultHandler {
-    private static final Class<EventsSaxHandler> MODULE = EventsSaxHandler.class;
+public class EventsSaxContentHandler extends DefaultHandler {
+    private static final Class<EventsSaxContentHandler> MODULE = EventsSaxContentHandler.class;
     private static final Logger lOG = Logger.getLogger(MODULE.getName());
     private EtrStateContext etrStateContext;
 
@@ -32,7 +32,7 @@ public class EventsSaxHandler extends DefaultHandler {
         String EVENT_CATEGORY = "event-category";
     }
 
-    public EventsSaxHandler() {
+    public EventsSaxContentHandler() {
         this.etrStateContext = new EtrStateContext();
     }
 

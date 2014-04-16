@@ -70,7 +70,9 @@ If to gather these reports in some DB (MongoDB?), interesting stats can be revea
 
 ## XML subprojects
 Under path **projects/xmlius**:
- - etr_jaxb
+ - etr_jaxb (JAXB generation and marshalling shown up there)
+ - etr_parsing (XML parsing techniques such as DOM, SAX; with XSD validation)
+ - etr_xsl (XSLT, XSL-FO to PDF transformation samples)
 
 ### Dependency highlights
 In order to increase modularity and reusability some former internal projects were moved to external libraries.
