@@ -1,4 +1,4 @@
-package com.meriosol.etr.xml.sax.handling.domain;
+package com.meriosol.etr.domain;
 
 import java.util.Properties;
 

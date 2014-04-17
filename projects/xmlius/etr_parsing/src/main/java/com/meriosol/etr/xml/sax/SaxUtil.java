@@ -1,8 +1,9 @@
 package com.meriosol.etr.xml.sax;
 
+import com.meriosol.etr.CommonUtil;
 import com.meriosol.etr.xml.sax.handling.EventsSaxContentHandler;
 import com.meriosol.etr.xml.sax.handling.EventsSaxErrorHandler;
-import com.meriosol.etr.xml.sax.handling.domain.EventInfo;
+import com.meriosol.etr.domain.EventInfo;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -51,7 +52,7 @@ public class SaxUtil {
     public static List<EventInfo> gatherEventInfo(String eventsResourcePath)
             throws IOException, SAXException, ParserConfigurationException {
         SAXParser saxParser = buildSAXParser();
-        URL eventsResourceUrl = MODULE.getClassLoader().getResource(eventsResourcePath);
+        URL eventsResourceUrl = CommonUtil.getResourceUrl(eventsResourcePath);
 
         EventsSaxContentHandler eventsSaxContentHandler = new EventsSaxContentHandler();
 
@@ -68,8 +69,8 @@ public class SaxUtil {
      * @param eventsResourcePath
      * @param schemaResourcePath
      * @param parsingMessagesHolder Will contain messages gathered while parsing XML
-     * @return event list
      * @param eventsResourcePath
+     * @return event list
      * @throws SAXException
      * @throws ParserConfigurationException
      */
@@ -79,7 +80,7 @@ public class SaxUtil {
         SAXParser saxParser = buildSAXParser();
         saxParser.setProperty(ValidatorConstants.JAXP_SCHEMA_LANGUAGE, ValidatorConstants.W3C_XML_SCHEMA);
 
-        URL schemaResourceUrl = MODULE.getClassLoader().getResource(schemaResourcePath);
+        URL schemaResourceUrl = CommonUtil.getResourceUrl(schemaResourcePath);
         saxParser.setProperty(ValidatorConstants.JAXP_SCHEMA_SOURCE, schemaResourceUrl.openStream());
 
         // Content handler:
@@ -94,7 +95,7 @@ public class SaxUtil {
         xmlReader.setErrorHandler(eventsSaxErrorHandler);
 
         // Convert to URL:
-        URL eventsResourceUrl = MODULE.getClassLoader().getResource(eventsResourcePath);
+        URL eventsResourceUrl = CommonUtil.getResourceUrl(eventsResourcePath);
 
         // Input source
         Reader reader = new InputStreamReader(eventsResourceUrl.openStream(), DEFAULT_ENCODING);

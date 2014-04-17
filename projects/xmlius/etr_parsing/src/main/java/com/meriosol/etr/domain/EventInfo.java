@@ -1,6 +1,4 @@
-package com.meriosol.etr.xml.sax.handling.domain;
-
-import org.xml.sax.Attributes;
+package com.meriosol.etr.domain;
 
 import java.util.Properties;
 
@@ -54,7 +52,7 @@ public class EventInfo extends Info {
 
     @Override
     public String toString() {
-        return  super.toString() + "_EventInfo{" +
+        return super.toString() + "_EventInfo{" +
                 "title='" + getTitle() + '\'' +
                 ", eventCategory=" + eventCategory +
                 '}';

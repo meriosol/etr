@@ -1,6 +1,7 @@
 package com.meriosol.etr.xml.sax;
 
-import com.meriosol.etr.xml.sax.handling.domain.EventInfo;
+import com.meriosol.etr.CommonUtil;
+import com.meriosol.etr.domain.EventInfo;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -14,6 +15,7 @@ import static org.junit.Assert.assertNotNull;
 
 /**
  * Sample of how xml SAX events can be caught.<br>
+ * NOTE: Stax is more modern parsing approach..<br>
  * Useful links: http://www.mkyong.com/java/how-to-read-utf-8-xml-file-in-java-sax-parser/
  *
  * @author meriosol
@@ -39,11 +41,7 @@ public class EventSaxParsingTest {
         String eventsResourcePath = SampleEventResource.CORRECT_EVENTS_RESOURCE_PATH;
         List<EventInfo> eventInfoList = SaxUtil.gatherEventInfo(eventsResourcePath);
         assertNotNull(String.format("Sample events eventInfoList should not be null for resource path '%s'!", eventsResourcePath), eventInfoList);
-
-        lOG.info(String.format("~~~ Events(%s found): ", eventInfoList.size()));
-        for (EventInfo eventInfo : eventInfoList) {
-            lOG.info("~~~~~ event: " + eventInfo);
-        }
+        CommonUtil.logEventsData("CorrectEventsParse", eventInfoList);
     }
 
     @Test
@@ -53,15 +51,14 @@ public class EventSaxParsingTest {
         List<String> parsingMessagesHolder = new ArrayList<>();
 
 
-
         List<EventInfo> eventInfoList = SaxUtil.gatherEventInfo(eventsResourcePath, ETR_XSD_RESOURCE_PATH, parsingMessagesHolder);
         assertNotNull(String.format("Sample events eventInfoList should not be null for resource path '%s'!", eventsResourcePath), eventInfoList);
 
         logParserMessagesIfAny(parsingMessagesHolder);
-        logEventsData("CorrectEventsParseWithErrorHandler",eventInfoList);
+        CommonUtil.logEventsData("CorrectEventsParseWithErrorHandler", eventInfoList);
     }
 
-    @Test (expected = SAXException.class)
+    @Test(expected = SAXException.class)
     public void testInvalidEventsParseWithErrorHandler() throws ParserConfigurationException, IOException, SAXException {
         String eventsResourcePath = SampleEventResource.INVALID_EVENTS_RESOURCE_PATH;
 
@@ -74,10 +71,10 @@ public class EventSaxParsingTest {
         lOG.info(String.format("NOTE: because '%s' has xsd errors, parsingMessagesHolder should contain warnings. "
                 + " For now it has '%s' messages..", eventsResourcePath, parsingMessagesHolder.size()));
         logParserMessagesIfAny(parsingMessagesHolder);
-        logEventsData("InvalidEventsParseWithErrorHandler", eventInfoList);
+        CommonUtil.logEventsData("InvalidEventsParseWithErrorHandler", eventInfoList);
     }
 
-    @Test (expected = SAXException.class)
+    @Test(expected = SAXException.class)
     public void testDeeplyScrewedEventsParseWithErrorHandler() throws ParserConfigurationException, IOException, SAXException {
         String eventsResourcePath = SampleEventResource.BADLY_FORMED_EVENTS_RESOURCE_PATH;
 
@@ -86,20 +83,9 @@ public class EventSaxParsingTest {
         List<EventInfo> eventInfoList = SaxUtil.gatherEventInfo(eventsResourcePath, ETR_XSD_RESOURCE_PATH, parsingMessagesHolder);
         lOG.warning(String.format("Because '%s' has errors, code shouldn't reach here!", eventsResourcePath));
     }
+
     //---------------------
     // Utils
-
-    /**
-     * @param eventInfoList
-     */
-    private void logEventsData(String title, List<EventInfo> eventInfoList) {
-        String delimLine = "\n~~~ ======================================\n";
-        lOG.info(String.format("%s~~~ (%s) Events(%s found): ", delimLine, title, eventInfoList.size()));
-        for (EventInfo eventInfo : eventInfoList) {
-            lOG.info("~~~~~ event: " + eventInfo);
-        }
-        lOG.info(delimLine);
-    }
 
     /**
      * @param parsingMessagesHolder

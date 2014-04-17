@@ -1,6 +1,6 @@
 package com.meriosol.etr.xml.sax.handling.state;
 
-import com.meriosol.etr.xml.sax.handling.domain.EventInfo;
+import com.meriosol.etr.domain.EventInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,5 +1,6 @@
 package com.meriosol.etr.xml.dom;
 
+import com.meriosol.etr.CommonUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -26,15 +27,15 @@ public class DomUtil {
     private static final Logger lOG = Logger.getLogger(MODULE.getName());
 
     /**
-     *
      * @param eventsResourcePath
      * @return DOM Document for events.
      * @throws ParserConfigurationException
      * @throws IOException
      * @throws SAXException
      */
-    public static Document loadEtrEvents(String eventsResourcePath) throws ParserConfigurationException, IOException, SAXException {
-        URL eventsResourceUrl = MODULE.getClassLoader().getResource(eventsResourcePath);
+    public static Document loadEtrEvents(String eventsResourcePath)
+            throws ParserConfigurationException, IOException, SAXException {
+        URL eventsResourceUrl = CommonUtil.getResourceUrl(eventsResourcePath);
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
@@ -49,6 +50,12 @@ public class DomUtil {
         return documentBuilder.parse(eventsResourceUrl.openStream());
     }
 
+    /**
+     *
+     * @param parentElement
+     * @param childElementName
+     * @return 1st element
+     */
     public static Element loadFirstElementNode(Element parentElement, String childElementName) {
         Element childElement = null;
         if (parentElement != null && childElementName != null && !"".equals(childElementName)) {
@@ -67,6 +74,12 @@ public class DomUtil {
         return childElement;
     }
 
+    /**
+     *
+     * @param element
+     * @param childElementName
+     * @return Element text
+     */
     public static String loadChildElementText(Element element, String childElementName) {
         StringBuilder elementTextSB = new StringBuilder();
         if (element != null) {

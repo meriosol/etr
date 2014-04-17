@@ -1,7 +1,6 @@
 package com.meriosol.etr.xml.sax.handling.state;
 
-import com.meriosol.etr.xml.sax.handling.domain.Info;
-import org.xml.sax.Attributes;
+import com.meriosol.etr.domain.Info;
 
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -37,6 +36,7 @@ public abstract class EtrBaseState {
     //--------------
     // Handle misc:
     public abstract void handleAddingPropertyKey(final String key);
+
     public abstract void handleAddingText(String text);
 
     public abstract String getStateName();
