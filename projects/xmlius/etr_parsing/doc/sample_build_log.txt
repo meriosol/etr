@@ -45,9 +45,9 @@ $ mvn -e clean test
 -------------------------------------------------------
 Running com.meriosol.etr.gen.EventMarshallingTest
 Apr 07, 2014 10:56:23 PM com.meriosol.etr.gen.EventMarshallingTest testEventsMarshalling
-INFO: Events POJO was marshalled into file C:\Users\neos\AppData\Local\Temp\events.out.xml
+INFO: Events POJO was marshalled into file Temp\events.out.xml
 Apr 07, 2014 10:56:23 PM com.meriosol.etr.gen.EventMarshallingTest testEventMarshalling
-INFO: Event POJO was marshalled into file C:\Users\neos\AppData\Local\Temp\event.out.xml
+INFO: Event POJO was marshalled into file Temp\event.out.xml
 Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.416 sec
 Running com.meriosol.etr.gen.EventUnmarshallingTest
 Apr 07, 2014 10:56:23 PM com.meriosol.etr.gen.EventUnmarshallingTest testCorrectEventsUnmarshall

@@ -15,6 +15,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 /**
+ * XML building (using Stax) tests.
  * @author meriosol
  * @version 0.1
  * @since 17/04/14

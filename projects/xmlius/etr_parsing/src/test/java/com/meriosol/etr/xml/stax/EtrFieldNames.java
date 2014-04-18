@@ -1,7 +1,10 @@
 package com.meriosol.etr.xml.stax;
 
 /**
-* Created by neos on 4/17/2014.
+*
+ * @author meriosol
+ * @version 0.1
+ * @since 17/04/14
 */
 interface EtrFieldNames {
     String EVENTS = "events";
