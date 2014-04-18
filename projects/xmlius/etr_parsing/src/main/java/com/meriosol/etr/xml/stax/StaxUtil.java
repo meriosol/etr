@@ -3,18 +3,21 @@ package com.meriosol.etr.xml.stax;
 import com.meriosol.etr.CommonUtil;
 import com.meriosol.etr.domain.Info;
 
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.*;
 import javax.xml.stream.events.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
  * Stax util <br>
- * Links: http://www.vogella.com/tutorials/JavaXML/article.html
+ * Useful Links: http://www.vogella.com/tutorials/JavaXML/article.html
  *
  * @author meriosol
  * @version 0.1
@@ -26,6 +29,10 @@ public class StaxUtil {
 
     private StaxUtil() {
     }
+
+    //--------------------------------------------
+    // For parsing:
+
 
     /**
      * @param xmlResourcePath
@@ -66,7 +73,16 @@ public class StaxUtil {
         }
     }
 
-    public static void addChildSimpleElementsDataToInfo(Info info, XMLEventReader xmlEventReader, StartElement parentStartElement) throws XMLStreamException {
+    /**
+     * Element builder for basic elements.
+     * @param info
+     * @param xmlEventReader
+     * @param parentStartElement
+     * @throws XMLStreamException
+     */
+    public static void addChildSimpleElementsDataToInfo(Info info,
+                                                        XMLEventReader xmlEventReader, StartElement parentStartElement)
+            throws XMLStreamException {
         if (info != null && xmlEventReader != null && parentStartElement != null) {
             // Goal: iterate events unless end element with the same name
             // as parent is not achieved and add all data from child elements to info POJO properties.
@@ -110,4 +126,66 @@ public class StaxUtil {
             }
         }
     }
+
+    //--------------------------------------------
+    // For writing:
+
+    /**
+     *
+     * @param outputFile
+     * @return eventWriter
+     * @throws FileNotFoundException
+     * @throws XMLStreamException
+     */
+    public static XMLEventWriter createXMLEventWriterWithStartingDocForWriting(File outputFile) throws FileNotFoundException, XMLStreamException {
+        // create an XMLOutputFactory
+        XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
+        outputFactory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, true);
+        // create XMLEventWriter
+        XMLEventWriter eventWriter = outputFactory
+                .createXMLEventWriter(new FileOutputStream(outputFile));
+        return eventWriter;
+    }
+
+    /**
+     * Credit: http://www.vogella.com/tutorials/JavaXML/article.html
+     * @param eventWriter
+     * @param name
+     * @param value
+     * @param namespaceUri
+     * @throws XMLStreamException
+     */
+    public static void createNode(XMLEventWriter eventWriter, String name,
+                                  String value, String namespaceUri) throws XMLStreamException {
+        XMLEventFactory eventFactory = XMLEventFactory.newInstance();
+        XMLEvent end = eventFactory.createDTD("\n");
+        XMLEvent tab = eventFactory.createDTD("\t");
+        // create Start node
+        StartElement sElement = eventFactory.createStartElement("", namespaceUri, name);
+        eventWriter.add(tab);
+        eventWriter.add(sElement);
+        // create Content
+        Characters characters = eventFactory.createCharacters(value);
+        eventWriter.add(characters);
+        // create End node
+        EndElement eElement = eventFactory.createEndElement("", "", name);
+        eventWriter.add(eElement);
+        eventWriter.add(end);
+
+    }
+
+    /**
+     *
+     * @param eventFactory
+     * @param prefix
+     * @param namespaceUri
+     * @return Namespaces
+     */
+    public static Iterator<Namespace> createNamespaces(XMLEventFactory eventFactory, String prefix, String namespaceUri ) {
+        Namespace namespace = eventFactory.createNamespace(prefix, namespaceUri);
+        List<Namespace> namespaces = new ArrayList<>();
+        namespaces.add(namespace);
+        return namespaces.iterator();
+    }
+
 }

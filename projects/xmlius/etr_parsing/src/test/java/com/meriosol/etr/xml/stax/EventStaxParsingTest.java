@@ -29,24 +29,9 @@ public class EventStaxParsingTest {
     private static final Logger lOG = Logger.getLogger(MODULE.getName());
     private static final String ETR_XSD_RESOURCE_PATH = "etr.xsd"; // TODO: remove if not needed.
 
-    private interface FieldNames {
-        String EVENTS = "events";
-        String EVENT = "event";
-        String EVENT_CATEGORY = "event-category";
-    }
-
-    /**
-     * Sample events files.
-     */
-    interface SampleEventResource {
-        String CORRECT_EVENTS_RESOURCE_PATH = "events.xml";
-        String INVALID_EVENTS_RESOURCE_PATH = "events_invalid.xml";
-        String BADLY_FORMED_EVENTS_RESOURCE_PATH = "events_badly_formed.xml";
-    }
-
     @Test
     public void testCorrectEventsParse() throws IOException, XMLStreamException {
-        String eventsResourcePath = SampleEventResource.CORRECT_EVENTS_RESOURCE_PATH;
+        String eventsResourcePath = SampleEventResources.CORRECT_EVENTS_RESOURCE_PATH;
         XMLEventReader xmlEventReader = StaxUtil.createXMLEventReaderForResource(eventsResourcePath);
         assertNotNull(String.format("xmlEventReader should not be null for resource path '%s'!", eventsResourcePath), xmlEventReader);
         //==================================
@@ -59,12 +44,12 @@ public class EventStaxParsingTest {
                 StartElement startElement = event.asStartElement();
                 String elementName = startElement.getName().getLocalPart();
                 // If we have an item element, we create a new item
-                if (FieldNames.EVENT.equals(elementName)) {
+                if (EtrFieldNames.EVENT.equals(elementName)) {
                     eventInfo = new EventInfo();
                     StaxUtil.addAttributesToInfo(eventInfo, startElement.getAttributes());
                 } else {
                     if (eventInfo != null) {
-                        if (!FieldNames.EVENT_CATEGORY.equals(elementName)) {
+                        if (!EtrFieldNames.EVENT_CATEGORY.equals(elementName)) {
                             StaxUtil.addChildSimpleElementDataToInfo(eventInfo, xmlEventReader, elementName);
                         } else {
                             EventCategoryInfo eventCategoryInfo = new EventCategoryInfo();
@@ -79,7 +64,7 @@ public class EventStaxParsingTest {
             } else if (event.isEndElement()) {
                 // If we reach the end of an item element, we add it to the list
                 EndElement endElement = event.asEndElement();
-                if (FieldNames.EVENT.equals(endElement.getName().getLocalPart())) {
+                if (EtrFieldNames.EVENT.equals(endElement.getName().getLocalPart())) {
                     eventInfoList.add(eventInfo);
                 }
             }

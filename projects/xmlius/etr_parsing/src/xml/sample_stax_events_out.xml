@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<events xmlns="http://com/meriosol/etr/schema">
+    <!-- Events: -->
+    <event id="1000001" created="2014-04-04T01:02:04.622Z">
+        <title>Event 1</title>
+        <source>Testing_22</source>
+        <event-category code="MESSAGE">
+            <name>Some categ</name>
+        </event-category>
+    </event>
+    <event id="1000002" created="2014-04-04T01:02:04.227Z">
+        <title>Event 2</title>
+        <source>Testing_15</source>
+        <event-category code="MESSAGE">
+            <name>Some categ</name>
+        </event-category>
+    </event>
+</events>

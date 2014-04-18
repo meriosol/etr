@@ -5,7 +5,7 @@
 	<groupId>com.meriosol</groupId>
 	<artifactId>etr-xml-parsing</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.2-RELEASE</version>
 	<name>ETR XML parsing samples</name>
 	<description>${project.name}</description>	
 
