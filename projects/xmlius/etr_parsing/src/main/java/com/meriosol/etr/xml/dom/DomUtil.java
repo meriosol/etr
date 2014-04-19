@@ -27,15 +27,15 @@ public class DomUtil {
     private static final Logger lOG = Logger.getLogger(MODULE.getName());
 
     /**
-     * @param eventsResourcePath
+     * @param resourcePath
      * @return DOM Document for events.
      * @throws ParserConfigurationException
      * @throws IOException
      * @throws SAXException
      */
-    public static Document loadEtrEvents(String eventsResourcePath)
+    public static Document loadDom(String resourcePath)
             throws ParserConfigurationException, IOException, SAXException {
-        URL eventsResourceUrl = CommonUtil.getResourceUrl(eventsResourcePath);
+        URL resourceUrl = CommonUtil.getResourceUrl(resourcePath);
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
@@ -47,11 +47,11 @@ public class DomUtil {
 
         dbf.setNamespaceAware(true);
         DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
-        return documentBuilder.parse(eventsResourceUrl.openStream());
+
+        return documentBuilder.parse(resourceUrl.openStream());
     }
 
     /**
-     *
      * @param parentElement
      * @param childElementName
      * @return 1st element
@@ -75,7 +75,6 @@ public class DomUtil {
     }
 
     /**
-     *
      * @param element
      * @param childElementName
      * @return Element text

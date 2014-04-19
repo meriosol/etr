@@ -43,7 +43,7 @@ public class EventDomParsingTest {
     @Test
     public void testCorrectEventsParse() throws ParserConfigurationException, IOException, SAXException {
         String eventsResourcePath = "events.xml";
-        Document eventsDoc = DomUtil.loadEtrEvents(eventsResourcePath);
+        Document eventsDoc = DomUtil.loadDom(eventsResourcePath);
 
         assertNotNull(String.format("Sample events DOM tree doc should not be null for resource path '%s'!", eventsResourcePath), eventsDoc);
         eventsDoc.getDocumentElement().normalize();

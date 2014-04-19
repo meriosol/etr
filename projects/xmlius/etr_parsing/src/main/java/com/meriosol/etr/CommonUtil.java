@@ -17,20 +17,20 @@ public class CommonUtil {
     }
 
     /**
-     *
      * @param resourcePath
      * @return URL of <code>resourcePath</code>
      */
     public static URL getResourceUrl(String resourcePath) {
         URL eventsResourceUrl = null;
         if (resourcePath != null) {
-            eventsResourceUrl =   MODULE.getClassLoader().getResource(resourcePath);
+            eventsResourceUrl = MODULE.getClassLoader().getResource(resourcePath);
         }
         return eventsResourceUrl;
     }
 
     /**
      * Logs gathered event data.
+     *
      * @param title
      * @param eventInfoList
      */

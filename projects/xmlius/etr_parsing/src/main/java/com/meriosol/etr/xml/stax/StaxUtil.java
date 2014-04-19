@@ -2,9 +2,15 @@ package com.meriosol.etr.xml.stax;
 
 import com.meriosol.etr.CommonUtil;
 import com.meriosol.etr.domain.Info;
+import org.xml.sax.SAXException;
 
+import javax.xml.XMLConstants;
 import javax.xml.stream.*;
 import javax.xml.stream.events.*;
+import javax.xml.transform.stax.StAXSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -75,6 +81,7 @@ public class StaxUtil {
 
     /**
      * Element builder for basic elements.
+     *
      * @param info
      * @param xmlEventReader
      * @param parentStartElement
@@ -127,11 +134,41 @@ public class StaxUtil {
         }
     }
 
+    /**
+     * Validates XML from <code>xmlEventReader</code> against XSD <code>xsdResourcePath</code>.
+     *
+     * @param xmlEventReader
+     * @param xsdResourcePath
+     * @throws SAXException
+     * @throws XMLStreamException
+     * @throws IOException
+     */
+    public static void validateAgainstSchema(XMLEventReader xmlEventReader, String xsdResourcePath) throws SAXException, XMLStreamException, IOException {
+        validateAgainstSchema(xmlEventReader, CommonUtil.getResourceUrl(xsdResourcePath));
+    }
+
+    /**
+     * Validates XML from <code>xmlEventReader</code> against XSD <code>xsdResourceUrl</code>.
+     *
+     * @param xmlEventReader
+     * @param xsdResourceUrl
+     * @throws SAXException
+     * @throws XMLStreamException
+     * @throws IOException
+     */
+    public static void validateAgainstSchema(XMLEventReader xmlEventReader, URL xsdResourceUrl) throws SAXException, XMLStreamException, IOException {
+        SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        Schema schema = factory.newSchema(xsdResourceUrl);
+
+        Validator validator = schema.newValidator();
+        validator.validate(new StAXSource(xmlEventReader));
+    }
+
+
     //--------------------------------------------
     // For writing:
 
     /**
-     *
      * @param outputFile
      * @return eventWriter
      * @throws FileNotFoundException
@@ -149,6 +186,7 @@ public class StaxUtil {
 
     /**
      * Credit: http://www.vogella.com/tutorials/JavaXML/article.html
+     *
      * @param eventWriter
      * @param name
      * @param value
@@ -175,13 +213,12 @@ public class StaxUtil {
     }
 
     /**
-     *
      * @param eventFactory
      * @param prefix
      * @param namespaceUri
      * @return Namespaces
      */
-    public static Iterator<Namespace> createNamespaces(XMLEventFactory eventFactory, String prefix, String namespaceUri ) {
+    public static Iterator<Namespace> createNamespaces(XMLEventFactory eventFactory, String prefix, String namespaceUri) {
         Namespace namespace = eventFactory.createNamespace(prefix, namespaceUri);
         List<Namespace> namespaces = new ArrayList<>();
         namespaces.add(namespace);

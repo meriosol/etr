@@ -1,9 +1,9 @@
 package com.meriosol.etr.xml.sax;
 
 import com.meriosol.etr.CommonUtil;
+import com.meriosol.etr.domain.EventInfo;
 import com.meriosol.etr.xml.sax.handling.EventsSaxContentHandler;
 import com.meriosol.etr.xml.sax.handling.EventsSaxErrorHandler;
-import com.meriosol.etr.domain.EventInfo;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;

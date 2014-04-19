@@ -10,8 +10,10 @@
     </event>
     <event id="1000001" severity="WARN" created="2014-04-">
         <title>Some WARN message</title>
-        <event-category code="MESSAGE"/>  >>>>OMG OMG ERROR>>>>
+        <event-category code="MESSAGE"/>
+        >>>>OMG OMG ERROR>>>>
         <source>SRC1</source>
-        <proc PRC1</process-id>
-    </event>
-</events>
+        <proc PRC1
+    </process-id>
+</event>
+        </events>

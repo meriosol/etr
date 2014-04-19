@@ -1,7 +1,7 @@
 package com.meriosol.etr.xml.sax.handling;
 
-import com.meriosol.etr.xml.sax.SaxUtil;
 import com.meriosol.etr.domain.EventInfo;
+import com.meriosol.etr.xml.sax.SaxUtil;
 import com.meriosol.etr.xml.sax.handling.state.EtrStateContext;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
