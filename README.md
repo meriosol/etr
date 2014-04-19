@@ -50,6 +50,12 @@ Combinations of ORM and persistence frameworks embraced so far(root path **proje
 
 > NOTE: For SQL DBs persistence combination **etr-hibernate-spring-xml** looks like contains the least configuration and boilerplate code as it can be seen from that subproject.
 
+## XML subprojects
+Under path **projects/xmlius**:
+ - etr_jaxb (JAXB generation and marshalling shown up there).
+ - etr_parsing (XML parsing and storing techniques such as DOM, SAX, StAX, XPath; with XSD validation).
+ - etr_xsl (XSLT, XSL-FO to PDF transformation samples).
+
 ## Performance metrics
 If you perform tests for e.g. **apistudy** module, you notice JSON constructs in log file, like this one:
 ```JSON
@@ -66,24 +72,18 @@ If you perform tests for e.g. **apistudy** module, you notice JSON constructs in
 ```
 
 These are basically duration and (heap) memory consumption metrics. Idea was to report rough metrics for potential resource consumption estimates of different approaches.
-If to gather these reports in some DB (MongoDB?), interesting stats can be revealed for combinations of approaches and underlying backend systems.
+If to gather these reports in some DB (MongoDB?), interesting statistics can be revealed for combinations of approaches and underlying backend systems.
 
-## XML subprojects
-Under path **projects/xmlius**:
- - etr_jaxb (JAXB generation and marshalling shown up there)
- - etr_parsing (XML parsing techniques such as DOM, SAX; with XSD validation)
- - etr_xsl (XSLT, XSL-FO to PDF transformation samples)
+## Dependency highlights
+Notice that in order to increase modularity and reusability some former internal projects were moved to external libraries.
 
-### Dependency highlights
-In order to increase modularity and reusability some former internal projects were moved to external libraries.
-
-#### MuTasker
-MuTasker is about running tasks using pool of threads. It's external library [MuTasker](https://github.com/meriosol/mutasker) (**mu**lti-threaded "tasker").
+### MuTasker
+MuTasker is about running tasks using pool of threads. It's external library [MuTasker](https://github.com/meriosol/mutasker) (multi-threaded "tasker").
 This lib utilizes Java Concurrency package and provides a few abstracts to deal with generic tasks. 
-Gathering of execution time performance stats and load testing itself are main features of this lib.
+Gathering of execution time performance statistics and load testing itself are main features of this lib.
 > NOTE: In order to build ETR, because of dependency on **mutasker** in **projects/java_se7_sql/apistudy** module you need to clone and install this lib on your local maven repo first.
 
-#### JaxbUtil
+### JaxbUtil
 XML and web service related subprojects can depend on external library [JaxbUtil](https://github.com/meriosol/jaxbutil).
 The library provides thin generic wrapper around JAXB framework internals.
 For now it's utilized in ETR JAXB subproject **projects/xmlius/etr_jaxb** (means you need to install this lib in local maven repo first).
@@ -104,7 +104,7 @@ The library is POJO agnostic because of generics binding(it also supports type s
  - **projects**: Case studies grouped by technologies used. They are generally have maven root poms, can be opened in e.g. IDEA IDE.
     They, in turn, have deep dir structures to show usage combinations. Hope you don't get lost :)..  
     - **java_se7_sql**: For SQL and NoSQL DBs, using Java SE 7.
-	- **xmlius**: For event XML handling approaches.
+	- **xmlius**: For ETR event XML handling approaches(also it's preparation to SOAP exploration, with WSDLs/XSDs etc.. maybe some BPEL too).
  - **runtimes**: DB runtime launch samples
     - **javadb**: JavaDB(apache derby) runtime folder. Both windows and linux env-s are embraced. 
     - **cassandra**: Cassandra runtime folder. Both windows and linux env-s are embraced.
