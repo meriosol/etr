@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -218,13 +217,8 @@ public class EventDaoImpl implements EventDao {
         String queryString = "select " + EVENT_COLUMNS + " from events " + where + " order by created desc";
         LOG.info("{}: queryString: '{}'", module, queryString);
 
-        try {
-            LOG.info("{}: startDate='{}'; endDate='{}', queryString: {}", module, DateUtil.formatDateWithDefaultFormat(startDate),
-                    DateUtil.formatDateWithDefaultFormat(endDate), queryString);
-        } catch (ParseException e) {
-            LOG.error("{}: Error while parsing date!", module, e);
-            LOG.info("{}: startDate='{}'; endDate='{}', queryString: {}", module, startDate, endDate, queryString);
-        }
+        LOG.info("{}: startDate='{}'; endDate='{}', queryString: {}", module, DateUtil.formatDateWithDefaultFormat(startDate),
+                DateUtil.formatDateWithDefaultFormat(endDate), queryString);
 
         try (PreparedStatement statement = connection.prepareStatement(queryString,
                 ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {

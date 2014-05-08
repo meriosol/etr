@@ -135,11 +135,11 @@ public class EventDaoMockedImpl implements EventDao {
                     createdDateMilliss--;
                 }
 
-                long endDateMilliss = endDate.getTime();
-                if (createdDateMilliss > endDateMilliss) {
-                    createdDateMilliss = endDateMilliss;
-                    timeToBreak = true;
-                }
+//                long endDateMilliss = endDate.getTime();
+//                if (createdDateMilliss > endDateMilliss) {
+//                    createdDateMilliss = endDateMilliss;
+//                    timeToBreak = true;
+//                }
             }
 
             if (createdDateMilliss > 0) {
